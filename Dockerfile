@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Expose the port your app listens on
-EXPOSE 3000
+EXPOSE 1234
 
 # Define the command to start your app
-CMD ["node", "src/index.ts"]
+CMD ["npm", "run", "start"]
