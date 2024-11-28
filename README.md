@@ -6,4 +6,4 @@ Vanilla Typescript Breakout
 `docker build -t salthouse-breakout .`
 
 ## To run with Docker
-`docker run -p 3000:3000 salthouse-breakout`
+`docker run -p 1234:1234 salthouse-breakout`
