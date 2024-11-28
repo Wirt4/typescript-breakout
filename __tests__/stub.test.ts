@@ -1,3 +1,5 @@
 describe('stub', () => {
-    expect(2 + 2).toBe(5);
+    test('basic case',()=>{
+        expect(2 + 2).toBe(4);
+    })
 })
