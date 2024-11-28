@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Define the command to start your app
-CMD ["node", "index.ts"]
+CMD ["node", "src/index.ts"]
