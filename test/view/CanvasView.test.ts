@@ -174,4 +174,11 @@ describe('CanvasView.drawSprite',()=>{
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('image.png')}),
             expect.anything() ,expect.anything(), expect.anything(), expect.anything());
     })
+    it("when drawSprites is called, expect drawImage to be called with the sprite's image, different data",()=>{
+        canvasView = new CanvasView('#playField');
+        const sprite = new Sprite('../../image3.png')
+        canvasView.drawSprite(sprite)
+        expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('image3.png')}),
+            expect.anything() ,expect.anything(), expect.anything(), expect.anything());
+    })
 })
