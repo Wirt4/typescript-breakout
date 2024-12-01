@@ -169,21 +169,21 @@ describe('CanvasView.drawSprite',()=>{
     })
     it("when drawSprites is called, expect drawImage to be called with the sprite's image",()=>{
         canvasView = new CanvasView('#playField');
-        const sprite = new Sprite('image.png', 0)
+        const sprite = new Sprite('image.png', 0, 0)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('image.png')}),
             expect.anything() ,expect.anything(), expect.anything(), expect.anything());
     })
     it("when drawSprites is called, expect drawImage to be called with the sprite's image, different data",()=>{
         canvasView = new CanvasView('#playField');
-        const sprite = new Sprite('../../image3.png', 0)
+        const sprite = new Sprite('../../image3.png', 0, 0)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('image3.png')}),
             expect.anything() ,expect.anything(), expect.anything(), expect.anything());
     })
     it("when drawSprites is called, expect drawImage to be called with the sprite's X cord",()=>{
         canvasView = new CanvasView('#playField');
-        const sprite = new Sprite('../../image3.png', 3)
+        const sprite = new Sprite('../../image3.png', 3, 0)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(),
             3,
@@ -191,7 +191,7 @@ describe('CanvasView.drawSprite',()=>{
     })
     it("when drawSprites is called, expect drawImage to be called with the sprite's X cord, different data",()=>{
         canvasView = new CanvasView('#playField');
-        const sprite = new Sprite('../../image3.png', 64)
+        const sprite = new Sprite('../../image3.png', 64, 0)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(),
             64,
