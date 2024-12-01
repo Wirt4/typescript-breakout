@@ -7,6 +7,7 @@ describe('CanvasView constructor tests', () => {
         new CanvasView('canvasID')
     })
 })
+
 describe('CanvasView.clear', () => {
     let canvasView: CanvasView;
     let mockCanvas: HTMLCanvasElement;
@@ -58,7 +59,8 @@ describe('CanvasView.clear', () => {
         const nullContextView = new CanvasView('#playField');
         expect(() => nullContextView.clear()).not.toThrow();
     });
-});
+})
+
 describe('CanvasView.initStartButton', () => {
     let canvasElement: HTMLCanvasElement;
     let startButton: HTMLButtonElement;
