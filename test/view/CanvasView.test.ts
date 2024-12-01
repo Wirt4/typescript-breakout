@@ -96,4 +96,16 @@ describe('CanvasView.drawScore',()=>{
         const view = new CanvasView('#playField');
         view.drawScore(7)
     })
+    it('drawScore should write the number to the score field',()=>{
+        document.body.innerHTML = `
+      <div id="playField">
+        <button id="start">Start</button>
+        <canvas></canvas>
+        <div id="score"></div>
+      </div>`;
+        const view = new CanvasView('#playField');
+        const scoreDisplay = document.querySelector('#score') as HTMLObjectElement;
+        view.drawScore(7)
+        expect(scoreDisplay.innerText).toBe('7');
+    })
 })
