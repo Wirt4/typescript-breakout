@@ -1,4 +1,5 @@
 import {Sprite} from "../sprites/Sprite";
+import {Brick} from "../sprites/Brick";
 
 export class CanvasView {
     private canvas: HTMLCanvasElement;
@@ -56,5 +57,10 @@ export class CanvasView {
             sprite.width,
             sprite.height
         )
+    }
+
+    drawBricks(bricks:Brick[]){
+        const brick = new Brick('./brick-image.png', 0,0, 10, 20)
+        this.drawSprite(brick)
     }
 }

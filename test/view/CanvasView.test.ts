@@ -1,5 +1,6 @@
 import {CanvasView} from "../../src/view/CanvasView";
 import {Sprite} from "../../src/sprites/Sprite";
+import {Brick} from "../../src/sprites/Brick";
 
 describe('CanvasView constructor tests', () => {
     it('Object instantiates without error',()=>{
