@@ -60,7 +60,7 @@ describe('CanvasView.clear', () => {
 describe('CanvasView.initStartButton', () => {
     it('argument to initStartButton is a function that takes a CanvaView type as an argument',()=>{
         const func = (arg: CanvasView)=>{}
-        new CanvasView('canvasID')
-        CanvasView.initStartButton(func)
+        const view = new CanvasView('canvasID')
+        view.initStartButton(func)
     })
 })

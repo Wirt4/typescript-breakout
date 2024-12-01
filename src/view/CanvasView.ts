@@ -12,4 +12,6 @@ export class CanvasView {
                 this.canvas.width, this.canvas.height);
         }
     }
+
+    initStartButton(startFunction:(view: CanvasView)=>void){}
 }
