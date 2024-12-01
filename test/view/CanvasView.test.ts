@@ -222,4 +222,12 @@ describe('CanvasView.drawSprite',()=>{
             60,
             expect.anything());
     })
+    it("when drawSprites is called, expect drawImage to be called with the sprite's width, different data",()=>{
+        canvasView = new CanvasView('#playField');
+        const sprite = new Sprite('../../image3.png', 64, 89, 45)
+        canvasView.drawSprite(sprite)
+        expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.anything(),
+            45,
+            expect.anything());
+    })
 })
