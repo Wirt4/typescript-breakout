@@ -245,3 +245,34 @@ describe('CanvasView.drawSprite',()=>{
             234);
     })
 })
+
+describe('CanvasView.drawBricks',()=>{
+    let canvasView: CanvasView;
+    let mockCanvas: HTMLCanvasElement;
+    let mockContext: jest.Mocked<CanvasRenderingContext2D>;
+
+    beforeEach(()=>{
+        mockCanvas = document.createElement('canvas');
+        mockContext = {
+            clearRect: jest.fn(),
+            drawImage: jest.fn(),
+        } as unknown as jest.Mocked<CanvasRenderingContext2D>;
+
+        jest.spyOn(mockCanvas, 'getContext').mockReturnValue(mockContext);
+        jest.spyOn(document, 'querySelector').mockImplementation((selector) => {
+            if (selector === '#playField') return mockCanvas;
+            return null;
+        });
+
+    })
+
+    afterAll(()=>{
+        jest.restoreAllMocks()
+    })
+    it('if bricks Array has one brick, then draw the contents of that brick to canvas',()=>{
+        canvasView = new CanvasView('#playField');
+        const bricks = [new Brick('./brick-image.png', 0,0, 10, 20)]
+        canvasView.drawBricks(bricks)
+        expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('brick-image.png')}), 0, 0, 10, 20);
+    })
+})
