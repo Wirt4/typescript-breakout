@@ -5,12 +5,24 @@ export class CanvasView {
     private scoreDisplay: HTMLObjectElement | null;
 
     constructor(canvasName: string) {
-        this.canvas = document.querySelector(canvasName);
+        this.canvas = this.queryCanvas(canvasName)
         if (typeof this.canvas?.getContext == 'function'){
             this.context = this.canvas?.getContext('2d') || null;
         }
-        this.start = document.querySelector('#start');
-        this.scoreDisplay = document.querySelector('#score');
+        this.start = this.queryDocument('start')
+        this.scoreDisplay = this.queryDocument('score')
+    }
+
+    queryDocument (id: string): HTMLObjectElement {
+       return this.query(`#${id}`) as HTMLObjectElement;
+    }
+
+    queryCanvas(id: string): HTMLCanvasElement {
+        return this.query(id) as HTMLCanvasElement;
+    }
+
+    query(id: string){
+        return  document.querySelector(id)
     }
 
     clear(): void{
