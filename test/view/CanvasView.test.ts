@@ -230,4 +230,11 @@ describe('CanvasView.drawSprite',()=>{
             45,
             expect.anything());
     })
+    it("when drawSprites is called, expect drawImage to be called with the sprite's height",()=>{
+        canvasView = new CanvasView('#playField');
+        const sprite = new Sprite('../../image3.png', 64, 89, 45, 100)
+        canvasView.drawSprite(sprite)
+        expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.anything(), expect.anything(),
+            100);
+    })
 })
