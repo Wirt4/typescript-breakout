@@ -3,6 +3,7 @@ export class CanvasView {
     private readonly context: CanvasRenderingContext2D | null;
     private start: HTMLObjectElement | null;
     private scoreDisplay: HTMLObjectElement | null;
+    private infoDisplay: HTMLObjectElement | null;
 
     constructor(canvasName: string) {
         this.canvas = this.queryCanvas(canvasName)
@@ -11,6 +12,7 @@ export class CanvasView {
         }
         this.start = this.queryDocument('start')
         this.scoreDisplay = this.queryDocument('score')
+        this.infoDisplay = this.queryDocument('info')
     }
 
     queryDocument (id: string): HTMLObjectElement {
@@ -38,5 +40,9 @@ export class CanvasView {
 
     drawScore(score: number) {
         this.scoreDisplay.innerHTML = score.toString()
+    }
+
+    drawInfo(info: string){
+        this.infoDisplay.innerHTML = info
     }
 }
