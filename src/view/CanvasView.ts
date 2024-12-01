@@ -1,1 +1,3 @@
-export class CanvasView {}
+export class CanvasView {
+    constructor(canvasName: string) {}
+}
