@@ -26,7 +26,7 @@ export class CanvasView {
         return this.query(id) as HTMLCanvasElement;
     }
 
-    query(id: string){
+    query(id: string):any{
         return  document.querySelector(id)
     }
 
@@ -37,19 +37,19 @@ export class CanvasView {
         }
     }
 
-    initStartButton(startFunction:(view: CanvasView)=>void){
+    initStartButton(startFunction:(view: CanvasView)=>void):void{
         this.start?.addEventListener('click', () => startFunction(this));
     }
 
-    drawScore(score: number) {
+    drawScore(score: number):void {
         this.scoreDisplay.innerHTML = score.toString()
     }
 
-    drawInfo(info: string){
+    drawInfo(info: string):void{
         this.infoDisplay.innerHTML = info
     }
 
-    drawSprite(sprite: Sprite){
+    drawSprite(sprite: Sprite):void{
         this.context.drawImage(
             sprite.image,
             sprite.x,
@@ -59,7 +59,7 @@ export class CanvasView {
         )
     }
 
-    drawBricks(bricks:Brick[]){
+    drawBricks(bricks:Brick[]): void{
         const brick = new Brick('./brick-image.png', 0,0, 10, 20)
         this.drawSprite(brick)
     }
