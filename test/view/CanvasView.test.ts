@@ -58,9 +58,35 @@ describe('CanvasView.clear', () => {
     });
 });
 describe('CanvasView.initStartButton', () => {
-    it('argument to initStartButton is a function that takes a CanvaView type as an argument',()=>{
-        const func = (arg: CanvasView)=>{}
-        const view = new CanvasView('canvasID')
+    let canvasElement: HTMLCanvasElement;
+    let startButton: HTMLButtonElement;
+    let mockStartFunction: jest.Mock;
+    beforeEach(() => {
+        // Mock DOM elements
+        document.body.innerHTML = `
+      <canvas id="playField"></canvas>
+      <button id="start"></button>
+    `;
+
+        canvasElement = document.querySelector('#playField') as HTMLCanvasElement;
+        startButton = document.querySelector('#start') as HTMLButtonElement;
+        mockStartFunction = jest.fn();
+
+        // Ensure the mocked elements exist
+        expect(canvasElement).not.toBeNull();
+        expect(startButton).not.toBeNull();
+    });
+    it('argument to initStartButton is a function that takes a CanvaView type as an argument', () => {
+        const func = (arg: CanvasView) => {
+        }
+        const view = new CanvasView('#playField')
         view.initStartButton(func)
     })
+    it('should add a click event listener to the start button', () => {
+        const view = new CanvasView('#playField');
+        view.initStartButton(mockStartFunction);
+        startButton.click();
+        expect(mockStartFunction).toHaveBeenCalledTimes(1);
+        expect(mockStartFunction).toHaveBeenCalledWith(view);
+    });
 })
