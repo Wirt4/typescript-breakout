@@ -1,3 +1,5 @@
+import {Sprite} from "../sprites/Sprite";
+
 export class CanvasView {
     private canvas: HTMLCanvasElement;
     private readonly context: CanvasRenderingContext2D | null;
@@ -44,5 +46,11 @@ export class CanvasView {
 
     drawInfo(info: string){
         this.infoDisplay.innerHTML = info
+    }
+
+    drawSprite(sprite: Sprite){
+        const image = new Image();
+        image.src = 'imgage.png'
+        this.context.drawImage(image, 0,0, 40,40)
     }
 }

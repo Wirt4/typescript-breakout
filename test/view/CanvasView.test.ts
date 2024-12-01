@@ -1,4 +1,5 @@
 import {CanvasView} from "../../src/view/CanvasView";
+import {Sprite} from "../../src/sprites/Sprite";
 
 describe('CanvasView constructor tests', () => {
     it('Object instantiates without error',()=>{
@@ -140,5 +141,37 @@ describe('CanvasView.drawInfo',()=>{
     it('should write "you lose" to screen',()=>{
         canvasView.drawInfo("You lose")
         expect(infoDisplay.innerHTML).toBe("You lose");
+    })
+})
+
+describe('CanvasView.drawSprite',()=>{
+    let canvasView: CanvasView;
+    let mockCanvas: HTMLCanvasElement;
+    let mockContext: jest.Mocked<CanvasRenderingContext2D>;
+
+    beforeEach(()=>{
+        mockCanvas = document.createElement('canvas');
+        mockContext = {
+            clearRect: jest.fn(),
+            drawImage: jest.fn(),
+        } as unknown as jest.Mocked<CanvasRenderingContext2D>;
+
+        jest.spyOn(mockCanvas, 'getContext').mockReturnValue(mockContext);
+        jest.spyOn(document, 'querySelector').mockImplementation((selector) => {
+            if (selector === '#playField') return mockCanvas;
+            return null;
+        });
+
+    })
+
+    afterAll(()=>{
+        jest.restoreAllMocks()
+    })
+    it("when drawSprites is called, expect drawImage to be called with the sprite's image",()=>{
+        canvasView = new CanvasView('#playField');
+        const sprite = new Sprite()
+        canvasView.drawSprite(sprite)
+        expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('imgage.png')}),
+            expect.anything() ,expect.anything(), expect.anything(), expect.anything());
     })
 })
