@@ -276,4 +276,10 @@ describe('CanvasView.drawBricks',()=>{
         canvasView.drawBricks(bricks)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('brick-image.png')}), 0, 0, 10, 20);
     })
+    it('if bricks Array has one brick, then draw the contents of that brick to canvas, different data',()=>{
+        canvasView = new CanvasView('#playField');
+        const bricks = [new Brick('./brick-image2.png', 5,8, 10, 20)]
+        canvasView.drawBricks(bricks)
+        expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('brick-image2.png')}), 5, 8, 10, 20);
+    })
 })
