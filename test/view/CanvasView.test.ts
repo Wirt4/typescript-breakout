@@ -111,4 +111,10 @@ describe('CanvasView.drawScore',()=>{
         canvasView.drawScore(score);
         expect(scoreDisplay.innerHTML).toBe(score.toString());
     });
+
+    it('should draw score of 56 on the canvas', () => {
+        const score = 56;
+        canvasView.drawScore(score);
+        expect(scoreDisplay.innerHTML).toBe(score.toString());
+    });
 })
