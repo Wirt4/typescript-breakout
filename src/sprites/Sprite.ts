@@ -2,7 +2,7 @@ export class Sprite {
     private readonly _imageSrc: string;
     private readonly _x: number;
 
-    constructor(imageSrc: string, xCoord: number) {
+    constructor(imageSrc: string, xCoord: number, yCoord: number =0) {
         this._imageSrc = imageSrc;
         this._x = xCoord
     }
