@@ -37,6 +37,6 @@ export class CanvasView {
     }
 
     drawScore(score: number) {
-        this.scoreDisplay.innerHTML = "10"
+        this.scoreDisplay.innerHTML = score.toString()
     }
 }

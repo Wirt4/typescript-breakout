@@ -118,3 +118,23 @@ describe('CanvasView.drawScore',()=>{
         expect(scoreDisplay.innerHTML).toBe(score.toString());
     });
 })
+
+describe('CanvasView.drawInfo',()=>{
+    let canvasView: CanvasView;
+    let infoDisplay: HTMLObjectElement;
+
+    beforeEach(() => {
+        document.body.innerHTML = `
+      <div id="playField">
+        <button id="start">Start</button>
+        <canvas></canvas>
+        <div id="info"></div>
+      </div>`;
+        canvasView = new CanvasView('#playField');
+        infoDisplay = document.querySelector('#info') as HTMLObjectElement;
+    })
+    it('should write "you win" to screen',()=>{
+        canvasView.drawInfo("You win!")
+        expect(infoDisplay.innerHTML).toBe("You win!");
+    })
+})
