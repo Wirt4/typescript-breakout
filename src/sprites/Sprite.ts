@@ -4,7 +4,7 @@ export class Sprite {
     private readonly _y: number;
     private readonly _w: number;
 
-    constructor(imageSrc: string, xCoord: number, yCoord: number, width: number) {
+    constructor(imageSrc: string, xCoord: number, yCoord: number, width: number, height: number = 0) {
         this._imageSrc = imageSrc;
         this._x = xCoord
         this._y = yCoord
