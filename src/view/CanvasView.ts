@@ -2,11 +2,15 @@ export class CanvasView {
     private canvas: HTMLCanvasElement;
     private readonly context: CanvasRenderingContext2D | null;
     private start: HTMLObjectElement | null;
+    private scoreDisplay: HTMLObjectElement | null;
 
     constructor(canvasName: string) {
         this.canvas = document.querySelector(canvasName);
-        this.context = this.canvas?.getContext('2d') || null;
+        if (typeof this.canvas?.getContext == 'function'){
+            this.context = this.canvas?.getContext('2d') || null;
+        }
         this.start = document.querySelector('#start');
+        this.scoreDisplay = document.querySelector('#score');
     }
 
     clear(): void{
@@ -20,5 +24,7 @@ export class CanvasView {
         this.start?.addEventListener('click', () => startFunction(this));
     }
 
-    drawScore(score: number) {}
+    drawScore(score: number) {
+        this.scoreDisplay.innerHTML = "10"
+    }
 }

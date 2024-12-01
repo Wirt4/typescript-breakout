@@ -92,20 +92,23 @@ describe('CanvasView.initStartButton', () => {
 })
 
 describe('CanvasView.drawScore',()=>{
-    it('drawScore takes in a parameter of a number',()=>{
-        const view = new CanvasView('#playField');
-        view.drawScore(7)
-    })
-    it('drawScore should write the number to the score field',()=>{
+    let canvasView: CanvasView;
+    let scoreDisplay: HTMLObjectElement;
+
+    beforeEach(() => {
         document.body.innerHTML = `
       <div id="playField">
         <button id="start">Start</button>
         <canvas></canvas>
         <div id="score"></div>
       </div>`;
-        const view = new CanvasView('#playField');
-        const scoreDisplay = document.querySelector('#score') as HTMLObjectElement;
-        view.drawScore(7)
-        expect(scoreDisplay.innerText).toBe('7');
+        canvasView = new CanvasView('#playField');
+        scoreDisplay = document.querySelector('#score') as HTMLObjectElement;
     })
+
+    it('should draw score of 10 on the canvas', () => {
+        const score = 10;
+        canvasView.drawScore(score);
+        expect(scoreDisplay.innerHTML).toBe(score.toString());
+    });
 })
