@@ -189,4 +189,12 @@ describe('CanvasView.drawSprite',()=>{
             3,
             expect.anything(), expect.anything(), expect.anything());
     })
+    it("when drawSprites is called, expect drawImage to be called with the sprite's X cord, different data",()=>{
+        canvasView = new CanvasView('#playField');
+        const sprite = new Sprite('../../image3.png', 64)
+        canvasView.drawSprite(sprite)
+        expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(),
+            64,
+            expect.anything(), expect.anything(), expect.anything());
+    })
 })
