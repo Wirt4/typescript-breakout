@@ -60,7 +60,6 @@ export class CanvasView {
     }
 
     drawBricks(bricks:Brick[]): void{
-        const brick = new Brick('./brick-image.png', 0,0, 10, 20)
-        this.drawSprite(brick)
+        this.drawSprite(bricks[0])
     }
 }
