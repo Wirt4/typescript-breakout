@@ -1,1 +1,4 @@
-export class Sprite {}
+export class Sprite {
+    constructor(imageSrc: string) {
+    }
+}
