@@ -137,4 +137,8 @@ describe('CanvasView.drawInfo',()=>{
         canvasView.drawInfo("You win!")
         expect(infoDisplay.innerHTML).toBe("You win!");
     })
+    it('should write "you lose" to screen',()=>{
+        canvasView.drawInfo("You lose")
+        expect(infoDisplay.innerHTML).toBe("You lose");
+    })
 })
