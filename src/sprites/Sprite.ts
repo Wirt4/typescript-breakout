@@ -1,5 +1,5 @@
 export class Sprite {
-    private _imageSrc: string;
+    private readonly _imageSrc: string;
 
     constructor(imageSrc: string) {
         this._imageSrc = imageSrc;
