@@ -50,7 +50,7 @@ export class CanvasView {
 
     drawSprite(sprite: Sprite){
         const image = new Image();
-        image.src = 'image.png'
+        image.src = sprite.imageSrc
         this.context.drawImage(image, 0,0, 40,40)
     }
 }
