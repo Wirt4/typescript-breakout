@@ -1,6 +1,6 @@
 export class CanvasView {
     private canvas: HTMLCanvasElement;
-    private context: CanvasRenderingContext2D | null;
+    private readonly context: CanvasRenderingContext2D | null;
     constructor(canvasName: string) {
         this.canvas = document.querySelector(canvasName);
         this.context = this.canvas?.getContext('2d') || null;
@@ -8,7 +8,8 @@ export class CanvasView {
 
     clear(): void{
         if (this.context) {
-            this.context?.clearRect(0,0,this.canvas.width, this.canvas.height);
+            this.context?.clearRect(0,0,
+                this.canvas.width, this.canvas.height);
         }
     }
 }
