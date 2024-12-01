@@ -90,3 +90,10 @@ describe('CanvasView.initStartButton', () => {
         expect(mockStartFunction).toHaveBeenCalledWith(view);
     });
 })
+
+describe('CanvasView.drawScore',()=>{
+    it('drawScore takes in a parameter of a number',()=>{
+        const view = new CanvasView('#playField');
+        view.drawScore(7)
+    })
+})

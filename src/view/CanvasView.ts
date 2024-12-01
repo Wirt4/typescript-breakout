@@ -6,7 +6,7 @@ export class CanvasView {
     constructor(canvasName: string) {
         this.canvas = document.querySelector(canvasName);
         this.context = this.canvas?.getContext('2d') || null;
-        this.start= document.querySelector('#start');
+        this.start = document.querySelector('#start');
     }
 
     clear(): void{
