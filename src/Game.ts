@@ -3,6 +3,7 @@ import {CanvasView} from "./view/CanvasView";
 enum EndState{
     GAME_OVER = "Game Over!",
     GAME_WON = "Game Won!",
+    BLANK = ""
 }
 
 export class Game {
@@ -23,6 +24,10 @@ export class Game {
         this.setGameStatus(EndState.GAME_OVER)
     }
 
+    clearInfo():void{
+        this.setGameStatus(EndState.BLANK)
+    }
+
     setGameWin():void{
         this.setGameStatus(EndState.GAME_WON)
     }
@@ -31,5 +36,7 @@ export class Game {
         this._view.drawInfo(state)
     }
 
-    start():void{}
+    start():void{
+        this.clearInfo()
+    }
 }
