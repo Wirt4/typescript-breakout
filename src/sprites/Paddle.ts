@@ -17,6 +17,6 @@ export class Paddle extends Sprite{
     }
 
     handleKeyDown = (event: KeyboardEvent)=>{
-       if(event.key == "ArrowLeft") this._moveLeft = true;
+       if(event.key == "ArrowLeft" || event.key == "ArrowRight") this._moveLeft = true;
     }
 }
