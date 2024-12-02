@@ -8,6 +8,7 @@ export class Paddle extends Sprite{
     constructor(src: string, pos: Vector, size: Size) {
         super(src, pos, size);
         document.addEventListener('keydown', this.handleKeyDown);
+        document.addEventListener('keyup', this.handleKeyUp);
     }
     get isMovingLeft():boolean{
         return this._moveLeft;
@@ -25,6 +26,20 @@ export class Paddle extends Sprite{
                     break
                 }
                 this._moveLeft = true
+                break
+            case "ArrowRight":
+                if (this.isMovingLeft){
+                    this.stopPaddle()
+                    break
+                }
+                this._moveRight = true
+        }
+    }
+
+    handleKeyUp = (event: KeyboardEvent)=>{
+        switch (event.key){
+            case"ArrowLeft":
+                this._moveLeft = false
                 break
             case "ArrowRight":
                 if (this.isMovingLeft){
