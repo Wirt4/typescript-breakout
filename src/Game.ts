@@ -46,5 +46,6 @@ export class Game {
 
     loop(view: CanvasView, bricks: Brick[]):void{
         view.clear()
+        view.drawBricks([])
     }
 }
