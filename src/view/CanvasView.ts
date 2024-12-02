@@ -12,6 +12,8 @@ export class CanvasView {
         this.canvas = this.queryCanvas(canvasName)
         if (typeof this.canvas?.getContext == 'function'){
             this.context = this.canvas?.getContext('2d') || null;
+        }else{
+            this.context  =null
         }
         this.start = this.queryDocument('start')
         this.scoreDisplay = this.queryDocument('score')
@@ -42,26 +44,34 @@ export class CanvasView {
     }
 
     drawScore(score: number):void {
-        this.scoreDisplay.innerHTML = score.toString()
+        this.setComponentHTML(this.scoreDisplay, score.toString())
     }
 
     drawInfo(info: string):void{
-        if (this.infoDisplay) {
-            this.infoDisplay.innerHTML = info
-        }
+        this.setComponentHTML(this.infoDisplay, info)
+    }
+
+    setComponentHTML(element: HTMLObjectElement | null, data: string){
+        if (element) element.innerHTML = data
     }
 
     drawSprite(sprite: Sprite):void{
-        this.context.drawImage(
-            sprite.image,
-            sprite.x,
-            sprite.y,
-            sprite.width,
-            sprite.height
-        )
+        if (this.context && sprite.hasValidImage()) {
+            this.context.drawImage(
+                sprite.image,
+                sprite.x,
+                sprite.y,
+                sprite.width,
+                sprite.height
+            );
+        } else {
+            console.warn("Cannot draw sprite; image is not ready or broken.", sprite);
+        }
     }
 
     drawBricks(bricks:Brick[]): void{
-        this.drawSprite(bricks[0])
+        bricks.forEach((brick) => {
+            this.drawSprite(brick)
+        })
     }
 }

@@ -1,13 +1,17 @@
 import {CanvasView} from "./view/CanvasView";
+import {createBricks} from "./helper";
+import {Brick} from "./sprites/Brick";
 
 enum EndState{
     GAME_OVER = "Game Over!",
     GAME_WON = "Game Won!",
+    BLANK = ""
 }
 
 export class Game {
     private readonly _isGameOver: boolean
     private _view: CanvasView
+    public score = 0
 
     constructor(view: CanvasView) {
         this._isGameOver = false;
@@ -22,6 +26,10 @@ export class Game {
         this.setGameStatus(EndState.GAME_OVER)
     }
 
+    clearInfo():void{
+        this.setGameStatus(EndState.BLANK)
+    }
+
     setGameWin():void{
         this.setGameStatus(EndState.GAME_WON)
     }
@@ -30,5 +38,15 @@ export class Game {
         this._view.drawInfo(state)
     }
 
-    start():void{}
+    start(view: CanvasView){
+        view.drawInfo("")
+        view.drawScore(0)
+        this.loop(view, createBricks())
+    }
+
+    loop(view: CanvasView, bricks: Brick[]):void{
+        view.clear()
+        view.drawBricks(bricks)
+        requestAnimationFrame(()=>{this.loop(view, bricks)})
+    }
 }
