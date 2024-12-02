@@ -137,4 +137,9 @@ describe('Game.loop tests',()=>{
         game.loop(view, [])
         expect(drawBricksSpy).toHaveBeenCalledWith([])
     })
+    it('Game.loop calls view.drawBricks() with the bricks argument, different data', ()=>{
+        const expected = [ new Brick('stub',{x:0, y:0},{width: 20, height:10},)];
+        game.loop(view, expected);
+        expect(drawBricksSpy).toHaveBeenCalledWith(expected);
+    })
 })
