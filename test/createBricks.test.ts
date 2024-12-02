@@ -1,3 +1,4 @@
+import {createBricks} from "../src/helper";
 
 jest.mock("../src/setup", () => ({
     get LEVEL () {
@@ -6,6 +7,6 @@ jest.mock("../src/setup", () => ({
 }))
 describe('createBricks', () => {
     it('Given that the setup const LEVEL returns an empty array, when createBricks is called, then it returns an empty array',()=>{
-        expect(createBricks).toEqual([])
+        expect(createBricks()).toEqual([])
     })
 })
