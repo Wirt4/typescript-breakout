@@ -8,6 +8,7 @@ enum EndState{
 export class Game {
     private readonly _isGameOver: boolean
     private _view: CanvasView
+    public score = 0
 
     constructor(view: CanvasView) {
         this._isGameOver = false;
