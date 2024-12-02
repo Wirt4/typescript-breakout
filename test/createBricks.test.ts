@@ -1,7 +1,5 @@
 import {createBricks} from "../src/helper";
 import {Brick} from "../src/sprites/Brick";
-import RED_BRICK_IMAGE from "../src/images/brick-red.png";
-
 
 jest.mock("../src/setup", () => ({
     LEVEL: [],

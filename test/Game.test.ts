@@ -114,3 +114,21 @@ describe('Game.start tests',()=>{
         expect(loopSpy).toHaveBeenCalledWith(view, expected)
     })
 })
+
+describe('Game.loop tests',()=>{
+    let view: CanvasView
+    let game: Game
+    beforeEach(()=>{
+        view = new CanvasView('#playField');
+        game = new Game(view);
+    })
+    afterEach(()=>{
+        jest.resetAllMocks()
+    })
+    it('Game.loop calls view.clear()', ()=>{
+        const spy = jest.spyOn(view, 'clear')
+        game = new Game(view)
+        game.loop(view, [])
+        expect(spy).toHaveBeenCalled()
+    })
+})

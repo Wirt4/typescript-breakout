@@ -24,8 +24,8 @@ function adjustedCoords(i: number): Vector{
 }
 
 function brickStats(energyLevel: number){
-    let color: string
-    let level = -1
+    let color ="red"
+    let level = 1
     switch (energyLevel){
         case 2:
             color = "green"
@@ -41,10 +41,8 @@ function brickStats(energyLevel: number){
             break
         case 5:
             color = "purple"
+            level = 3
             break
-        default:
-            color = "red"
-            level = 1
     }
     return { img:`images/brick-${color}.png`, energyLevel: level };
 }
