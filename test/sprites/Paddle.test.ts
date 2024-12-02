@@ -19,4 +19,10 @@ describe('Paddle.isMovingLeft and isMovingRight', () => {
     it('when created, moveRight is false',()=>{
         expect(paddle.isMovingRight).toEqual(false)
     })
+    it('after Arrow key down left, isMovingLeft is true',()=>{
+        expect(paddle.isMovingRight).toEqual(false)
+        const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
+        expect(paddle.isMovingLeft).toEqual(true)
+
+    })
 })
