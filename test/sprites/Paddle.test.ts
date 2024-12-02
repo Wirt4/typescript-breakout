@@ -1,8 +1,15 @@
 import {Sprite} from "../../src/sprites/Sprite";
 import {Paddle} from "../../src/sprites/Paddle";
 import {PADDLE_HEIGHT, PADDLE_WIDTH} from "../../src/setup";
+import mock = jest.mock;
 
 jest.mock("../../src/images/paddle.png");
+jest.mock( "../../src/setup",()=>({
+    PADDLE_HEIGHT: PADDLE_HEIGHT,
+    PADDLE_WIDTH: PADDLE_WIDTH,
+    STAGE_PADDING:0
+
+}));
 
 describe('Paddle', () => {
     it('paddle is a sprite',()=>{
@@ -92,11 +99,24 @@ describe('Paddle.move', () => {
         paddle.move()
         expect(paddle.x).toEqual(20)
     })
-    it('given paddle is moving right with a speed of 2, when move is called, the the y position is adjuste plus 2pix',()=>{
+    it('given paddle is moving right with a speed of 2, when move is called, the the y position is adjust plus 2pix',()=>{
         paddle = new Paddle({x:40, y:0},2);
         const event = new KeyboardEvent('keydown', { key: "ArrowRight" });
         document.dispatchEvent(event);
         paddle.move()
         expect(paddle.x).toEqual(42)
+    })
+})
+
+describe('Paddle start.y', () => {
+    let paddle: Paddle
+    let mockedSetup: Record<string, any>;
+    beforeEach(() => {
+        mockedSetup = require("../../src/setup");
+    })
+    it('given a canvasHeight of 800 a STAGE_PADDING of 5 and a PADDLE_HEIGHT of 25, when the paddle is created, it should be with the y coordinae of 770',()=>{
+        mockedSetup.PADDLE_HEIGHT = 5
+        paddle = new Paddle({x:40, y:0}, 2, 800);
+        expect(paddle.y).toEqual(770)
     })
 })
