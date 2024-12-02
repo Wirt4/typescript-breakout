@@ -23,14 +23,19 @@ function adjustedCoords(i: number): Vector{
 }
 
 function brickImage(energyLevel: number){
+    let color: string
     switch (energyLevel){
         case 2:
-            return "images/brick-green.png"
+            color = "green"
+            break
         case 3:
-            return "images/brick-yellow.png"
+            color = "yellow"
+            break
         case 4:
-            return "images/brick-blue.png"
+            color = "blue"
+            break
         default:
-            return "images/brick-red.png"
+            color = "red"
     }
+    return `images/brick-${color}.png`
 }
