@@ -27,4 +27,6 @@ export class Game {
     setGameStatus(state: EndState):void{
         this._view.drawInfo(state)
     }
+
+    start():void{}
 }
