@@ -29,6 +29,7 @@ describe('Game.setGameOver tests',()=>{
         expect(spy).not.toHaveBeenCalledWith("Game Over!")
     })
 })
+
 describe('Game.setGameWin tests',()=>{
     let view: CanvasView
     let game: Game
