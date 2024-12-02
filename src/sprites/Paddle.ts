@@ -9,10 +9,12 @@ enum keys{
 export class Paddle extends Sprite{
     private _moveLeft = false
     private _moveRight = false
+    private _speed: number
 
-    constructor(pos: Vector) {
+    constructor(pos: Vector, speed: number = 5) {
         const size = {width: PADDLE_WIDTH, height: PADDLE_HEIGHT};
         super(PADDLE_IMAGE, pos, size);
+        this._speed = speed
         document.addEventListener('keydown', this.handleKeyDown);
         document.addEventListener('keyup', this.handleKeyUp);
     }
@@ -30,7 +32,7 @@ export class Paddle extends Sprite{
     }
 
     move():void{
-        this._x = -5
+        this._x -= this._speed;
     }
 
     handleKeyDown = (event: KeyboardEvent)=>{

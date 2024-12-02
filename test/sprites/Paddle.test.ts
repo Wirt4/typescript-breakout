@@ -73,11 +73,23 @@ describe('Paddle.isMovingLeft and isMovingRight', () => {
 
 describe('Paddle.move', () => {
     let paddle: Paddle
-    it('given paddle is moving left, when move is called, the the x position is ajusted minus  5 pix',()=>{
-        paddle = new Paddle({x:0, y:0},);
+    it('given paddle is moving left, when move is called, the the x position is adjusted minus  5 pix',()=>{
+        paddle = new Paddle({x:0, y:0},5);
         const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
         document.dispatchEvent(event);
         paddle.move()
         expect(paddle.x).toEqual(-5)
+    })
+    it('given paddle is moving left and the speed is 10, when move is called, the the x position is adjusted minus  10 pix',()=>{
+        paddle = new Paddle({x:20, y:0},10);
+        const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
+        document.dispatchEvent(event);
+        paddle.move()
+        expect(paddle.x).toEqual(10)
+    })
+    it('given paddle is not moving and the speed is 10, when move is called, the the x position is not adjusted',()=>{
+        paddle = new Paddle({x:20, y:0},10);
+        paddle.move()
+        expect(paddle.x).toEqual(20)
     })
 })
