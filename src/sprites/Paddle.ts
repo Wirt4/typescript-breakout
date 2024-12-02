@@ -1,6 +1,5 @@
 import {Sprite} from "./Sprite";
-import {Vector} from "../types";
-import {PADDLE_HEIGHT, PADDLE_WIDTH} from "../setup";
+import {PADDLE_HEIGHT, PADDLE_WIDTH, STAGE_PADDING} from "../setup";
 import PADDLE_IMAGE from "../images/paddle.png"
 
 enum keys{
@@ -15,7 +14,7 @@ export class Paddle extends Sprite{
 
     constructor(startX: number, canvasHeight: number =0, speed: number = 5) {
         const size = {width: PADDLE_WIDTH, height: PADDLE_HEIGHT};
-        const pos= {y:770, x: startX}
+        const pos= {y:canvasHeight - PADDLE_HEIGHT - STAGE_PADDING, x: startX}
         super(PADDLE_IMAGE, pos, size);
         this._speed = speed
         document.addEventListener('keydown', this.handleKeyDown);
