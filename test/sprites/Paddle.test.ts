@@ -1,6 +1,6 @@
 import {Sprite} from "../../src/sprites/Sprite";
 import {Paddle} from "../../src/sprites/Paddle";
-import {PADDLE_WIDTH} from "../../src/setup";
+import {PADDLE_HEIGHT, PADDLE_WIDTH} from "../../src/setup";
 
 describe('Paddle', () => {
     it('paddle is a sprite',()=>{
