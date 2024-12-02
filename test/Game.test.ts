@@ -54,3 +54,15 @@ describe('Game.setGameWin tests',()=>{
         expect(spy).not.toHaveBeenCalledWith("Game Won!")
     })
 })
+
+describe('Game.start tests',()=>{
+    let view: CanvasView
+    let game: Game
+    beforeEach(()=>{
+        view = new CanvasView('#playField')
+        game = new Game(view)
+    })
+    it('game has function named "start"',()=>{
+        game.start()
+    })
+})
