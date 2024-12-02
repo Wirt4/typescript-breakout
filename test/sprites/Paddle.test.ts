@@ -44,4 +44,12 @@ describe('Paddle.isMovingLeft and isMovingRight', () => {
         expect(paddle.isMovingRight).toEqual(false)
         expect(paddle.isMovingLeft).toEqual(false)
     })
+    it('stop moving lef when the arrow key is raised',()=>{
+        const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
+        document.dispatchEvent(event);
+        expect(paddle.isMovingLeft).toEqual(true)
+        const event2 = new KeyboardEvent('keyup', { key: "ArrowLeft" });
+        document.dispatchEvent(event2);
+        expect(paddle.isMovingLeft).toEqual(false)
+    })
 })
