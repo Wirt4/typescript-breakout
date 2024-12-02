@@ -13,4 +13,10 @@ describe('basic sprite getters', () => {
         const brick = new Brick('stub',0, 0, 40, 10, 3);
         expect(brick.energy).toBe(3);
     })
+    it('can reset brick energy to 2',()=>{
+        const brick = new Brick('stub',0, 0, 40, 10, 3);
+        expect(brick.energy).toBe(3);
+        brick.energy = 2
+        expect(brick.energy).toBe(2);
+    })
 })
