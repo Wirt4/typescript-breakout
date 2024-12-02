@@ -36,8 +36,8 @@ export class Paddle extends Sprite{
 
     move():void{
        if (this.isMovingLeft) {
-       if (this.x - this._speed >=0) this._x -= this._speed;
-       else this._x = 0;
+           const newX = this.x - this._speed
+           this._x = newX >=0? newX : 0
        }
        if (this.isMovingRight) this._x += this._speed;
     }
