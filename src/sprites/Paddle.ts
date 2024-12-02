@@ -32,7 +32,7 @@ export class Paddle extends Sprite{
     }
 
     move():void{
-        this._x -= this._speed;
+       if (this.isMovingLeft) this._x -= this._speed;
     }
 
     handleKeyDown = (event: KeyboardEvent)=>{
