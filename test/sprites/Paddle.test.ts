@@ -13,4 +13,8 @@ describe('Paddle.moveLeft and moveRight', () => {
         const paddle = new Paddle('stub',{x:0, y:0}, {width:0, height:0});
         expect(paddle.moveLeft).toEqual(false)
     })
+    it('when created, moveRight is false',()=>{
+        const paddle = new Paddle('stub',{x:0, y:0}, {width:0, height:0});
+        expect(paddle.moveRight).toEqual(false)
+    })
 })
