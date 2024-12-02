@@ -34,6 +34,9 @@ function brickImage(energyLevel: number){
         case 4:
             color = "blue"
             break
+        case 5:
+            color = "purple"
+            break
         default:
             color = "red"
     }

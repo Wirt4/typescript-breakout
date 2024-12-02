@@ -134,5 +134,15 @@ describe('createBricks', () => {
         const bricks = createBricks()
         expect(bricks[0].image.src).toEqual(expect.stringContaining('brick-purple.png'))
     })
+    it('if the input energy is 2, then the brick energy is 1',()=>{
+        mockedSetup.LEVEL = [2]
+        const bricks = createBricks()
+        expect(bricks[0].energy).toEqual(1)
+    })
+    it('if the input energy is 3, then the brick energy is 2',()=>{
+        mockedSetup.LEVEL = [3]
+        const bricks = createBricks()
+        expect(bricks[0].energy).toEqual(2)
+    })
 })
 
