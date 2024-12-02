@@ -120,10 +120,12 @@ describe('Game.loop tests',()=>{
     let game: Game
     let clearSpy: jest.SpyInstance
     let drawBricksSpy: jest.SpyInstance
+    let animationSpy: jest.SpyInstance
     beforeEach(()=>{
         view = new CanvasView('#playField');
         clearSpy = jest.spyOn(view, 'clear')
         drawBricksSpy = jest.spyOn(view, 'drawBricks')
+        animationSpy = jest.spyOn(global, 'requestAnimationFrame').mockReturnValue(1)
         game = new Game(view);
     })
     afterEach(()=>{
@@ -141,5 +143,9 @@ describe('Game.loop tests',()=>{
         const expected = [ new Brick('stub',{x:0, y:0},{width: 20, height:10},)];
         game.loop(view, expected);
         expect(drawBricksSpy).toHaveBeenCalledWith(expected);
+    })
+    it('Game.loop ends by calling requestAnimationFrame', ()=>{
+        game.loop(view, [])
+        expect(animationSpy).toHaveBeenCalled()
     })
 })
