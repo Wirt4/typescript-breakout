@@ -111,7 +111,6 @@ describe('Paddle.move', () => {
         paddle.move()
         expect(paddle.x).toEqual(42)
     })
-
     it('given paddle is moving left, the speed is 10 and the initial position is 5, when move is called, the the x position is adjusted only to the border, 0',()=>{
         paddle = new Paddle(5, canvasSize,10);
         const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
