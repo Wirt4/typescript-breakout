@@ -6,4 +6,7 @@ export class Paddle extends Sprite{
     get moveLeft():boolean{
         return this._moveLeft;
     }
+    get moveRight(): boolean{
+        return this._moveLeft;
+    }
 }
