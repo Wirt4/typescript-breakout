@@ -1,3 +1,5 @@
+import {LEVEL} from "./setup";
+
 export function createBricks(){
-    return []
+    return LEVEL
 }
