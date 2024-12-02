@@ -12,14 +12,15 @@ export class Paddle extends Sprite{
     private _moveLeft = false
     private _moveRight = false
     private readonly _speed: number
-    private _canvasWidth: number
+    private readonly _rightHandLimit: number
+    private readonly _leftHandLimit = 0
 
     constructor(startX: number, canvasSize: Size,  speed: number = 5) {
         const size = {width: PADDLE_WIDTH, height: PADDLE_HEIGHT}
         const pos = {y:canvasSize.height - PADDLE_HEIGHT - STAGE_PADDING, x: startX}
         super(PADDLE_IMAGE, pos, size);
         this._speed = speed
-        this._canvasWidth =canvasSize.width
+        this._rightHandLimit = canvasSize.width - this.width
         document.addEventListener('keydown', this.handleKeyDown)
         document.addEventListener('keyup', this.handleKeyUp)
     }
@@ -39,11 +40,11 @@ export class Paddle extends Sprite{
     move():void{
        if (this.isMovingLeft) {
            const newX = this.x - this._speed
-           this._x = newX >=0? newX : 0
+           this._x = newX >= this._leftHandLimit? newX : this._leftHandLimit
        }
        if (this.isMovingRight) {
            const newX = this.x + this._speed
-           this._x = newX <= this._canvasWidth - this.width? newX :this._canvasWidth - this.width
+           this._x = newX <= this._rightHandLimit ? newX :this._rightHandLimit
        }
     }
 
