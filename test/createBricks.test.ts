@@ -1,6 +1,5 @@
 import {createBricks} from "../src/helper";
 import {Brick} from "../src/sprites/Brick";
-import {STAGE_COLS} from "../src/setup";
 
 jest.mock("../src/setup", () => ({
     LEVEL: [],

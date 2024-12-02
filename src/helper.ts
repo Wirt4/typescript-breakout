@@ -2,10 +2,11 @@ import {BRICK_HEIGHT, BRICK_PADDING, BRICK_WIDTH, LEVEL, STAGE_COLS, STAGE_PADDI
 import {Brick} from "./sprites/Brick";
 import {Vector} from "./types";
 
-export function createBricks(){
-    return LEVEL.map((element, ndx)=> {
-        return new Brick('stub', adjustedCoords(ndx), {width: 0, height: 0})
-    });
+export function createBricks(): Brick[] {
+    return LEVEL.reduce((accumulated, element, ndx)=>{
+        if (element <=0) return accumulated
+        return [...accumulated,new Brick('stub', adjustedCoords(ndx), {width: 0, height: 0}) ]
+    },[] as Brick[] );
 }
 
 function adjustedCoords(i: number): Vector{
