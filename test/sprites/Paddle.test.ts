@@ -80,8 +80,10 @@ describe('Paddle.isMovingLeft and isMovingRight', () => {
 describe('Paddle.move', () => {
     let paddle: Paddle
     let canvasSize: Size
-    beforeAll(()=>{
+    let mockedSetup:Record<string, any>;
+    beforeEach(() => {
         canvasSize = {width: 1200, height:800};
+        mockedSetup = require("../../src/setup");
     })
     it('given paddle is moving left, when move is called, the the x position is adjusted minus  5 pix',()=>{
         paddle = new Paddle(6,canvasSize, 5);
@@ -116,6 +118,15 @@ describe('Paddle.move', () => {
         document.dispatchEvent(event);
         paddle.move()
         expect(paddle.x).toEqual(0)
+    })
+    it('given paddle is moving right and about to exit the plain, the x coordinate is stopped at 1180',()=>{
+        mockedSetup.PADDLE_WIDTH = 20
+        canvasSize = {width: 1200, height:800};
+        paddle = new Paddle(1175, canvasSize,10);
+        const event = new KeyboardEvent('keydown', { key: "ArrowRight" });
+        document.dispatchEvent(event);
+        paddle.move()
+        expect(paddle.x).toEqual(1180)
     })
 
 })
