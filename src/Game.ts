@@ -39,5 +39,8 @@ export class Game {
     start():void{
         this.clearInfo()
         this._view.drawScore(0)
+        this.loop(this._view)
     }
+
+    loop(view: CanvasView):void{}
 }

@@ -1,5 +1,7 @@
 import {Game} from "../src/Game";
 import {CanvasView} from "../src/view/CanvasView";
+import {createBricks} from "../src/helper";
+jest.mock("../src/helper");
 
 describe('Game.setGameOver tests',()=>{
     let view: CanvasView
@@ -63,6 +65,9 @@ describe('Game.start tests',()=>{
         view = new CanvasView('#playField')
         game = new Game(view)
     })
+    afterEach(()=>{
+        jest.resetAllMocks()
+    })
     it('game has function named "start"',()=>{
         game.start()
     })
@@ -81,5 +86,21 @@ describe('Game.start tests',()=>{
         game = new Game(view)
         game.start()
         expect(spy).toHaveBeenCalledWith(0)
+    })
+    it('expect game.start to finish by calling game.loop',()=>{
+        const loopSpy = jest.spyOn(game, 'loop')
+        game.start()
+        expect(loopSpy).toHaveBeenCalled()
+    })
+    it('expect game.start to call game.loop with the view object',()=>{
+        const loopSpy = jest.spyOn(game, 'loop')
+        game.start()
+        expect(loopSpy).toHaveBeenCalledWith(view)
+    })
+    it('expect game.start to call game.loop with the output of createBricks',()=>{
+        const loopSpy = jest.spyOn(game, 'loop');
+        (createBricks as jest.Mock).mockReturnValue([])
+        game.start()
+        expect(loopSpy).toHaveBeenCalledWith(view, [])
     })
 })
