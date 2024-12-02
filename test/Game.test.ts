@@ -63,8 +63,9 @@ describe('Game.start tests',()=>{
     let view: CanvasView
     let game: Game
     beforeEach(()=>{
-        view = new CanvasView('#playField')
-        game = new Game(view)
+        view = new CanvasView('#playField');
+        game = new Game(view);
+        (createBricks as jest.Mock).mockReturnValue([]);
     })
     afterEach(()=>{
         jest.resetAllMocks()

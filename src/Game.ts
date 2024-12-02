@@ -41,7 +41,7 @@ export class Game {
     start():void{
         this.clearInfo()
         this._view.drawScore(0)
-        this.loop(this._view, [])
+        this.loop(this._view, createBricks())
     }
 
     loop(view: CanvasView, bricks: Brick[]):void{}
