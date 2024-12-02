@@ -1,5 +1,6 @@
 import {createBricks} from "../src/helper";
 import {LEVEL} from "../src/setup";
+import {Brick} from "../src/sprites/Brick";
 
 jest.mock("../src/setup", () => ({
     LEVEL: []
@@ -18,5 +19,12 @@ describe('createBricks', () => {
         mockedSetup.LEVEL = [1]
         const bricks = createBricks()
         expect(bricks.length).toEqual(1)
+    })
+    it('return type should be bricks',()=>{
+        mockedSetup.LEVEL = [1, 2 ,3, 4, 0, 5]
+        const bricks = createBricks()
+        bricks.forEach(brick => {
+            expect(brick).toBeInstanceOf(Brick)
+        })
     })
 })
