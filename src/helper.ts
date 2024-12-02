@@ -28,6 +28,8 @@ function brickImage(energyLevel: number){
             return "images/brick-green.png"
         case 3:
             return "images/brick-yellow.png"
+        case 4:
+            return "images/brick-blue.png"
         default:
             return "images/brick-red.png"
     }
