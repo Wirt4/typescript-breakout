@@ -1,7 +1,7 @@
 import {Size, Vector} from "../types";
 
 export class Sprite {
-    private readonly _x: number;
+    protected _x: number;
     private readonly _y: number;
     private readonly _w: number;
     private readonly _h: number;

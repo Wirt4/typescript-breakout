@@ -2,6 +2,7 @@ import {Game} from "../src/Game";
 import {CanvasView} from "../src/view/CanvasView";
 import {createBricks} from "../src/helper";
 import {Brick} from "../src/sprites/Brick";
+
 jest.mock("../src/helper");
 
 describe('Game.setGameOver tests',()=>{
