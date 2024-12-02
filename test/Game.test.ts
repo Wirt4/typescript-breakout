@@ -1,6 +1,7 @@
 import {Game} from "../src/Game";
 import {CanvasView} from "../src/view/CanvasView";
 import {createBricks} from "../src/helper";
+import {Brick} from "../src/sprites/Brick";
 jest.mock("../src/helper");
 
 describe('Game.setGameOver tests',()=>{
@@ -102,5 +103,13 @@ describe('Game.start tests',()=>{
         (createBricks as jest.Mock).mockReturnValue([])
         game.start()
         expect(loopSpy).toHaveBeenCalledWith(view, [])
+    })
+    it('expect game.start to call game.loop with the output of createBricks',()=>{
+        const loopSpy = jest.spyOn(game, 'loop');
+        const brick = new Brick('stub',{x:0, y:0}, {height:0, width:0});
+        const expected = [brick];
+        (createBricks as jest.Mock).mockReturnValue(expected);
+        game.start()
+        expect(loopSpy).toHaveBeenCalledWith(view, expected)
     })
 })
