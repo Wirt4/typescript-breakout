@@ -9,12 +9,14 @@ describe('Paddle', () => {
 })
 
 describe('Paddle.isMovingLeft and isMovingRight', () => {
+    let paddle: Paddle
+    beforeEach(()=>{
+        paddle = new Paddle('stub',{x:0, y:0}, {width:0, height:0});
+    })
     it('when created, moveLeft is false',()=>{
-        const paddle = new Paddle('stub',{x:0, y:0}, {width:0, height:0});
         expect(paddle.isMovingLeft).toEqual(false)
     })
     it('when created, moveRight is false',()=>{
-        const paddle = new Paddle('stub',{x:0, y:0}, {width:0, height:0});
         expect(paddle.isMovingRight).toEqual(false)
     })
 })
