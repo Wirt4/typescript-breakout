@@ -1,12 +1,11 @@
 import {Sprite} from "../../src/sprites/Sprite";
 import {Paddle} from "../../src/sprites/Paddle";
 import {PADDLE_HEIGHT, PADDLE_WIDTH} from "../../src/setup";
-import mock = jest.mock;
 
 jest.mock("../../src/images/paddle.png");
 jest.mock( "../../src/setup",()=>({
-    PADDLE_HEIGHT: PADDLE_HEIGHT,
-    PADDLE_WIDTH: PADDLE_WIDTH,
+    PADDLE_HEIGHT: 10,
+    PADDLE_WIDTH: 10,
     STAGE_PADDING:0
 
 }));

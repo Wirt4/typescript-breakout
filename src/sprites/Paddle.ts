@@ -13,7 +13,7 @@ export class Paddle extends Sprite{
     private _moveRight = false
     private readonly _speed: number
 
-    constructor(pos: Vector, speed: number = 5) {
+    constructor(pos: Vector, speed: number = 5, canvasHeight:number = 0) {
         const size = {width: PADDLE_WIDTH, height: PADDLE_HEIGHT};
         super(PADDLE_IMAGE, pos, size);
         this._speed = speed
