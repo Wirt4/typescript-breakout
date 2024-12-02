@@ -15,6 +15,5 @@ export class Game {
 
     setGameOver():void {
         this._view.drawInfo("Game Over!")
-        this._isGameOver = true
     }
 }

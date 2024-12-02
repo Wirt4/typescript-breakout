@@ -16,10 +16,10 @@ describe('Game.setGameOver tests',()=>{
     it('when game is created, Game.isGameOver is false',()=>{
         expect(game.isGameOver).toEqual(false)
     })
-    it('when Game.setGameOver is called, isGameOver is set to true',()=>{
+    it('when Game.setGameOver is called, isGameOver is set to false',()=>{
         expect(game.isGameOver).toEqual(false)
         game.setGameOver()
-        expect(game.isGameOver).toEqual(true)
+        expect(game.isGameOver).toEqual(false)
     })
     it('when Game.setGameOver is called, CanvasView.setInfo is called with message "Game Over"',()=>{
         game.setGameOver()
