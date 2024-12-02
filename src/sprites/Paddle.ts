@@ -42,11 +42,7 @@ export class Paddle extends Sprite{
                 this._moveLeft = false
                 break
             case "ArrowRight":
-                if (this.isMovingLeft){
-                    this.stopPaddle()
-                    break
-                }
-                this._moveRight = true
+                this._moveRight = false
         }
     }
 
