@@ -77,7 +77,7 @@ describe('Paddle.move', () => {
         paddle = new Paddle({x:0, y:0},);
         const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
         document.dispatchEvent(event);
-        event.move()
+        paddle.move()
         expect(paddle.x).toEqual(-5)
     })
 })

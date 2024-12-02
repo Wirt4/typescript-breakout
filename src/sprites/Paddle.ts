@@ -24,6 +24,15 @@ export class Paddle extends Sprite{
         return this._moveRight;
     }
 
+    private stopPaddle():void{
+        this._moveRight = false
+        this._moveLeft = false
+    }
+
+    move():void{
+        this._x = -5
+    }
+
     handleKeyDown = (event: KeyboardEvent)=>{
         switch (event.key){
             case keys.LEFT:
@@ -40,11 +49,6 @@ export class Paddle extends Sprite{
                 }
                 this._moveRight = true
         }
-    }
-
-    private stopPaddle():void{
-        this._moveRight = false
-        this._moveLeft = false
     }
 
     handleKeyUp = (event: KeyboardEvent)=>{
