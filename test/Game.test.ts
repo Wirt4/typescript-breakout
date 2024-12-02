@@ -66,4 +66,8 @@ describe('Game.start tests',()=>{
     it('game has function named "start"',()=>{
         game.start()
     })
+    it('after game.start is called, score is set to zero',()=>{
+        game.start()
+        expect(game.score).toEqual(0)
+    })
 })
