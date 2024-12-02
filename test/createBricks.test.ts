@@ -1,5 +1,10 @@
 import {createBricks} from "../src/helper";
 import {Brick} from "../src/sprites/Brick";
+import RED_BRICK from "../src/images/brick-red.png"
+import GREEN_BRICK from "../src/images/brick-green.png"
+import YELLOW_BRICK from "../src/images/brick-yellow.png"
+import BLUE_BRICK from "../src/images/brick-blue.png"
+import PURPLE_BRICK from "../src/images/brick-purple.png"
 
 jest.mock("../src/setup", () => ({
     LEVEL: [],
@@ -15,6 +20,11 @@ jest.mock("../src/setup", () => ({
     5: 'stub'
     }
 }))
+jest.mock("../src/images/brick-red.png")
+jest.mock("../src/images/brick-green.png")
+jest.mock("../src/images/brick-yellow.png")
+jest.mock("../src/images/brick-blue.png")
+jest.mock("../src/images/brick-purple.png")
 
 describe('createBricks', () => {
     let mockedSetup: Record<string, any>;
@@ -110,27 +120,27 @@ describe('createBricks', () => {
     it('if the input energy is 1, then the image is the red brick',()=>{
         mockedSetup.LEVEL = [1]
         const bricks = createBricks()
-        expect(bricks[0].image.src).toEqual(expect.stringContaining('brick-red.png'))
+        expect(bricks[0].image.src).toEqual(expect.stringContaining(RED_BRICK))
     })
     it('if the input energy is 2, then the image is the green brick',()=>{
         mockedSetup.LEVEL = [2]
         const bricks = createBricks()
-        expect(bricks[0].image.src).toEqual(expect.stringContaining('brick-green.png'))
+        expect(bricks[0].image.src).toEqual(expect.stringContaining(GREEN_BRICK))
     })
     it('if the input energy is 3, then the image is  yellow',()=>{
         mockedSetup.LEVEL = [3]
         const bricks = createBricks()
-        expect(bricks[0].image.src).toEqual(expect.stringContaining('brick-yellow.png'))
+        expect(bricks[0].image.src).toEqual(expect.stringContaining(YELLOW_BRICK))
     })
     it('if the input energy is 4, then the image is blue',()=>{
         mockedSetup.LEVEL = [4]
         const bricks = createBricks()
-        expect(bricks[0].image.src).toEqual(expect.stringContaining('brick-blue.png'))
+        expect(bricks[0].image.src).toEqual(expect.stringContaining(BLUE_BRICK))
     })
     it('if the input energy is 5, then the image is purple',()=>{
         mockedSetup.LEVEL = [5]
         const bricks = createBricks()
-        expect(bricks[0].image.src).toEqual(expect.stringContaining('brick-purple.png'))
+        expect(bricks[0].image.src).toEqual(expect.stringContaining(PURPLE_BRICK))
     })
     it('if the input energy is 2, then the brick energy is 1',()=>{
         mockedSetup.LEVEL = [2]
@@ -151,6 +161,16 @@ describe('createBricks', () => {
         mockedSetup.LEVEL = [5]
         const bricks = createBricks()
         expect(bricks[0].energy).toEqual(3)
+    })
+    it('Each Brick should have the width and height of the BRICK_WIDTH and BRICK_HEIGHT constants',()=>{
+        mockedSetup.LEVEL = [5, 1, 2, 3, 1, 1, 1]
+        mockedSetup.BRICK_HEIGHT = 20
+        mockedSetup.BRICK_WIDTH = 10
+        const bricks = createBricks()
+        bricks.forEach(brick=>{
+            expect(brick.width).toEqual(mockedSetup.BRICK_WIDTH)
+            expect(brick.height).toEqual(mockedSetup.BRICK_HEIGHT)
+        })
     })
 })
 

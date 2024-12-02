@@ -158,23 +158,22 @@ describe('CanvasView.drawSprite',()=>{
             clearRect: jest.fn(),
             drawImage: jest.fn(),
         } as unknown as jest.Mocked<CanvasRenderingContext2D>;
-
         jest.spyOn(mockCanvas, 'getContext').mockReturnValue(mockContext);
         jest.spyOn(document, 'querySelector').mockImplementation((selector) => {
             if (selector === '#playField') return mockCanvas;
             return null;
         });
-
     })
 
     afterAll(()=>{
         jest.restoreAllMocks()
     })
-    it("when drawSprites is called, expect drawImage to be called with the sprite's image",()=>{
+    it("when drawSprites is called and sprite image is valid, expect drawImage to be called with the sprite's image",()=>{
         canvasView = new CanvasView('#playField');
         const pos = {x:0, y: 0}
         const size={width:0, height:0}
         const sprite = new Sprite('../image.png', pos, size)
+        jest.spyOn(sprite, 'hasValidImage').mockReturnValue(true)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('image.png')}),
             expect.anything() ,expect.anything(), expect.anything(), expect.anything());
@@ -184,6 +183,7 @@ describe('CanvasView.drawSprite',()=>{
         const pos = {x:0, y: 0}
         const size={width:0, height:0}
         const sprite = new Sprite('../../image3.png', pos, size)
+        jest.spyOn(sprite, 'hasValidImage').mockReturnValue(true)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('image3.png')}),
             expect.anything() ,expect.anything(), expect.anything(), expect.anything());
@@ -193,6 +193,7 @@ describe('CanvasView.drawSprite',()=>{
         const pos = {x:3, y: 0}
         const size={width:0, height:0}
         const sprite = new Sprite('../../image3.png', pos, size)
+        jest.spyOn(sprite, 'hasValidImage').mockReturnValue(true)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(),
             3,
@@ -203,6 +204,7 @@ describe('CanvasView.drawSprite',()=>{
         const pos = {x:64, y: 0}
         const size={width:0, height:0}
         const sprite = new Sprite('../../image3.png', pos, size)
+        jest.spyOn(sprite, 'hasValidImage').mockReturnValue(true)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(),
             64,
@@ -214,6 +216,7 @@ describe('CanvasView.drawSprite',()=>{
         const pos = {x: 64, y:7}
         const size={width:0, height: 0}
         const sprite = new Sprite('../../image3.png', pos, size)
+        jest.spyOn(sprite, 'hasValidImage').mockReturnValue(true)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(), expect.anything(),
             7,
@@ -224,6 +227,7 @@ describe('CanvasView.drawSprite',()=>{
         const pos = {x:64, y:89}
         const size={width:0, height:0}
         const sprite = new Sprite('../../image3.png', pos, size)
+        jest.spyOn(sprite, 'hasValidImage').mockReturnValue(true)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(), expect.anything(),
             89,
@@ -234,6 +238,7 @@ describe('CanvasView.drawSprite',()=>{
         const pos = {x:64, y:89};
         const size={width: 60, height:0}
         const sprite = new Sprite('../../image3.png', pos,size)
+        jest.spyOn(sprite, 'hasValidImage').mockReturnValue(true)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.anything(),
             60,
@@ -244,6 +249,7 @@ describe('CanvasView.drawSprite',()=>{
         const pos = {x: 64, y: 89};
         const size = {width: 45, height: 100};
         const sprite = new Sprite('../../image3.png', pos, size)
+        jest.spyOn(sprite, 'hasValidImage').mockReturnValue(true)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.anything(),
             45,
@@ -254,6 +260,7 @@ describe('CanvasView.drawSprite',()=>{
         const pos = {x: 64, y: 89};
         const size = {width: 45, height: 100};
         const sprite = new Sprite('../../image3.png', pos, size)
+        jest.spyOn(sprite, 'hasValidImage').mockReturnValue(true)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.anything(), expect.anything(),
             100);
@@ -263,6 +270,7 @@ describe('CanvasView.drawSprite',()=>{
         const pos = {x: 64, y: 89};
         const size = {width: 45, height: 234};
         const sprite = new Sprite('../../image3.png',pos, size)
+        jest.spyOn(sprite, 'hasValidImage').mockReturnValue(true)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.anything(), expect.anything(),
             234);
@@ -296,7 +304,9 @@ describe('CanvasView.drawBricks',()=>{
         canvasView = new CanvasView('#playField');
         const pos = {x: 0, y: 0};
         const size = {width: 10, height: 20};
-        const bricks = [new Brick('./brick-image.png', pos, size)]
+        const brick = new Brick('./brick-image.png', pos, size)
+        jest.spyOn(brick, 'hasValidImage').mockReturnValue(true)
+        const bricks = [brick]
         canvasView.drawBricks(bricks)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('brick-image.png')}), 0, 0, 10, 20);
     })
@@ -304,7 +314,9 @@ describe('CanvasView.drawBricks',()=>{
         canvasView = new CanvasView('#playField');
         const pos = {x: 5, y: 8};
         const size = {width: 10, height: 20};
-        const bricks = [new Brick('./brick-image2.png',pos, size)]
+        const brick = new Brick('./brick-image2.png',pos, size)
+        jest.spyOn(brick, 'hasValidImage').mockReturnValue(true)
+        const bricks = [brick]
         canvasView.drawBricks(bricks)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('brick-image2.png')}), 5, 8, 10, 20);
     })

@@ -38,10 +38,10 @@ export class Game {
         this._view.drawInfo(state)
     }
 
-    start():void{
-        this.clearInfo()
-        this._view.drawScore(0)
-        this.loop(this._view, createBricks())
+    start(view: CanvasView){
+        view.drawInfo("")
+        view.drawScore(0)
+        this.loop(view, createBricks())
     }
 
     loop(view: CanvasView, bricks: Brick[]):void{

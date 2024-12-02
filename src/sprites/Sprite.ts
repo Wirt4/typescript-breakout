@@ -10,12 +10,40 @@ export class Sprite {
 
     constructor(imageSrc: string, coords:Vector, size: Size) {
         this._img = new Image();
-        this._img.src = imageSrc;
+
         this._x = coords.x
         this._y = coords.y
         this._w = size.width;
         this._h = size.height;
+
+        this.loadImage(imageSrc).catch((err: Error) => {
+            console.error(err);
+        });
     }
+
+    private async loadImage(src: string): Promise<void> {
+        try {
+            await new Promise<void>((resolve, reject) => {
+                this._img.onload = () => {
+                    console.log(`Image loaded: ${src}`);
+                    resolve();
+                };
+
+                this._img.onerror = () => {
+                    reject(new Error(`Failed to load image: ${src}`));
+                };
+
+                this._img.src = src;
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    hasValidImage(): boolean{
+        return this._img.complete && this._img.naturalWidth !== 0
+    }
+
 
     get image():HTMLImageElement{
         return this._img

@@ -71,38 +71,38 @@ describe('Game.start tests',()=>{
         jest.resetAllMocks()
     })
     it('game has function named "start"',()=>{
-        game.start()
+        game.start(view)
     })
     it('after game.start is called, score is set to zero',()=>{
-        game.start()
+        game.start(view)
         expect(game.score).toEqual(0)
     })
     it('expect view.drawInfo to have been called with an empty string',()=>{
         const spy = jest.spyOn(view, 'drawInfo').mockImplementation(()=>{})
         game = new Game(view)
-        game.start()
+        game.start(view)
         expect(spy).toHaveBeenCalledWith("")
     })
     it('expect view.drawScore to have been called with 0g',()=>{
         const spy = jest.spyOn(view, 'drawScore').mockImplementation(()=>{})
         game = new Game(view)
-        game.start()
+        game.start(view)
         expect(spy).toHaveBeenCalledWith(0)
     })
     it('expect game.start to finish by calling game.loop',()=>{
         const loopSpy = jest.spyOn(game, 'loop')
-        game.start()
+        game.start(view)
         expect(loopSpy).toHaveBeenCalled()
     })
     it('expect game.start to call game.loop with the view object',()=>{
         const loopSpy = jest.spyOn(game, 'loop')
-        game.start()
+        game.start(view)
         expect(loopSpy).toHaveBeenCalledWith(view, expect.anything())
     })
     it('expect game.start to call game.loop with the output of createBricks',()=>{
         const loopSpy = jest.spyOn(game, 'loop');
         (createBricks as jest.Mock).mockReturnValue([])
-        game.start()
+        game.start(view)
         expect(loopSpy).toHaveBeenCalledWith(view, [])
     })
     it('expect game.start to call game.loop with the output of createBricks',()=>{
@@ -110,7 +110,7 @@ describe('Game.start tests',()=>{
         const brick = new Brick('stub',{x:0, y:0}, {height:0, width:0});
         const expected = [brick];
         (createBricks as jest.Mock).mockReturnValue(expected);
-        game.start()
+        game.start(view)
         expect(loopSpy).toHaveBeenCalledWith(view, expected)
     })
 })

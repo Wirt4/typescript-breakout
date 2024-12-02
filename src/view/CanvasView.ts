@@ -56,14 +56,16 @@ export class CanvasView {
     }
 
     drawSprite(sprite: Sprite):void{
-        if (this.context){
+        if (this.context && sprite.hasValidImage()) {
             this.context.drawImage(
                 sprite.image,
                 sprite.x,
                 sprite.y,
                 sprite.width,
                 sprite.height
-            )
+            );
+        } else {
+            console.warn("Cannot draw sprite; image is not ready or broken.", sprite);
         }
     }
 
