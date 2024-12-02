@@ -21,19 +21,22 @@ export class Paddle extends Sprite{
         switch (event.key){
             case"ArrowLeft":
                 if (this.isMovingRight){
-                    this._moveRight = false
-                    this._moveLeft = false
+                    this.stopPaddle()
                     break
                 }
                 this._moveLeft = true
                 break
             case "ArrowRight":
                 if (this.isMovingLeft){
-                    this._moveRight = false
-                    this._moveLeft = false
+                    this.stopPaddle()
                     break
                 }
                 this._moveRight = true
         }
+    }
+
+    private stopPaddle():void{
+        this._moveRight = false
+        this._moveLeft = false
     }
 }
