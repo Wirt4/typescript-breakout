@@ -1,9 +1,12 @@
 import {createBricks} from "../src/helper";
-import {LEVEL} from "../src/setup";
 import {Brick} from "../src/sprites/Brick";
 
 jest.mock("../src/setup", () => ({
-    LEVEL: []
+    LEVEL: [],
+    STAGE_PADDING:0,
+    BRICK_WIDTH:0,
+    BRICK_HEIGHT:0,
+    BRICK_PADDING:0,
 }))
 
 describe('createBricks', () => {
@@ -26,5 +29,15 @@ describe('createBricks', () => {
         bricks.forEach(brick => {
             expect(brick).toBeInstanceOf(Brick)
         })
+    })
+    it('Given the array of bricks is one long, check the x coordinate ',()=>{
+        mockedSetup.LEVEL = [1]
+        mockedSetup.STAGE_PADDING = 4
+        mockedSetup.BRICK_PADDING = 2
+        mockedSetup.BRICK_WIDTH = 40
+        mockedSetup.BRICK_HEIGHT = 10
+        const bricks = createBricks()
+        const brick = bricks[0]
+        expect(brick.x).toBe(4)
     })
 })
