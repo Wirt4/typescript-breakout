@@ -1,5 +1,7 @@
 import {createBricks} from "../src/helper";
 import {Brick} from "../src/sprites/Brick";
+import RED_BRICK_IMAGE from "../src/images/brick-red.png";
+
 
 jest.mock("../src/setup", () => ({
     LEVEL: [],
@@ -7,6 +9,13 @@ jest.mock("../src/setup", () => ({
     BRICK_WIDTH:0,
     BRICK_HEIGHT:0,
     BRICK_PADDING:0,
+    BRICK_IMAGES: {
+    1: 'stub',
+    2: 'stub',
+    3: 'stub',
+    4: 'stub',
+    5: 'stub'
+    }
 }))
 
 describe('createBricks', () => {
@@ -102,6 +111,7 @@ describe('createBricks', () => {
     })
     it('if the input energy is 1, then the image is the red brick',()=>{
         mockedSetup.LEVEL = [1]
+        mockedSetup.BRICK_IMAGES = {1: 'brick-red.png'}
         const bricks = createBricks()
         expect(bricks[0].image.src).toEqual(expect.stringContaining('brick-red.png'))
     })
