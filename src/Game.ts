@@ -44,5 +44,7 @@ export class Game {
         this.loop(this._view, createBricks())
     }
 
-    loop(view: CanvasView, bricks: Brick[]):void{}
+    loop(view: CanvasView, bricks: Brick[]):void{
+        view.clear()
+    }
 }
