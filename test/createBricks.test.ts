@@ -172,5 +172,15 @@ describe('createBricks', () => {
             expect(brick.height).toEqual(mockedSetup.BRICK_HEIGHT)
         })
     })
+    it('Each Brick should have the width and height of the BRICK_WIDTH and BRICK_HEIGHT constants, different data',()=>{
+        mockedSetup.LEVEL = [5, 1, 2, 3, 1, 1, 1]
+        mockedSetup.BRICK_HEIGHT = 10
+        mockedSetup.BRICK_WIDTH = 30
+        const bricks = createBricks()
+        bricks.forEach(brick=>{
+            expect(brick.width).toEqual(mockedSetup.BRICK_WIDTH)
+            expect(brick.height).toEqual(mockedSetup.BRICK_HEIGHT)
+        })
+    })
 })
 
