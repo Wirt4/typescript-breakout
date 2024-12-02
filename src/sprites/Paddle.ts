@@ -1,6 +1,9 @@
 import {Sprite} from "./Sprite";
 import {Size, Vector} from "../types";
-
+enum keys{
+    LEFT = "ArrowLeft",
+    RIGHT = "ArrowRight",
+}
 export class Paddle extends Sprite{
     private _moveLeft = false
     private _moveRight = false
@@ -20,14 +23,14 @@ export class Paddle extends Sprite{
 
     handleKeyDown = (event: KeyboardEvent)=>{
         switch (event.key){
-            case"ArrowLeft":
+            case keys.LEFT:
                 if (this.isMovingRight){
                     this.stopPaddle()
                     break
                 }
                 this._moveLeft = true
                 break
-            case "ArrowRight":
+            case keys.RIGHT:
                 if (this.isMovingLeft){
                     this.stopPaddle()
                     break
@@ -36,18 +39,18 @@ export class Paddle extends Sprite{
         }
     }
 
-    handleKeyUp = (event: KeyboardEvent)=>{
-        switch (event.key){
-            case"ArrowLeft":
-                this._moveLeft = false
-                break
-            case "ArrowRight":
-                this._moveRight = false
-        }
-    }
-
     private stopPaddle():void{
         this._moveRight = false
         this._moveLeft = false
+    }
+
+    handleKeyUp = (event: KeyboardEvent)=>{
+        switch (event.key){
+            case keys.LEFT:
+                this._moveLeft = false
+                break
+            case keys.RIGHT:
+                this._moveRight = false
+        }
     }
 }
