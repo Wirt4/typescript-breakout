@@ -2,6 +2,12 @@ import {Game} from "../src/Game";
 import {CanvasView} from "../src/view/CanvasView";
 
 describe('Game.setGameOver tests',()=>{
+    let view: CanvasView
+    let spy: jest.SpyInstance
+    beforeEach(()=>{
+        view = new CanvasView('#playField')
+        spy = jest.spyOn(view, 'drawInfo').mockImplementation(()=>{})
+    })
     it('when game is created, Game.isGameOver is false',()=>{
         const game = new Game()
         expect(game.isGameOver).toEqual(false)
@@ -13,8 +19,6 @@ describe('Game.setGameOver tests',()=>{
         expect(game.isGameOver).toEqual(true)
     })
     it('when Game.setGameOver is called, CanvasView.setInfo is called with message "Game Over"',()=>{
-        const view = new CanvasView('#playField');
-        const spy = jest.spyOn(view, 'drawInfo')
         const game = new Game(view)
         game.setGameOver()
         expect(spy).toHaveBeenCalledWith("Game Over!")

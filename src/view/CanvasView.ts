@@ -46,7 +46,9 @@ export class CanvasView {
     }
 
     drawInfo(info: string):void{
-        this.infoDisplay.innerHTML = info
+        if (this.infoDisplay) {
+            this.infoDisplay.innerHTML = info
+        }
     }
 
     drawSprite(sprite: Sprite):void{
