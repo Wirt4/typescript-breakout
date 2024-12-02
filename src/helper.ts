@@ -18,7 +18,7 @@ export function createBricks(): Brick[] {
     return LEVEL.reduce((accumulated, element, ndx)=>{
         if (element <=0) return accumulated
         const stats = brickStats(element)
-        return [...accumulated,new Brick(stats.img, adjustedCoords(ndx), {width: 10, height: 20}, stats.energyLevel) ]
+        return [...accumulated,new Brick(stats.img, adjustedCoords(ndx), {width: BRICK_WIDTH, height: BRICK_HEIGHT}, stats.energyLevel) ]
     },[] as Brick[] );
 }
 
