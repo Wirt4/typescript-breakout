@@ -76,4 +76,10 @@ describe('Game.start tests',()=>{
         game.start()
         expect(spy).toHaveBeenCalledWith("")
     })
+    it('expect view.drawScore to have been called with 0g',()=>{
+        const spy = jest.spyOn(view, 'drawScore').mockImplementation(()=>{})
+        game = new Game(view)
+        game.start()
+        expect(spy).toHaveBeenCalledWith(0)
+    })
 })
