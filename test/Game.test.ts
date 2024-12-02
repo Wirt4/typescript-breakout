@@ -95,7 +95,7 @@ describe('Game.start tests',()=>{
     it('expect game.start to call game.loop with the view object',()=>{
         const loopSpy = jest.spyOn(game, 'loop')
         game.start()
-        expect(loopSpy).toHaveBeenCalledWith(view)
+        expect(loopSpy).toHaveBeenCalledWith(view, expect.anything())
     })
     it('expect game.start to call game.loop with the output of createBricks',()=>{
         const loopSpy = jest.spyOn(game, 'loop');

@@ -1,4 +1,6 @@
 import {CanvasView} from "./view/CanvasView";
+import {createBricks} from "./helper";
+import {Brick} from "./sprites/Brick";
 
 enum EndState{
     GAME_OVER = "Game Over!",
@@ -39,8 +41,8 @@ export class Game {
     start():void{
         this.clearInfo()
         this._view.drawScore(0)
-        this.loop(this._view)
+        this.loop(this._view, [])
     }
 
-    loop(view: CanvasView):void{}
+    loop(view: CanvasView, bricks: Brick[]):void{}
 }
