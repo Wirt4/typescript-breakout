@@ -33,9 +33,6 @@ describe('createBricks', () => {
     it('Given the array of bricks is one long, check the x coordinate ',()=>{
         mockedSetup.LEVEL = [1]
         mockedSetup.STAGE_PADDING = 4
-        mockedSetup.BRICK_PADDING = 2
-        mockedSetup.BRICK_WIDTH = 40
-        mockedSetup.BRICK_HEIGHT = 10
         const bricks = createBricks()
         const brick = bricks[0]
         expect(brick.x).toBe(4)
