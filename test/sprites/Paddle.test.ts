@@ -12,7 +12,7 @@ jest.mock( "../../src/setup",()=>({
 
 describe('Paddle', () => {
     it('paddle is a sprite',()=>{
-        const paddle = new Paddle({x:0, y:0});
+        const paddle = new Paddle(0);
         expect(paddle).toBeInstanceOf(Sprite);
     })
 })
@@ -20,7 +20,7 @@ describe('Paddle', () => {
 describe('Paddle.isMovingLeft and isMovingRight', () => {
     let paddle: Paddle
     beforeEach(()=>{
-        paddle = new Paddle({x:0, y:0},);
+        paddle = new Paddle(0);
     })
     it('when created, moveLeft is false',()=>{
         expect(paddle.isMovingLeft).toEqual(false)
@@ -80,26 +80,26 @@ describe('Paddle.isMovingLeft and isMovingRight', () => {
 describe('Paddle.move', () => {
     let paddle: Paddle
     it('given paddle is moving left, when move is called, the the x position is adjusted minus  5 pix',()=>{
-        paddle = new Paddle({x:0, y:0},5);
+        paddle = new Paddle(0,800, 5);
         const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
         document.dispatchEvent(event);
         paddle.move()
         expect(paddle.x).toEqual(-5)
     })
     it('given paddle is moving left and the speed is 10, when move is called, the the x position is adjusted minus  10 pix',()=>{
-        paddle = new Paddle({x:20, y:0},10);
+        paddle = new Paddle(20, 800,10);
         const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
         document.dispatchEvent(event);
         paddle.move()
         expect(paddle.x).toEqual(10)
     })
     it('given paddle is not moving and the speed is 10, when move is called, the the x position is not adjusted',()=>{
-        paddle = new Paddle({x:20, y:0},10);
+        paddle = new Paddle(20, 800,10);
         paddle.move()
         expect(paddle.x).toEqual(20)
     })
-    it('given paddle is moving right with a speed of 2, when move is called, the the y position is adjust plus 2pix',()=>{
-        paddle = new Paddle({x:40, y:0},2);
+    it('given paddle is moving right with a speed of 2, when move is called, the the s position is adjust plus 2pix',()=>{
+        paddle = new Paddle(40, 800,2);
         const event = new KeyboardEvent('keydown', { key: "ArrowRight" });
         document.dispatchEvent(event);
         paddle.move()
@@ -115,7 +115,7 @@ describe('Paddle start.y', () => {
     })
     it('given a canvasHeight of 800 a STAGE_PADDING of 5 and a PADDLE_HEIGHT of 25, when the paddle is created, it should be with the y coordinae of 770',()=>{
         mockedSetup.PADDLE_HEIGHT = 5
-        paddle = new Paddle({x:40, y:0}, 2, 800);
+        paddle = new Paddle(40, 800, 2);
         expect(paddle.y).toEqual(770)
     })
 })
