@@ -20,13 +20,11 @@ describe('Paddle.isMovingLeft and isMovingRight', () => {
         expect(paddle.isMovingRight).toEqual(false)
     })
     it('after Arrow key down left, isMovingLeft is true',()=>{
-        expect(paddle.isMovingRight).toEqual(false)
         const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
         document.dispatchEvent(event);
         expect(paddle.isMovingLeft).toEqual(true)
     })
     it('if arrow key down is not left, isMovingLeft is not true',()=>{
-        expect(paddle.isMovingRight).toEqual(false)
         const event = new KeyboardEvent('keydown', { key: "A" });
         document.dispatchEvent(event);
         expect(paddle.isMovingLeft).toEqual(false)
@@ -36,5 +34,14 @@ describe('Paddle.isMovingLeft and isMovingRight', () => {
         const event = new KeyboardEvent('keydown', { key: "ArrowRight" });
         document.dispatchEvent(event);
         expect(paddle.isMovingRight).toEqual(true)
+    })
+    it('if both keys are pushed down at once, then paddle neither moves right or less',()=>{
+        const event = new KeyboardEvent('keydown', { key: "ArrowRight" });
+        document.dispatchEvent(event);
+        expect(paddle.isMovingRight).toEqual(true)
+        const event2 = new KeyboardEvent('keydown', { key: "ArrowLeft" });
+        document.dispatchEvent(event2);
+        expect(paddle.isMovingRight).toEqual(false)
+        expect(paddle.isMovingLeft).toEqual(false)
     })
 })

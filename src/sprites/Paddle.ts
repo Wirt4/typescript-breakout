@@ -3,6 +3,7 @@ import {Size, Vector} from "../types";
 
 export class Paddle extends Sprite{
     private _moveLeft = false
+    private _moveRight = false
 
     constructor(src: string, pos: Vector, size: Size) {
         super(src, pos, size);
@@ -13,10 +14,26 @@ export class Paddle extends Sprite{
     }
 
     get isMovingRight(): boolean{
-        return this._moveLeft;
+        return this._moveRight;
     }
 
     handleKeyDown = (event: KeyboardEvent)=>{
-       if(event.key == "ArrowLeft" || event.key == "ArrowRight") this._moveLeft = true;
+        switch (event.key){
+            case"ArrowLeft":
+                if (this.isMovingRight){
+                    this._moveRight = false
+                    this._moveLeft = false
+                    break
+                }
+                this._moveLeft = true
+                break
+            case "ArrowRight":
+                if (this.isMovingLeft){
+                    this._moveRight = false
+                    this._moveLeft = false
+                    break
+                }
+                this._moveRight = true
+        }
     }
 }
