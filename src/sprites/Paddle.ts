@@ -3,10 +3,10 @@ import {Sprite} from "./Sprite";
 export class Paddle extends Sprite{
     private _moveLeft = false
 
-    get moveLeft():boolean{
+    get isMovingLeft():boolean{
         return this._moveLeft;
     }
-    get moveRight(): boolean{
+    get isMovingRight(): boolean{
         return this._moveLeft;
     }
 }
