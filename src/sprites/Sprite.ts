@@ -7,10 +7,8 @@ export class Sprite {
     private readonly _h: number;
     protected _img: HTMLImageElement;
 
-
     constructor(imageSrc: string, coords:Vector, size: Size) {
         this._img = new Image();
-
         this._x = coords.x
         this._y = coords.y
         this._w = size.width;
