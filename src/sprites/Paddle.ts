@@ -24,6 +24,7 @@ export class Paddle extends Sprite{
         document.addEventListener('keydown', this.handleKeyDown)
         document.addEventListener('keyup', this.handleKeyUp)
     }
+
     get isMovingLeft():boolean{
         return this._moveLeft;
     }
