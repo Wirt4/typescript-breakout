@@ -47,5 +47,6 @@ export class Game {
     loop(view: CanvasView, bricks: Brick[]):void{
         view.clear()
         view.drawBricks(bricks)
+        requestAnimationFrame(()=>{this.loop(view, bricks)})
     }
 }
