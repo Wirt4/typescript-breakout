@@ -172,21 +172,27 @@ describe('CanvasView.drawSprite',()=>{
     })
     it("when drawSprites is called, expect drawImage to be called with the sprite's image",()=>{
         canvasView = new CanvasView('#playField');
-        const sprite = new Sprite('image.png', 0, 0,0,0)
+        const pos = {x:0, y: 0}
+        const size={width:0, height:0}
+        const sprite = new Sprite('../image.png', pos, size)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('image.png')}),
             expect.anything() ,expect.anything(), expect.anything(), expect.anything());
     })
     it("when drawSprites is called, expect drawImage to be called with the sprite's image, different data",()=>{
         canvasView = new CanvasView('#playField');
-        const sprite = new Sprite('../../image3.png', 0, 0,0,0)
+        const pos = {x:0, y: 0}
+        const size={width:0, height:0}
+        const sprite = new Sprite('../../image3.png', pos, size)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('image3.png')}),
             expect.anything() ,expect.anything(), expect.anything(), expect.anything());
     })
     it("when drawSprites is called, expect drawImage to be called with the sprite's X cord",()=>{
         canvasView = new CanvasView('#playField');
-        const sprite = new Sprite('../../image3.png', 3, 0,0,0)
+        const pos = {x:3, y: 0}
+        const size={width:0, height:0}
+        const sprite = new Sprite('../../image3.png', pos, size)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(),
             3,
@@ -194,7 +200,9 @@ describe('CanvasView.drawSprite',()=>{
     })
     it("when drawSprites is called, expect drawImage to be called with the sprite's X cord, different data",()=>{
         canvasView = new CanvasView('#playField');
-        const sprite = new Sprite('../../image3.png', 64, 0,0,0)
+        const pos = {x:64, y: 0}
+        const size={width:0, height:0}
+        const sprite = new Sprite('../../image3.png', pos, size)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(),
             64,
@@ -203,7 +211,9 @@ describe('CanvasView.drawSprite',()=>{
 
     it("when drawSprites is called, expect drawImage to be called with the sprite's Y cord",()=>{
         canvasView = new CanvasView('#playField');
-        const sprite = new Sprite('../../image3.png', 64, 7,0,0)
+        const pos = {x: 64, y:7}
+        const size={width:0, height: 0}
+        const sprite = new Sprite('../../image3.png', pos, size)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(), expect.anything(),
             7,
@@ -211,7 +221,9 @@ describe('CanvasView.drawSprite',()=>{
     })
     it("when drawSprites is called, expect drawImage to be called with the sprite's Y cord, different data",()=>{
         canvasView = new CanvasView('#playField');
-        const sprite = new Sprite('../../image3.png', 64, 89,0,0)
+        const pos = {x:64, y:89}
+        const size={width:0, height:0}
+        const sprite = new Sprite('../../image3.png', pos, size)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(), expect.anything(),
             89,
@@ -219,7 +231,9 @@ describe('CanvasView.drawSprite',()=>{
     })
     it("when drawSprites is called, expect drawImage to be called with the sprite's width",()=>{
         canvasView = new CanvasView('#playField');
-        const sprite = new Sprite('../../image3.png', 64, 89, 60,0)
+        const pos = {x:64, y:89};
+        const size={width: 60, height:0}
+        const sprite = new Sprite('../../image3.png', pos,size)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.anything(),
             60,
@@ -227,7 +241,9 @@ describe('CanvasView.drawSprite',()=>{
     })
     it("when drawSprites is called, expect drawImage to be called with the sprite's width, different data",()=>{
         canvasView = new CanvasView('#playField');
-        const sprite = new Sprite('../../image3.png', 64, 89, 45,0)
+        const pos = {x: 64, y: 89};
+        const size = {width: 45, height: 100};
+        const sprite = new Sprite('../../image3.png', pos, size)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.anything(),
             45,
@@ -235,14 +251,18 @@ describe('CanvasView.drawSprite',()=>{
     })
     it("when drawSprites is called, expect drawImage to be called with the sprite's height",()=>{
         canvasView = new CanvasView('#playField');
-        const sprite = new Sprite('../../image3.png', 64, 89, 45, 100)
+        const pos = {x: 64, y: 89};
+        const size = {width: 45, height: 100};
+        const sprite = new Sprite('../../image3.png', pos, size)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.anything(), expect.anything(),
             100);
     })
     it("when drawSprites is called, expect drawImage to be called with the sprite's height, different data",()=>{
         canvasView = new CanvasView('#playField');
-        const sprite = new Sprite('../../image3.png', 64, 89, 45, 234)
+        const pos = {x: 64, y: 89};
+        const size = {width: 45, height: 234};
+        const sprite = new Sprite('../../image3.png',pos, size)
         canvasView.drawSprite(sprite)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.anything(), expect.anything(),
             234);
@@ -274,13 +294,17 @@ describe('CanvasView.drawBricks',()=>{
     })
     it('if bricks Array has one brick, then draw the contents of that brick to canvas',()=>{
         canvasView = new CanvasView('#playField');
-        const bricks = [new Brick('./brick-image.png', 0,0, 10, 20)]
+        const pos = {x: 0, y: 0};
+        const size = {width: 10, height: 20};
+        const bricks = [new Brick('./brick-image.png', pos, size)]
         canvasView.drawBricks(bricks)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('brick-image.png')}), 0, 0, 10, 20);
     })
     it('if bricks Array has one brick, then draw the contents of that brick to canvas, different data',()=>{
         canvasView = new CanvasView('#playField');
-        const bricks = [new Brick('./brick-image2.png', 5,8, 10, 20)]
+        const pos = {x: 5, y: 8};
+        const size = {width: 10, height: 20};
+        const bricks = [new Brick('./brick-image2.png',pos, size)]
         canvasView.drawBricks(bricks)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('brick-image2.png')}), 5, 8, 10, 20);
     })
