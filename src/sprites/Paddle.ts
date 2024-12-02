@@ -15,6 +15,7 @@ export class Paddle extends Sprite{
 
     constructor(pos: Vector, speed: number = 5, canvasHeight:number = 0) {
         const size = {width: PADDLE_WIDTH, height: PADDLE_HEIGHT};
+        pos.y=770
         super(PADDLE_IMAGE, pos, size);
         this._speed = speed
         document.addEventListener('keydown', this.handleKeyDown);
