@@ -1,6 +1,7 @@
 import {Sprite} from "./Sprite";
 import {PADDLE_HEIGHT, PADDLE_WIDTH, STAGE_PADDING} from "../setup";
 import PADDLE_IMAGE from "../images/paddle.png"
+import {Size} from "../types";
 
 enum keys{
     LEFT = "ArrowLeft",
@@ -12,13 +13,13 @@ export class Paddle extends Sprite{
     private _moveRight = false
     private readonly _speed: number
 
-    constructor(startX: number, canvasHeight: number =0, speed: number = 5) {
-        const size = {width: PADDLE_WIDTH, height: PADDLE_HEIGHT};
-        const pos= {y:canvasHeight - PADDLE_HEIGHT - STAGE_PADDING, x: startX}
+    constructor(startX: number, canvasSize: Size,  speed: number = 5) {
+        const size = {width: PADDLE_WIDTH, height: PADDLE_HEIGHT}
+        const pos = {y:canvasSize.height - PADDLE_HEIGHT - STAGE_PADDING, x: startX}
         super(PADDLE_IMAGE, pos, size);
         this._speed = speed
-        document.addEventListener('keydown', this.handleKeyDown);
-        document.addEventListener('keyup', this.handleKeyUp);
+        document.addEventListener('keydown', this.handleKeyDown)
+        document.addEventListener('keyup', this.handleKeyUp)
     }
     get isMovingLeft():boolean{
         return this._moveLeft;
