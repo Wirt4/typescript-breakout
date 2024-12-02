@@ -23,4 +23,8 @@ describe('Game.setGameOver tests',()=>{
         game.setGameOver()
         expect(spy).toHaveBeenCalledWith("Game Over!")
     })
+    it('when Game.setGameOver is not called, CanvasView.setInfo is not called with message "Game Over"',()=>{
+        new Game(view)
+        expect(spy).not.toHaveBeenCalledWith("Game Over!")
+    })
 })
