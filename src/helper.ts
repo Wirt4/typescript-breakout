@@ -1,13 +1,15 @@
 import {BRICK_HEIGHT, BRICK_PADDING, BRICK_WIDTH, LEVEL, STAGE_COLS, STAGE_PADDING} from "./setup";
 import {Brick} from "./sprites/Brick";
+import {Vector} from "./types";
 
 export function createBricks(){
     return LEVEL.map((element, ndx)=> {
-        const xCoord =  STAGE_PADDING + (ndx%STAGE_COLS) * (BRICK_WIDTH + BRICK_PADDING)
-
-        const row =  Math.floor(ndx/STAGE_COLS)
-        const yCoord = STAGE_PADDING + row * (BRICK_HEIGHT + BRICK_PADDING)
-        return  new Brick('stub', {x: xCoord, y:yCoord}, {width: 0, height: 0})
+        return new Brick('stub', adjustedCoords(ndx), {width: 0, height: 0})
     });
 }
 
+function adjustedCoords(i: number): Vector{
+    const x = STAGE_PADDING + (i%STAGE_COLS) * (BRICK_WIDTH + BRICK_PADDING)
+    const y = STAGE_PADDING + Math.floor(i/STAGE_COLS) * (BRICK_HEIGHT + BRICK_PADDING)
+    return {x, y}
+}
