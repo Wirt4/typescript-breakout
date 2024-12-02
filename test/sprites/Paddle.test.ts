@@ -65,6 +65,6 @@ describe('Paddle.isMovingLeft and isMovingRight', () => {
         expect(paddle.width).toEqual(PADDLE_WIDTH)
     })
     it('paddle Height should be the constant PADDLE_HEIGHT',()=>{
-        expect(paddle.width).toEqual(PADDLE_HEIGHT)
+        expect(paddle.height).toEqual(PADDLE_HEIGHT)
     })
 })
