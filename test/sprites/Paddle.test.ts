@@ -92,4 +92,11 @@ describe('Paddle.move', () => {
         paddle.move()
         expect(paddle.x).toEqual(20)
     })
+    it('given paddle is moving right with a speed of 2, when move is called, the the y position is adjuste plus 2pix',()=>{
+        paddle = new Paddle({x:40, y:0},2);
+        const event = new KeyboardEvent('keydown', { key: "ArrowRight" });
+        document.dispatchEvent(event);
+        paddle.move()
+        expect(paddle.x).toEqual(42)
+    })
 })
