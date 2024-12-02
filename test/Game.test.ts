@@ -29,3 +29,19 @@ describe('Game.setGameOver tests',()=>{
         expect(spy).not.toHaveBeenCalledWith("Game Over!")
     })
 })
+describe('Game.setGameWin tests',()=>{
+    let view: CanvasView
+    let game: Game
+    beforeEach(()=>{
+        view = new CanvasView('#playField')
+        game = new Game(view)
+    })
+    afterEach(()=>{
+        jest.resetAllMocks()
+    })
+    it('when Game.setGameWiner is called, isGameOver is set to false',()=>{
+        expect(game.isGameOver).toEqual(false)
+        game.setGameWin()
+        expect(game.isGameOver).toEqual(false)
+    })
+})
