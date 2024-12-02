@@ -12,12 +12,14 @@ export class Paddle extends Sprite{
     private _moveLeft = false
     private _moveRight = false
     private readonly _speed: number
+    private _canvasWidth: number
 
     constructor(startX: number, canvasSize: Size,  speed: number = 5) {
         const size = {width: PADDLE_WIDTH, height: PADDLE_HEIGHT}
         const pos = {y:canvasSize.height - PADDLE_HEIGHT - STAGE_PADDING, x: startX}
         super(PADDLE_IMAGE, pos, size);
         this._speed = speed
+        this._canvasWidth =canvasSize.width
         document.addEventListener('keydown', this.handleKeyDown)
         document.addEventListener('keyup', this.handleKeyUp)
     }
@@ -39,7 +41,10 @@ export class Paddle extends Sprite{
            const newX = this.x - this._speed
            this._x = newX >=0? newX : 0
        }
-       if (this.isMovingRight) this._x += this._speed;
+       if (this.isMovingRight) {
+           const newX = this.x + this._speed
+           this._x = newX <= this._canvasWidth - this.width? newX :this._canvasWidth - this.width
+       }
     }
 
     handleKeyDown = (event: KeyboardEvent)=>{
