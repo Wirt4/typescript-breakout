@@ -113,9 +113,14 @@ describe('Paddle start.y', () => {
     beforeEach(() => {
         mockedSetup = require("../../src/setup");
     })
-    it('given a canvasHeight of 800 a STAGE_PADDING of 5 and a PADDLE_HEIGHT of 25, when the paddle is created, it should be with the y coordinae of 770',()=>{
+    it('given a canvasHeight of 800 a STAGE_PADDING of 5 and a PADDLE_HEIGHT of 25, when the paddle is created, it should be with the y coordinate of 770',()=>{
         mockedSetup.PADDLE_HEIGHT = 5
         paddle = new Paddle(40, 800, 2);
         expect(paddle.y).toEqual(770)
+    })
+    it('given a canvasHeight of 1200 a STAGE_PADDING of 10 and a PADDLE_HEIGHT of 40, when the paddle is created, it should be with the y coordinate of 1170',()=>{
+        mockedSetup.PADDLE_HEIGHT = 10
+        paddle = new Paddle(40, 1200, 2);
+        expect(paddle.y).toEqual(1150)
     })
 })
