@@ -24,6 +24,11 @@ describe('Paddle.isMovingLeft and isMovingRight', () => {
         const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
         document.dispatchEvent(event);
         expect(paddle.isMovingLeft).toEqual(true)
-
+    })
+    it('if arrow key down is not left, isMovingLeft is not true',()=>{
+        expect(paddle.isMovingRight).toEqual(false)
+        const event = new KeyboardEvent('keydown', { key: "A" });
+        document.dispatchEvent(event);
+        expect(paddle.isMovingLeft).toEqual(false)
     })
 })
