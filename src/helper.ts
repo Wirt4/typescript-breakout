@@ -37,6 +37,7 @@ function brickStats(energyLevel: number){
             break
         case 4:
             color = "blue"
+            level = 2
             break
         case 5:
             color = "purple"
