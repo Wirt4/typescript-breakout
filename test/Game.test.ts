@@ -107,7 +107,7 @@ describe('Game.start tests',()=>{
     })
     it('expect game.start to call game.loop with the output of createBricks',()=>{
         const loopSpy = jest.spyOn(game, 'loop');
-        const brick = new Brick('stub',{x:0, y:0}, {height:0, width:0});
+        const brick = new Brick('stub',{x:0, y:0});
         const expected = [brick];
         (createBricks as jest.Mock).mockReturnValue(expected);
         game.start(view)
@@ -140,7 +140,7 @@ describe('Game.loop tests',()=>{
         expect(drawBricksSpy).toHaveBeenCalledWith([])
     })
     it('Game.loop calls view.drawBricks() with the bricks argument, different data', ()=>{
-        const expected = [ new Brick('stub',{x:0, y:0},{width: 20, height:10},)];
+        const expected = [ new Brick('stub',{x:0, y:0})];
         game.loop(view, expected);
         expect(drawBricksSpy).toHaveBeenCalledWith(expected);
     })

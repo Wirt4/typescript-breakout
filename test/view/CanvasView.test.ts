@@ -1,6 +1,7 @@
 import {CanvasView} from "../../src/view/CanvasView";
 import {Sprite} from "../../src/sprites/Sprite";
 import {Brick} from "../../src/sprites/Brick";
+import {BRICK_HEIGHT, BRICK_WIDTH} from "../../src/setup";
 
 describe('CanvasView constructor tests', () => {
     it('Object instantiates without error',()=>{
@@ -303,28 +304,25 @@ describe('CanvasView.drawBricks',()=>{
     it('if bricks Array has one brick, then draw the contents of that brick to canvas',()=>{
         canvasView = new CanvasView('#playField');
         const pos = {x: 0, y: 0};
-        const size = {width: 10, height: 20};
-        const brick = new Brick('./brick-image.png', pos, size)
+        const brick = new Brick('./brick-image.png', pos)
         jest.spyOn(brick, 'hasValidImage').mockReturnValue(true)
         const bricks = [brick]
         canvasView.drawBricks(bricks)
-        expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('brick-image.png')}), 0, 0, 10, 20);
+        expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('brick-image.png')}), 0, 0, BRICK_WIDTH, BRICK_HEIGHT);
     })
     it('if bricks Array has one brick, then draw the contents of that brick to canvas, different data',()=>{
         canvasView = new CanvasView('#playField');
         const pos = {x: 5, y: 8};
-        const size = {width: 10, height: 20};
-        const brick = new Brick('./brick-image2.png',pos, size)
+        const brick = new Brick('./brick-image2.png',pos)
         jest.spyOn(brick, 'hasValidImage').mockReturnValue(true)
         const bricks = [brick]
         canvasView.drawBricks(bricks)
-        expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('brick-image2.png')}), 5, 8, 10, 20);
+        expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('brick-image2.png')}), 5, 8, BRICK_WIDTH, BRICK_HEIGHT);
     })
     it('if bricks Array has three bricks, then draw three bricks to canvas',()=>{
         canvasView = new CanvasView('#playField');
         const pos = {x: 5, y: 8};
-        const size = {width: 10, height: 20};
-        const brick = new Brick('./brick-image2.png',pos, size)
+        const brick = new Brick('./brick-image2.png',pos)
         jest.spyOn(brick, 'hasValidImage').mockReturnValue(true)
         const bricks = [brick, brick, brick]
         canvasView.drawBricks(bricks)
