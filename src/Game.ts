@@ -2,10 +2,11 @@ import {CanvasView} from "./view/CanvasView";
 
 export class Game {
     private _isGameOver: boolean
+    private _view: CanvasView
 
     constructor(view: CanvasView = new CanvasView('stub')) {
-        view.drawInfo("Game Over!")
         this._isGameOver = false;
+        this._view = view;
     }
 
     get isGameOver(): boolean {
@@ -13,6 +14,7 @@ export class Game {
     }
 
     setGameOver():void {
+        this._view.drawInfo("Game Over!")
         this._isGameOver = true
     }
 }
