@@ -111,9 +111,13 @@ describe('createBricks', () => {
     })
     it('if the input energy is 1, then the image is the red brick',()=>{
         mockedSetup.LEVEL = [1]
-        mockedSetup.BRICK_IMAGES = {1: 'brick-red.png'}
         const bricks = createBricks()
         expect(bricks[0].image.src).toEqual(expect.stringContaining('brick-red.png'))
+    })
+    it('if the input energy is 2, then the image is the green brick',()=>{
+        mockedSetup.LEVEL = [2]
+        const bricks = createBricks()
+        expect(bricks[0].image.src).toEqual(expect.stringContaining('brick-green.png'))
     })
 })
 
