@@ -2,14 +2,16 @@ import {Sprite} from "./Sprite";
 import {Vector} from "../types";
 import {PADDLE_HEIGHT, PADDLE_WIDTH} from "../setup";
 import PADDLE_IMAGE from "../images/paddle.png"
+
 enum keys{
     LEFT = "ArrowLeft",
     RIGHT = "ArrowRight",
 }
+
 export class Paddle extends Sprite{
     private _moveLeft = false
     private _moveRight = false
-    private _speed: number
+    private readonly _speed: number
 
     constructor(pos: Vector, speed: number = 5) {
         const size = {width: PADDLE_WIDTH, height: PADDLE_HEIGHT};
@@ -33,7 +35,7 @@ export class Paddle extends Sprite{
 
     move():void{
        if (this.isMovingLeft) this._x -= this._speed;
-        if (this.isMovingRight) this._x += this._speed;
+       if (this.isMovingRight) this._x += this._speed;
     }
 
     handleKeyDown = (event: KeyboardEvent)=>{
