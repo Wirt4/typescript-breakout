@@ -96,4 +96,9 @@ describe('createBricks', () => {
         const bricks = createBricks()
         expect(bricks[2].x).toBe(bricks[0].x)
     })
+    it('The function should not create bricks in places where 0 is',()=>{
+        mockedSetup.LEVEL = [0, 1, 1]
+        const bricks = createBricks()
+        expect(bricks.length).toBe(2)
+    })
 })
