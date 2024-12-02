@@ -9,4 +9,8 @@ describe('basic sprite getters', () => {
         const brick = new Brick('stub',0, 0, 40, 10);
         expect(brick.energy).toBe(1);
     })
+    it('brick energy is 3',()=>{
+        const brick = new Brick('stub',0, 0, 40, 10, 3);
+        expect(brick.energy).toBe(3);
+    })
 })
