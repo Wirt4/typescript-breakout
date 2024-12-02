@@ -4,7 +4,7 @@ import {Brick} from "./sprites/Brick";
 export function createBricks(){
     return LEVEL.map((element, ndx)=> {
         const xCoord=  STAGE_PADDING + ndx * (BRICK_WIDTH + BRICK_PADDING)
-        return  new Brick('stub', {x: xCoord, y:0}, {width: 0, height: 0})
+        return  new Brick('stub', {x: xCoord, y:10}, {width: 0, height: 0})
     });
 }
 
