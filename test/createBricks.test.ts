@@ -54,12 +54,18 @@ describe('createBricks', () => {
         const brick = bricks[1]
         expect(brick.x).toBe(35)
     })
-
-    it('Given the array of bricks one long, check the y coordinate ',()=>{
+    it('Given the array of bricks one long, check the y coordinate',()=>{
         mockedSetup.LEVEL = [1]
         mockedSetup.STAGE_PADDING = 10
         const bricks = createBricks()
         const brick = bricks[0]
         expect(brick.y).toBe(10)
+    })
+    it('Given the array of bricks one long, check the y coordinate, different data',()=>{
+        mockedSetup.LEVEL = [1]
+        mockedSetup.STAGE_PADDING = 2
+        const bricks = createBricks()
+        const brick = bricks[0]
+        expect(brick.y).toBe(2)
     })
 })
