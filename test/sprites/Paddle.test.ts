@@ -1,5 +1,6 @@
 import {Sprite} from "../../src/sprites/Sprite";
 import {Paddle} from "../../src/sprites/Paddle";
+import {PADDLE_WIDTH} from "../../src/setup";
 
 describe('Paddle', () => {
     it('paddle is a sprite',()=>{
@@ -59,5 +60,8 @@ describe('Paddle.isMovingLeft and isMovingRight', () => {
         const event2 = new KeyboardEvent('keyup', { key: "ArrowRight" });
         document.dispatchEvent(event2);
         expect(paddle.isMovingRight).toEqual(false)
+    })
+    it('paddle Width should be the constant PADDLE_WIDTH',()=>{
+        expect(paddle.width).toEqual(PADDLE_WIDTH)
     })
 })

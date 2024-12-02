@@ -1,5 +1,6 @@
 import {Sprite} from "./Sprite";
 import {Size, Vector} from "../types";
+import {PADDLE_WIDTH} from "../setup";
 enum keys{
     LEFT = "ArrowLeft",
     RIGHT = "ArrowRight",
@@ -9,6 +10,7 @@ export class Paddle extends Sprite{
     private _moveRight = false
 
     constructor(src: string, pos: Vector, size: Size) {
+        size = {width: PADDLE_WIDTH, height: size.height};
         super(src, pos, size);
         document.addEventListener('keydown', this.handleKeyDown);
         document.addEventListener('keyup', this.handleKeyUp);
