@@ -12,7 +12,8 @@ import {Vector} from "./types";
 export function createBricks(): Brick[] {
     return LEVEL.reduce((accumulated, element, ndx)=>{
         if (element <=0) return accumulated
-        return [...accumulated,new Brick(brickImage(element), adjustedCoords(ndx), {width: 0, height: 0}) ]
+        const stats = brickStats(element)
+        return [...accumulated,new Brick(stats.img, adjustedCoords(ndx), {width: 0, height: 0}, stats.energyLevel) ]
     },[] as Brick[] );
 }
 
@@ -22,14 +23,17 @@ function adjustedCoords(i: number): Vector{
     return {x, y}
 }
 
-function brickImage(energyLevel: number){
+function brickStats(energyLevel: number){
     let color: string
+    let level = -1
     switch (energyLevel){
         case 2:
             color = "green"
+            level = 1
             break
         case 3:
             color = "yellow"
+            level = 2
             break
         case 4:
             color = "blue"
@@ -39,6 +43,7 @@ function brickImage(energyLevel: number){
             break
         default:
             color = "red"
+            level = 1
     }
-    return `images/brick-${color}.png`
+    return { img:`images/brick-${color}.png`, energyLevel: level };
 }

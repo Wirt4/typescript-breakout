@@ -144,5 +144,10 @@ describe('createBricks', () => {
         const bricks = createBricks()
         expect(bricks[0].energy).toEqual(2)
     })
+    it('if the input energy is 4, then the brick energy is 2',()=>{
+        mockedSetup.LEVEL = [4]
+        const bricks = createBricks()
+        expect(bricks[0].energy).toEqual(2)
+    })
 })
 
