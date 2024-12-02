@@ -32,16 +32,25 @@ describe('Game.setGameOver tests',()=>{
 describe('Game.setGameWin tests',()=>{
     let view: CanvasView
     let game: Game
+    let spy: jest.SpyInstance
     beforeEach(()=>{
         view = new CanvasView('#playField')
+        spy = jest.spyOn(view, 'drawInfo').mockImplementation(()=>{})
         game = new Game(view)
     })
     afterEach(()=>{
         jest.resetAllMocks()
     })
-    it('when Game.setGameWiner is called, isGameOver is set to false',()=>{
+    it('when Game.setGameWin is called, isGameOver is set to false',()=>{
         expect(game.isGameOver).toEqual(false)
         game.setGameWin()
         expect(game.isGameOver).toEqual(false)
+    })
+    it('when Game.setGameOver is called, CanvasView.setInfo is called with message "Game Over"',()=>{
+        game.setGameWin()
+        expect(spy).toHaveBeenCalledWith("Game Won!")
+    })
+    it('when Game.setGameOver is not called, CanvasView.setInfo is not called with message "Game Over"',()=>{
+        expect(spy).not.toHaveBeenCalledWith("Game Won!")
     })
 })
