@@ -42,15 +42,15 @@ export class CanvasView {
     }
 
     drawScore(score: number):void {
-        if (this.scoreDisplay){
-            this.scoreDisplay.innerHTML = score.toString()
-        }
+        this.setComponentHTML(this.scoreDisplay, score.toString())
     }
 
     drawInfo(info: string):void{
-        if (this.infoDisplay) {
-            this.infoDisplay.innerHTML = info
-        }
+        this.setComponentHTML(this.infoDisplay, info)
+    }
+
+    setComponentHTML(element: HTMLObjectElement, data: string){
+        if (element) element.innerHTML = data
     }
 
     drawSprite(sprite: Sprite):void{
