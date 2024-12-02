@@ -1,5 +1,6 @@
 import {createBricks} from "../src/helper";
 import {Brick} from "../src/sprites/Brick";
+import {STAGE_COLS} from "../src/setup";
 
 jest.mock("../src/setup", () => ({
     LEVEL: [],
@@ -67,5 +68,15 @@ describe('createBricks', () => {
         const bricks = createBricks()
         const brick = bricks[0]
         expect(brick.y).toBe(2)
+    })
+    it('Given a brick on a lower level, check the y coordinate',()=>{
+        mockedSetup.LEVEL = [1, 1]
+        mockedSetup.STAGE_PADDING = 2
+        mockedSetup.STAGE_COLS = 1.
+        mockedSetup.BRICK_HEIGHT = 20
+        mockedSetup.BRICK_PADDING = 5
+        const bricks = createBricks()
+        const brick = bricks[1]
+        expect(brick.y).toBe(28)
     })
 })
