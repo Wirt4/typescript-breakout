@@ -2,9 +2,11 @@ import {Sprite} from "../../src/sprites/Sprite";
 import {Paddle} from "../../src/sprites/Paddle";
 import {PADDLE_HEIGHT, PADDLE_WIDTH} from "../../src/setup";
 
+jest.mock("../../src/images/paddle.png");
+
 describe('Paddle', () => {
     it('paddle is a sprite',()=>{
-        const paddle = new Paddle('stub',{x:0, y:0}, {width:0, height:0});
+        const paddle = new Paddle({x:0, y:0});
         expect(paddle).toBeInstanceOf(Sprite);
     })
 })
@@ -12,7 +14,7 @@ describe('Paddle', () => {
 describe('Paddle.isMovingLeft and isMovingRight', () => {
     let paddle: Paddle
     beforeEach(()=>{
-        paddle = new Paddle('stub',{x:0, y:0}, {width:0, height:0});
+        paddle = new Paddle({x:0, y:0},);
     })
     it('when created, moveLeft is false',()=>{
         expect(paddle.isMovingLeft).toEqual(false)
@@ -66,5 +68,16 @@ describe('Paddle.isMovingLeft and isMovingRight', () => {
     })
     it('paddle Height should be the constant PADDLE_HEIGHT',()=>{
         expect(paddle.height).toEqual(PADDLE_HEIGHT)
+    })
+})
+
+describe('Paddle.move', () => {
+    let paddle: Paddle
+    it('given paddle is moving left, when move is called, the the x position is ajusted minus  5 pix',()=>{
+        paddle = new Paddle({x:0, y:0},);
+        const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
+        document.dispatchEvent(event);
+        event.move()
+        expect(paddle.x).toEqual(-5)
     })
 })
