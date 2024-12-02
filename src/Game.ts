@@ -4,7 +4,7 @@ export class Game {
     private _isGameOver: boolean
     private _view: CanvasView
 
-    constructor(view: CanvasView = new CanvasView('stub')) {
+    constructor(view: CanvasView) {
         this._isGameOver = false;
         this._view = view;
     }
