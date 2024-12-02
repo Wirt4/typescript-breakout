@@ -5,7 +5,7 @@ export class Sprite {
     private readonly _y: number;
     private readonly _w: number;
     private readonly _h: number;
-    private readonly _img: HTMLImageElement;
+    protected _img: HTMLImageElement;
 
 
     constructor(imageSrc: string, coords:Vector, size: Size) {
@@ -43,7 +43,6 @@ export class Sprite {
     hasValidImage(): boolean{
         return this._img.complete && this._img.naturalWidth !== 0
     }
-
 
     get image():HTMLImageElement{
         return this._img

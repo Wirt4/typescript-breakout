@@ -1,5 +1,5 @@
 import {Sprite} from "./Sprite";
-import {Size, Vector} from "../types";
+import { Vector} from "../types";
 import {BRICK_HEIGHT, BRICK_WIDTH} from "../setup";
 
 export class Brick extends Sprite{
