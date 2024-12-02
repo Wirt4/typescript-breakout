@@ -119,9 +119,11 @@ describe('Game.loop tests',()=>{
     let view: CanvasView
     let game: Game
     let clearSpy: jest.SpyInstance
+    let drawBricksSpy: jest.SpyInstance
     beforeEach(()=>{
         view = new CanvasView('#playField');
         clearSpy = jest.spyOn(view, 'clear')
+        drawBricksSpy = jest.spyOn(view, 'drawBricks')
         game = new Game(view);
     })
     afterEach(()=>{
@@ -130,5 +132,9 @@ describe('Game.loop tests',()=>{
     it('Game.loop calls view.clear()', ()=>{
         game.loop(view, [])
         expect(clearSpy).toHaveBeenCalled()
+    })
+    it('Game.loop calls view.drawBricks() with the bricks argument', ()=>{
+        game.loop(view, [])
+        expect(drawBricksSpy).toHaveBeenCalledWith([])
     })
 })
