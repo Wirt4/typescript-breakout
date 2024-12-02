@@ -16,4 +16,6 @@ export class Game {
     setGameOver():void {
         this._view.drawInfo("Game Over!")
     }
+
+    setGameWin():void{}
 }
