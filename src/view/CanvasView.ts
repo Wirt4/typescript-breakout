@@ -42,7 +42,9 @@ export class CanvasView {
     }
 
     drawScore(score: number):void {
-        this.scoreDisplay.innerHTML = score.toString()
+        if (this.scoreDisplay){
+            this.scoreDisplay.innerHTML = score.toString()
+        }
     }
 
     drawInfo(info: string):void{

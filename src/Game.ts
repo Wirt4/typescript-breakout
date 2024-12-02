@@ -38,5 +38,6 @@ export class Game {
 
     start():void{
         this.clearInfo()
+        this._view.drawScore(0)
     }
 }
