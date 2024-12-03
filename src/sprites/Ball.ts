@@ -1,13 +1,20 @@
 import {Sprite} from "./Sprite";
-import {Vector} from "../types";
+import {Size, Vector} from "../types";
 import BALL_IMAGE from "../images/ball.png"
 
 export class Ball extends Sprite{
     private _speed: Speed
+    private readonly canvasWidth: number
 
-    constructor(position: Vector, size: number, speed: number) {
+    constructor(position: Vector, size: number, canvasWidth: number,  speed: number) {
         super(BALL_IMAGE, position, {width: size, height: size});
-        this._speed= new Speed(speed);
+        this._speed = new Speed(speed);
+        this.canvasWidth =canvasWidth
+    }
+
+    detectCollision(){
+        if (this.y <= 0) this.bounceY()
+        if (!(this.x > 0 && this.x + this.width < this.canvasWidth)) this.bounceX()
     }
 
     move():void{
