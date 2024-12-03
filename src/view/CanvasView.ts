@@ -70,8 +70,10 @@ export class CanvasView {
     }
 
     drawBricks(bricks:Brick[]): void{
-        bricks.forEach((brick) => {
-            this.drawSprite(brick)
-        })
+        if (bricks){
+            bricks.forEach((brick) => {
+                this.drawSprite(brick)
+            })
+        }
     }
 }

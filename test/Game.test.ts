@@ -148,13 +148,23 @@ describe('Game.loop tests',()=>{
         expect(clearSpy).toHaveBeenCalled()
     })
     it('Game.loop calls view.drawBricks() with the bricks argument', ()=>{
+        const brick = new Brick('stub',{x:0, y:0});
+        const expected = [brick];
+        (createBricks as jest.Mock).mockReturnValue(expected);
+        game = new Game(view)
+
         game.loop(view, [], paddle)
-        expect(drawBricksSpy).toHaveBeenCalledWith([])
+
+        expect(drawBricksSpy).toHaveBeenCalledWith(expected)
     })
     it('Game.loop calls view.drawBricks() with the bricks argument, different data', ()=>{
-        const expected = [ new Brick('stub',{x:0, y:0})];
-        game.loop(view, expected, paddle);
-        expect(drawBricksSpy).toHaveBeenCalledWith(expected);
+        const surplus = [ new Brick('stub',{x:0, y:0})];
+        (createBricks as jest.Mock).mockReturnValue([]);
+        game = new Game(view);
+
+        game.loop(view, surplus, paddle);
+
+        expect(drawBricksSpy).toHaveBeenCalledWith([]);
     })
     it('Game.loop calls view.drawSprite with the paddle argument',()=>{
         const expected = new Paddle(0,{width:0,height:0});
@@ -181,6 +191,5 @@ describe('constructor tests',()=>{
         (createBricks as jest.Mock).mockReturnValue(expected);
         const game = new Game(view)
         expect(game.bricks).toEqual(expected);
-
     })
 })
