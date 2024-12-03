@@ -11,9 +11,9 @@ enum EndState{
 
 export class Game {
     private readonly _isGameOver: boolean
-    private _view: CanvasView
+    private readonly _view: CanvasView
     public score = 0
-    public bricks = createBricks()
+    private _bricks = createBricks()
 
     constructor(view: CanvasView) {
         this._isGameOver = false;
@@ -22,6 +22,10 @@ export class Game {
 
     get isGameOver(): boolean {
         return this._isGameOver
+    }
+
+    get bricks(): Brick[] {
+        return this._bricks
     }
 
     setGameOver():void {
