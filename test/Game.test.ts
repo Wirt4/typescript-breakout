@@ -3,7 +3,7 @@ import {CanvasView} from "../src/view/CanvasView";
 import {createBricks} from "../src/helper";
 import {Brick} from "../src/sprites/Brick";
 import {Paddle} from "../src/sprites/Paddle";
-import {PADDLE_HEIGHT, PADDLE_STARTX} from "../src/setup";
+import { PADDLE_STARTX} from "../src/setup";
 
 jest.mock("../src/helper");
 jest.mock("../src/sprites/Paddle");
@@ -128,12 +128,14 @@ describe('Game.loop tests',()=>{
     let game: Game
     let clearSpy: jest.SpyInstance
     let drawBricksSpy: jest.SpyInstance
+    let drawSpriteSpy: jest.SpyInstance
     let animationSpy: jest.SpyInstance
     let paddle: Paddle
     beforeEach(()=>{
         view = new CanvasView('#playField');
         clearSpy = jest.spyOn(view, 'clear')
         drawBricksSpy = jest.spyOn(view, 'drawBricks')
+        drawSpriteSpy = jest.spyOn(view, 'drawSprite')
         animationSpy = jest.spyOn(global, 'requestAnimationFrame').mockReturnValue(1)
         game = new Game(view);
         paddle = new Paddle(0,{width:0, height:0})
@@ -153,6 +155,11 @@ describe('Game.loop tests',()=>{
         const expected = [ new Brick('stub',{x:0, y:0})];
         game.loop(view, expected, paddle);
         expect(drawBricksSpy).toHaveBeenCalledWith(expected);
+    })
+    it('Game.loop calls view.drawSprite with the paddle argument',()=>{
+        const expected = new Paddle(0,{width:0,height:0});
+        game.loop(view, [], expected);
+        expect(drawSpriteSpy).toHaveBeenCalledWith(expected);
     })
     it('Game.loop ends by calling requestAnimationFrame', ()=>{
         game.loop(view, [], paddle)
