@@ -8,7 +8,7 @@ describe('Ball constructor', () => {
         const pos = {x:0, y:0};
         const diameter = 5
         const speed = 6
-        const ball = new Ball(pos, canvasSize, diameter, speed)
+        const ball = new Ball(pos, diameter,canvasSize, speed)
         expect(ball).toBeInstanceOf(Sprite)
     })
 })
@@ -19,7 +19,7 @@ describe('move tests',()=>{
         const pos = {x:10, y:10}
         const diameter = 5
         const speed = 5
-        const ball = new Ball(pos, canvasSize, diameter, speed)
+        const ball = new Ball(pos, diameter, canvasSize, speed)
         expect(ball.x).toEqual(10)
         expect(ball.y).toEqual(10)
         ball.move()
@@ -30,7 +30,7 @@ describe('move tests',()=>{
         const pos = {x:25, y:30}
         const diameter = 5
         const speed = 7
-        const ball = new Ball(pos, canvasSize, diameter, speed)
+        const ball = new Ball(pos, diameter, canvasSize, speed)
         expect(ball.x).toEqual(25)
         expect(ball.y).toEqual(30)
         ball.move()
@@ -41,7 +41,7 @@ describe('move tests',()=>{
         const pos = {x:25, y:30}
         const diameter = 5
         const speed = 7
-        const ball = new Ball(pos, canvasSize, diameter, speed)
+        const ball = new Ball(pos, diameter, canvasSize, speed)
         expect(ball.x).toEqual(25)
         expect(ball.y).toEqual(30)
         ball.bounceY()
@@ -53,7 +53,7 @@ describe('move tests',()=>{
         const pos = {x:25, y:30}
         const diameter = 5
         const speed = 7
-        const ball = new Ball(pos, canvasSize, diameter, speed)
+        const ball = new Ball(pos, diameter, canvasSize, speed)
         expect(ball.x).toEqual(25)
         expect(ball.y).toEqual(30)
         ball.bounceX()
@@ -72,7 +72,7 @@ describe('Detect Collision tests', () => {
         const pos = {x:25, y:0}
         const diameter = 5
         const speed = 7
-        const ball = new Ball(pos, canvasSize, diameter, speed)
+        const ball = new Ball(pos, diameter,canvasSize,  speed)
         ball.detectCollision()
         ball.move()
         expect(ball.y).toEqual(7)
@@ -81,7 +81,7 @@ describe('Detect Collision tests', () => {
         const pos = {x:25, y:30}
         const diameter = 5
         const speed = 7
-        const ball = new Ball(pos, canvasSize, diameter, speed)
+        const ball = new Ball(pos, diameter,canvasSize,  speed)
         ball.detectCollision()
         ball.move()
         expect(ball.y).toEqual(23)
@@ -90,7 +90,7 @@ describe('Detect Collision tests', () => {
         const pos = {x:25, y:-4}
         const diameter = 12
         const speed = 10
-        const ball = new Ball(pos, canvasSize, diameter, speed)
+        const ball = new Ball(pos,  diameter,canvasSize, speed)
         ball.detectCollision()
         ball.move()
         expect(ball.y).toEqual(6)
@@ -99,7 +99,7 @@ describe('Detect Collision tests', () => {
         const pos = {x:-1, y:50}
         const diameter = 12
         const speed = 10
-        const ball = new Ball(pos, canvasSize, diameter, speed)
+        const ball = new Ball(pos, diameter, canvasSize, speed)
         ball.bounceX()
         ball.detectCollision()
         ball.move()
@@ -110,7 +110,7 @@ describe('Detect Collision tests', () => {
         const pos = {x:790, y:50}
         const diameter = 12
         const speed = 10
-        const ball = new Ball(pos, canvasSize, diameter, speed)
+        const ball = new Ball(pos, diameter, canvasSize, speed)
         ball.detectCollision()
         ball.move()
         expect(ball.x).toEqual(780)

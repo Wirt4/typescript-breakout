@@ -195,6 +195,6 @@ describe('constructor tests',()=>{
         view = new CanvasView('#playField');
         new Game(view)
         const expectedPosition = {x: BALL_STARTX, y: BALL_STARTY};
-        expect(Ball).toHaveBeenCalledWith(expectedPosition, BALL_SIZE, BALL_SPEED)
+        expect(Ball).toHaveBeenCalledWith(expectedPosition, BALL_SIZE, expect.anything(), BALL_SPEED)
     })
 })
