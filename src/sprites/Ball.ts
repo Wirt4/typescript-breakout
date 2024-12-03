@@ -1,5 +1,5 @@
 import {Sprite} from "./Sprite";
-import {Size, Vector} from "../types";
+import { Vector} from "../types";
 import BALL_IMAGE from "../images/ball.png"
 
 export class Ball extends Sprite{
@@ -21,8 +21,12 @@ export class Ball extends Sprite{
         return Math.abs(this._speed.x)
     }
 
+    get centerX():number{
+        return this.x + this.width/2
+    }
+
     move():void{
-        this._x += this._speed.x;
+        this.x += this._speed.x;
         this._y += this._speed.y;
     }
 

@@ -42,9 +42,32 @@ describe('isCollidingWith',()=>{
         expect(brick.isCollidingWith(ball)).toEqual(true);
     })
 
-    it('detects collision, are occupying the same space',()=>{
+    it('detects collision, are not occupying the same space',()=>{
         const brick = new Brick('stub',{x:0,y:0}, 3);
         const ball = new Ball({x:100, y:100}, 5, 400, 1);
         expect(brick.isCollidingWith(ball)).toEqual(false);
+    })
+    it('when a ball collides with a brick and it overlaps, the brick needs to shift the ball, assumes default direction',()=>{
+        const brick = new Brick('stub',{x:15,y:100}, 3);
+        const ball = new Ball({x:30, y:100}, 15, 400, 1);
+        brick.isCollidingWith(ball)
+        expect(ball.x).toEqual(brick.x-ball.width);
+    })
+})
+
+describe('isVerticalCollision tests',()=>{
+    it('ball hits brick from below',()=>{
+        const brick = new Brick('stub',{x:0,y:0}, 3);
+        const ball = new Ball({x:2, y:brick.height}, 5, 400, 1);
+
+        expect(brick.isCollidingWith(ball)).toEqual(true);
+        expect(brick.isVerticalCollision()).toEqual(true);
+    })
+    it('ball hits brick from side',()=>{
+        const brick = new Brick('stub',{x:5,y:0}, 3);
+        const ball = new Ball({x:0, y:1}, 5, 400, 1);
+
+        expect(brick.isCollidingWith(ball)).toEqual(true);
+        expect(brick.isVerticalCollision()).toEqual(false);
     })
 })

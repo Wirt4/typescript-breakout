@@ -51,11 +51,11 @@ export class Paddle extends Sprite{
     detectMove():void{
        if (this.isMovingLeft) {
            const newX = this.x - this._speed
-           this._x = newX >= this._leftHandLimit? newX : this._leftHandLimit
+           this.x = newX >= this._leftHandLimit? newX : this._leftHandLimit
        }
        if (this.isMovingRight) {
            const newX = this.x + this._speed
-           this._x = newX <= this._rightHandLimit ? newX :this._rightHandLimit
+           this.x = newX <= this._rightHandLimit ? newX :this._rightHandLimit
        }
     }
 

@@ -1,8 +1,7 @@
 import {Size, Vector} from "../types";
-import {Ball} from "./Ball";
 
 export class Sprite {
-    protected _x: number;
+    public x: number;
     protected _y: number;
     private readonly _w: number;
     private readonly _h: number;
@@ -10,7 +9,7 @@ export class Sprite {
 
     constructor(imageSrc: string, coords:Vector, size: Size) {
         this._img = new Image();
-        this._x = coords.x
+        this.x = coords.x
         this._y = coords.y
         this._w = size.width;
         this._h = size.height;
@@ -57,10 +56,6 @@ export class Sprite {
 
     get bottomMostY() : number{
         return this.y + this.height
-    }
-
-    get x(): number {
-        return this._x
     }
 
     get y(): number{

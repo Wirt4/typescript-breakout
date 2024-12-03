@@ -197,9 +197,17 @@ describe('Game.loop tests',()=>{
         game.loop()
         expect(spy).toHaveBeenCalledWith(2)
     })
-    it('if bricks.detectCollision() returns true, bounce the ball', ()=>{
+    it('if bricks.detectCollision() returns true and it is a vertical bounce, bounce the ball y', ()=>{
         const spy = jest.spyOn(game.ball, 'bounceY')
         jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(true)
+        jest.spyOn(game.bricks, 'isVerticalCollision').mockReturnValue(true)
+        game.loop();
+        expect(spy).toHaveBeenCalled()
+    })
+    it('if bricks.detectCollision() returns true and it is not a vertical bounce, bounce the ball x', ()=>{
+        const spy = jest.spyOn(game.ball, 'bounceX')
+        jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(true)
+        jest.spyOn(game.bricks, 'isVerticalCollision').mockReturnValue(false)
         game.loop();
         expect(spy).toHaveBeenCalled()
     })
