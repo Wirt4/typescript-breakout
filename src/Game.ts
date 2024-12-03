@@ -1,33 +1,50 @@
 import {CanvasView} from "./view/CanvasView";
 import {createBricks} from "./helper";
 import {Brick} from "./sprites/Brick";
+import {Paddle} from "./sprites/Paddle";
+import {PADDLE_SPEED, PADDLE_STARTX} from "./setup";
+import {Size} from "./types";
 
 enum EndState{
     GAME_OVER = "Game Over!",
-    GAME_WON = "Game Won!",
-    BLANK = ""
+    GAME_WON = "Game Won!"
 }
 
 export class Game {
     private readonly _isGameOver: boolean
-    private _view: CanvasView
+    private readonly _view: CanvasView
     public score = 0
+    private _bricks = createBricks()
+    private readonly _paddle: Paddle
 
     constructor(view: CanvasView) {
         this._isGameOver = false;
         this._view = view;
+        this._paddle = new Paddle(PADDLE_STARTX, this.canvasSize(), PADDLE_SPEED)
+    }
+
+    private canvasSize(): Size{
+        if(this._view.canvas){
+            const {width, height} = this._view.canvas;
+            return {width, height};
+        }
+        return {width:0, height:0}
+    }
+
+    get paddle(): Paddle{
+        return this._paddle
     }
 
     get isGameOver(): boolean {
         return this._isGameOver
     }
 
-    setGameOver():void {
-        this.setGameStatus(EndState.GAME_OVER)
+    get bricks(): Brick[] {
+        return this._bricks
     }
 
-    clearInfo():void{
-        this.setGameStatus(EndState.BLANK)
+    setGameOver():void {
+        this.setGameStatus(EndState.GAME_OVER)
     }
 
     setGameWin():void{
@@ -38,15 +55,17 @@ export class Game {
         this._view.drawInfo(state)
     }
 
-    start(view: CanvasView){
-        view.drawInfo("")
-        view.drawScore(0)
-        this.loop(view, createBricks())
+    start(){
+        this._view.drawInfo("")
+        this._view.drawScore(0)
+        this.loop()
     }
 
-    loop(view: CanvasView, bricks: Brick[]):void{
-        view.clear()
-        view.drawBricks(bricks)
-        requestAnimationFrame(()=>{this.loop(view, bricks)})
+    loop():void{
+        this._view.clear()
+        this._view.drawBricks(this._bricks)
+        this._view.drawSprite(this._paddle)
+        this._paddle.move()
+        requestAnimationFrame(()=>{this.loop()})
     }
 }
