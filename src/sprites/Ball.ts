@@ -14,7 +14,9 @@ export class Ball extends Sprite{
 
     detectCollision(){
         if (this.y <= 0) this.bounceY()
-        if (!(this.x > 0 && this.x + this.width < this.canvasWidth)) this.bounceX()
+        if (this.x <= 0 || this.x + this.width >= this.canvasWidth) {
+            this.bounceX()
+        }
     }
 
     get speed(): number {
@@ -25,9 +27,13 @@ export class Ball extends Sprite{
         return this.x + this.width/2
     }
 
+    isMovingLeft(){
+        return false
+    }
+
     move():void{
         this.x += this._speed.x;
-        this._y += this._speed.y;
+        this.y += this._speed.y;
     }
 
     bounceY(){
@@ -37,6 +43,9 @@ export class Ball extends Sprite{
     bounceX(){
         this._speed.bounceX()
     }
+
+    bounceXY(){}
+
 }
 
 class Speed{

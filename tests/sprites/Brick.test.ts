@@ -41,17 +41,51 @@ describe('isCollidingWith',()=>{
         const ball = new Ball({x:0, y:0}, 5, 400, 1);
         expect(brick.isCollidingWith(ball)).toEqual(true);
     })
-
     it('detects collision, are not occupying the same space',()=>{
         const brick = new Brick('stub',{x:0,y:0}, 3);
         const ball = new Ball({x:100, y:100}, 5, 400, 1);
         expect(brick.isCollidingWith(ball)).toEqual(false);
     })
-    it('when a ball collides with a brick and it overlaps, the brick needs to shift the ball, assumes default direction',()=>{
-        const brick = new Brick('stub',{x:15,y:100}, 3);
-        const ball = new Ball({x:30, y:100}, 15, 400, 1);
-        brick.isCollidingWith(ball)
-        expect(ball.x).toEqual(brick.x-ball.width);
+    it('ball hits brick from below, no need to shift',()=>{
+        const brick = new Brick('stub',{x:0,y:0}, 3);
+        const ball = new Ball({x:2, y:brick.height}, 5, 400, 1);
+        expect(brick.isCollidingWith(ball)).toEqual(true);
+        expect(ball.x).toEqual(2);
+    })
+    it('ball hits brick from below, needs to shift, do not shift x',()=>{
+        const brick = new Brick('stub',{x:0,y:0}, 3);
+        const ball = new Ball({x:2, y:brick.height - 1}, 5, 400, 1);
+        expect(brick.isCollidingWith(ball)).toEqual(true);
+        expect(ball.x).toEqual(2);
+        expect(ball.y).toEqual(brick.height+1);
+    })
+    it('corner case',()=>{
+        const brick = new Brick('stub',{x:0,y:0}, 3);
+        const ball = new Ball({x:brick.rightMostX, y:brick.bottomMostY}, 5, 400, 1);
+        expect(brick.isCollidingWith(ball)).toEqual(true);
+        expect(ball.x).toEqual(brick.rightMostX + 1);
+        expect(ball.y).toEqual(brick.bottomMostY + 1);
+    })
+})
+
+describe('isCornerCollision',()=>{
+    it('tangent at origin',()=>{
+        const brick = new Brick('stub',{x:100,y:100}, 3);
+        const ball = new Ball({x:95, y:95}, 5, 400, 1);
+        expect(brick.isCollidingWith(ball)).toEqual(true);
+        expect(brick.isCornerCollision()).toEqual(true)
+    })
+    it('tangent at mid top',()=>{
+        const brick = new Brick('stub',{x:100,y:100}, 3);
+        const ball = new Ball({x:110, y:95}, 5, 400, 1);
+        expect(brick.isCollidingWith(ball)).toEqual(true);
+        expect(brick.isCornerCollision()).toEqual(false)
+    })
+    it('exact overlap at origin',()=>{
+        const brick = new Brick('stub',{x:100,y:100}, 3);
+        const ball = new Ball({x:98, y:98}, 5, 400, 1);
+        expect(brick.isCollidingWith(ball)).toEqual(true);
+        expect(brick.isCornerCollision()).toEqual(true)
     })
 })
 

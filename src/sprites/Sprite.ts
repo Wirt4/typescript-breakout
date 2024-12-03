@@ -2,7 +2,7 @@ import {Size, Vector} from "../types";
 
 export class Sprite {
     public x: number;
-    protected _y: number;
+    public y: number;
     private readonly _w: number;
     private readonly _h: number;
     protected _img: HTMLImageElement;
@@ -10,7 +10,7 @@ export class Sprite {
     constructor(imageSrc: string, coords:Vector, size: Size) {
         this._img = new Image();
         this.x = coords.x
-        this._y = coords.y
+        this.y = coords.y
         this._w = size.width;
         this._h = size.height;
 
@@ -58,15 +58,15 @@ export class Sprite {
         return this.y + this.height
     }
 
-    get y(): number{
-        return this._y
-    }
-
     get width(): number{
         return this._w
     }
 
     get height(): number{
         return this._h
+    }
+
+    get centerPoint():Vector{
+        return {x: this.x + this.width/2, y: this.y + this.y/2};
     }
 }

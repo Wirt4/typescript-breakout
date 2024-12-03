@@ -85,7 +85,9 @@ export class Game {
         if (brickCollide) {
             this._score ++
             this._view.drawScore(this._score)
+            this._ball.bounceY()
             this.bricks.isVerticalCollision() ? this._ball.bounceY() : this._ball.bounceX()
+            if (this._bricks.isCornerCollision())this._ball.bounceXY()
         }
         if (this._paddle.isCollidedWith(this.ball)){
             this._ball.bounceY()
