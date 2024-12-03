@@ -2,6 +2,7 @@ import {Sprite} from "../../src/sprites/Sprite";
 import {Paddle} from "../../src/sprites/Paddle";
 import {PADDLE_HEIGHT, PADDLE_WIDTH} from "../../src/setup";
 import {Size} from "../../src/types";
+import {Ball} from "../../src/sprites/Ball";
 
 jest.mock("../../src/images/paddle.png");
 jest.mock( "../../src/setup",()=>({
@@ -147,5 +148,54 @@ describe('Paddle start.y', () => {
         mockedSetup.STAGE_PADDING = 10
         paddle = new Paddle(40, {width: 50, height:1200}, 2);
         expect(paddle.y).toEqual(1150)
+    })
+})
+
+describe('isCollideWith',()=>{
+    let paddle: Paddle
+    let ball: Ball
+    let mockedSetup: Record<string, any>;
+    beforeEach(() => {
+        mockedSetup = require("../../src/setup");
+    })
+    it('the paddle line intersects the ball',()=>{
+        mockedSetup.PADDLE_WIDTH = 20
+        mockedSetup.PADDLE_HEIGHT = 5
+        mockedSetup.STAGE_PADDING = 10
+        ball = new Ball({x:45, y:1185}, 5, 50, 8)
+        paddle = new Paddle(40, {width: 50, height:1200}, 2);
+        expect(paddle.isCollidedWith(ball)).toEqual(true)
+    })
+    it('the paddle line does not intersect the ball, ball is too far right',()=>{
+        mockedSetup.PADDLE_WIDTH = 20
+        mockedSetup.PADDLE_HEIGHT = 5
+        mockedSetup.STAGE_PADDING = 10
+        ball = new Ball({x:400, y:1185}, 5, 50, 8)
+        paddle = new Paddle(40, {width: 500, height:1200}, 2);
+        expect(paddle.isCollidedWith(ball)).toEqual(false)
+    })
+    it('the paddle line does not intersect the ball, ball is too far left',()=>{
+        mockedSetup.PADDLE_WIDTH = 20
+        mockedSetup.PADDLE_HEIGHT = 5
+        mockedSetup.STAGE_PADDING = 10
+        ball = new Ball({x:5, y:1185}, 5, 50, 8)
+        paddle = new Paddle(40, {width: 500, height:1200}, 2);
+        expect(paddle.isCollidedWith(ball)).toEqual(false)
+    })
+    it('edge case, ball is directly above panel',()=>{
+        mockedSetup.PADDLE_WIDTH = 20
+        mockedSetup.PADDLE_HEIGHT = 5
+        mockedSetup.STAGE_PADDING = 10
+        ball = new Ball({x:45, y:2}, 5, 50, 8)
+        paddle = new Paddle(40, {width: 50, height:1200}, 2);
+        expect(paddle.isCollidedWith(ball)).toEqual(false)
+    })
+    it('edge case, ball is directly under panel',()=>{
+        mockedSetup.PADDLE_WIDTH = 20
+        mockedSetup.PADDLE_HEIGHT = 5
+        mockedSetup.STAGE_PADDING = 10
+        ball = new Ball({x:45, y:1300}, 5, 50, 8)
+        paddle = new Paddle(40, {width: 50, height:1200}, 2);
+        expect(paddle.isCollidedWith(ball)).toEqual(false)
     })
 })

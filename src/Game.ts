@@ -77,6 +77,9 @@ export class Game {
     private detectEvents(){
         this._paddle.detectMove()
         this._ball.detectCollision()
+        if (this._paddle.isCollidedWith(this.ball)){
+            this._ball.bounceY()
+        }
     }
 
     loop():void{

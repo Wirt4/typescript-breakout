@@ -171,6 +171,18 @@ describe('Game.loop tests',()=>{
         game.loop();
         expect(moveSpy).toHaveBeenCalled()
     })
+    it('paddle has detected collision with ball, so bounces the ball',()=>{
+        jest.spyOn(game.paddle, 'isCollidedWith').mockReturnValue(true)
+        const bounceSpy = jest.spyOn(game.ball, 'bounceY')
+        game.loop()
+        expect(bounceSpy).toHaveBeenCalled()
+    })
+    it('paddle has not detected collision with ball, so no ball bounce',()=>{
+        jest.spyOn(game.paddle, 'isCollidedWith').mockReturnValue(false)
+        const bounceSpy = jest.spyOn(game.ball, 'bounceY')
+        game.loop()
+        expect(bounceSpy).not.toHaveBeenCalled()
+    })
     it('Game.loop ends by calling requestAnimationFrame', ()=>{
         game.loop()
         expect(animationSpy).toHaveBeenCalled()

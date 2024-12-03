@@ -2,6 +2,7 @@ import {Sprite} from "./Sprite";
 import {PADDLE_HEIGHT, PADDLE_WIDTH, STAGE_PADDING} from "../setup";
 import PADDLE_IMAGE from "../images/paddle.png"
 import {Size} from "../types";
+import {Ball} from "./Ball";
 
 enum keys{
     LEFT = "ArrowLeft",
@@ -36,6 +37,14 @@ export class Paddle extends Sprite{
     private stopPaddle():void{
         this._moveRight = false
         this._moveLeft = false
+    }
+
+    private isInXRange(ball: Ball): boolean{
+        return this.x <= ball.rightMostX && this.rightMostX >= ball.x
+    }
+
+    isCollidedWith(ball: Ball):boolean{
+        return this.isInXRange(ball) && this.y >= ball.y && this.y <= ball.y + ball.height
     }
 
     detectMove():void{

@@ -46,6 +46,10 @@ export class Sprite {
         return this._img
     }
 
+    get rightMostX():number{
+        return this.x + this.width
+    }
+
     get x(): number {
         return this._x
     }
