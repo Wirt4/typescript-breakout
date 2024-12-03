@@ -6,14 +6,14 @@ import {PADDLE_STARTX} from "./setup";
 
 enum EndState{
     GAME_OVER = "Game Over!",
-    GAME_WON = "Game Won!",
-    BLANK = ""
+    GAME_WON = "Game Won!"
 }
 
 export class Game {
     private readonly _isGameOver: boolean
     private _view: CanvasView
     public score = 0
+    public bricks = createBricks()
 
     constructor(view: CanvasView) {
         this._isGameOver = false;
@@ -28,10 +28,6 @@ export class Game {
         this.setGameStatus(EndState.GAME_OVER)
     }
 
-    clearInfo():void{
-        this.setGameStatus(EndState.BLANK)
-    }
-
     setGameWin():void{
         this.setGameStatus(EndState.GAME_WON)
     }
@@ -40,19 +36,19 @@ export class Game {
         this._view.drawInfo(state)
     }
 
-    start(view: CanvasView){
-        view.drawInfo("")
-        view.drawScore(0)
-        const canvasSize = {width: view.canvas?.width||0, height:view.canvas?.height||0}
+    start(){
+        this._view.drawInfo("")
+        this._view.drawScore(0)
+        const canvasSize = {width: this._view.canvas?.width||0, height: this._view.canvas?.height||0}
         const paddle = new Paddle(PADDLE_STARTX, canvasSize, 8)
-        this.loop(view, createBricks(), paddle)
+        this.loop(this._view, createBricks(), paddle)
     }
 
     loop(view: CanvasView, bricks: Brick[], paddle: Paddle):void{
         view.clear()
         view.drawBricks(bricks)
         view.drawSprite(paddle)
-        //move paddle
+        paddle.move()
         requestAnimationFrame(()=>{this.loop(view, bricks, paddle)})
     }
 }

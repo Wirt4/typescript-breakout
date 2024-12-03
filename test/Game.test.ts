@@ -75,38 +75,38 @@ describe('Game.start tests',()=>{
         jest.resetAllMocks()
     })
     it('game has function named "start"',()=>{
-        game.start(view)
+        game.start()
     })
     it('after game.start is called, score is set to zero',()=>{
-        game.start(view)
+        game.start()
         expect(game.score).toEqual(0)
     })
     it('expect view.drawInfo to have been called with an empty string',()=>{
         const spy = jest.spyOn(view, 'drawInfo').mockImplementation(()=>{})
         game = new Game(view)
-        game.start(view)
+        game.start()
         expect(spy).toHaveBeenCalledWith("")
     })
     it('expect view.drawScore to have been called with 0',()=>{
         const spy = jest.spyOn(view, 'drawScore').mockImplementation(()=>{})
         game = new Game(view)
-        game.start(view)
+        game.start()
         expect(spy).toHaveBeenCalledWith(0)
     })
     it('expect game.start to finish by calling game.loop',()=>{
         const loopSpy = jest.spyOn(game, 'loop')
-        game.start(view)
+        game.start()
         expect(loopSpy).toHaveBeenCalled()
     })
     it('expect game.start to call game.loop with the view object',()=>{
         const loopSpy = jest.spyOn(game, 'loop')
-        game.start(view)
+        game.start()
         expect(loopSpy).toHaveBeenCalledWith(view, expect.anything(), expect.anything())
     })
     it('expect game.start to call game.loop with the output of createBricks',()=>{
         const loopSpy = jest.spyOn(game, 'loop');
         (createBricks as jest.Mock).mockReturnValue([])
-        game.start(view)
+        game.start()
         expect(loopSpy).toHaveBeenCalledWith(expect.anything(), [], expect.anything())
     })
     it('expect game.start to call game.loop with the output of createBricks',()=>{
@@ -114,11 +114,11 @@ describe('Game.start tests',()=>{
         const brick = new Brick('stub',{x:0, y:0});
         const expected = [brick];
         (createBricks as jest.Mock).mockReturnValue(expected);
-        game.start(view)
+        game.start()
         expect(loopSpy).toHaveBeenCalledWith(view, expected, expect.anything())
     })
     it('expect game.start to invoke a paddle with the startX of the constant PADDLE_STARTX',()=>{
-        game.start(view)
+        game.start()
         expect(Paddle).toHaveBeenCalledWith(PADDLE_STARTX, expect.anything(), expect.anything())
     })
 })
@@ -170,5 +170,17 @@ describe('Game.loop tests',()=>{
     it('Game.loop ends by calling requestAnimationFrame', ()=>{
         game.loop(view, [], paddle)
         expect(animationSpy).toHaveBeenCalled()
+    })
+})
+
+describe('constructor tests',()=>{
+    it('game.bricks is set with the output of createBricks',()=>{
+        const view = new CanvasView('#playField');
+        const brick = new Brick('stub',{x:0, y:0});
+        const expected = [brick];
+        (createBricks as jest.Mock).mockReturnValue(expected);
+        const game = new Game(view)
+        expect(game.bricks).toEqual(expected);
+
     })
 })
