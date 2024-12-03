@@ -2,7 +2,7 @@ import {Sprite} from "../sprites/Sprite";
 import {Brick} from "../sprites/Brick";
 
 export class CanvasView {
-    private canvas: HTMLCanvasElement;
+    canvas: HTMLCanvasElement;
     private readonly context: CanvasRenderingContext2D | null;
     private start: HTMLObjectElement | null;
     private scoreDisplay: HTMLObjectElement | null;
