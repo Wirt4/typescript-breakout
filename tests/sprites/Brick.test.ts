@@ -87,6 +87,18 @@ describe('isCornerCollision',()=>{
         expect(brick.isCollidingWith(ball)).toEqual(true);
         expect(brick.isCornerCollision()).toEqual(true)
     })
+    it('tangent at top right',()=>{
+        const brick = new Brick('stub',{x:100,y:100}, 3);
+        const ball = new Ball({x: brick.x + BRICK_WIDTH, y:95}, 5, 400, 1);
+        expect(brick.isCollidingWith(ball)).toEqual(true);
+        expect(brick.isCornerCollision()).toEqual(true)
+    })
+    it('exact overlap at top right',()=>{
+        const brick = new Brick('stub',{x:100,y:100}, 3);
+        const ball = new Ball({x: brick.x + BRICK_WIDTH-2, y:97}, 5, 400, 1);
+        expect(brick.isCollidingWith(ball)).toEqual(true);
+        expect(brick.isCornerCollision()).toEqual(true)
+    })
 })
 
 describe('isVerticalCollision tests',()=>{

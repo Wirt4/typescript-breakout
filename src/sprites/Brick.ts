@@ -21,13 +21,23 @@ export class Brick extends Sprite{
         return Math.abs(a- b)
     }
 
-    private setCornerTouch(ball:Ball){
+    private upperLeftTouch(ball: Ball):boolean{
         const yDiff = this.getDiff(ball.bottomMostY, this.y)
         const xDiff = this.getDiff(ball.rightMostX, this.x)
-        this._cornerTouch = ball.bottomMostY >= this.y && ball.rightMostX >= this.x && yDiff == xDiff;
+        return ball.bottomMostY >= this.y && ball.rightMostX >= this.x && yDiff == xDiff
     }
 
-    isCollidingWith(ball: Ball){
+    private upperRightTouch(ball: Ball):boolean{
+        const yDiff = this.getDiff(ball.bottomMostY, this.y)
+        const xDiff = this.getDiff(ball.x, this.rightMostX)
+        return ball.bottomMostY >= this.y && ball.x <= this.rightMostX && yDiff == xDiff
+    }
+
+    private setCornerTouch(ball:Ball):void{
+        this._cornerTouch = this.upperLeftTouch(ball) || this.upperRightTouch(ball);
+    }
+
+    isCollidingWith(ball: Ball):boolean{
         this._verticalCollision = ball.centerX >= this.x && ball.centerX <= this.rightMostX
         const inX = this.isInXRange(ball)
         const ans = inX && this.isInYRange(ball);
@@ -53,10 +63,6 @@ export class Brick extends Sprite{
             return ball.y < this.bottomMostY && ball.bottomMostY > this.y
         }
         return false
-    }
-
-    private insideX(ball: Ball){
-        return ball.x < this.rightMostX && ball.rightMostX > this.x
     }
 
     isVerticalCollision(){
