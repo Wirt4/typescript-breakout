@@ -89,33 +89,33 @@ describe('Paddle.move', () => {
         paddle = new Paddle(6,canvasSize, 5);
         const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
         document.dispatchEvent(event);
-        paddle.move()
+        paddle.detectMove()
         expect(paddle.x).toEqual(1)
     })
     it('given paddle is moving left and the speed is 10, when move is called, the the x position is adjusted minus  10 pix',()=>{
         paddle = new Paddle(20, canvasSize,10);
         const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
         document.dispatchEvent(event);
-        paddle.move()
+        paddle.detectMove()
         expect(paddle.x).toEqual(10)
     })
     it('given paddle is not moving and the speed is 10, when move is called, the the x position is not adjusted',()=>{
         paddle = new Paddle(20, canvasSize,10);
-        paddle.move()
+        paddle.detectMove()
         expect(paddle.x).toEqual(20)
     })
     it('given paddle is moving right with a speed of 2, when move is called, the the s position is adjust plus 2pix',()=>{
         paddle = new Paddle(40, canvasSize,2);
         const event = new KeyboardEvent('keydown', { key: "ArrowRight" });
         document.dispatchEvent(event);
-        paddle.move()
+        paddle.detectMove()
         expect(paddle.x).toEqual(42)
     })
     it('given paddle is moving left, the speed is 10 and the initial position is 5, when move is called, the the x position is adjusted only to the border, 0',()=>{
         paddle = new Paddle(5, canvasSize,10);
         const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
         document.dispatchEvent(event);
-        paddle.move()
+        paddle.detectMove()
         expect(paddle.x).toEqual(0)
     })
     it('given paddle is moving right and about to exit the plain, the x coordinate is stopped at 1180',()=>{
@@ -124,7 +124,7 @@ describe('Paddle.move', () => {
         paddle = new Paddle(1175, canvasSize,10);
         const event = new KeyboardEvent('keydown', { key: "ArrowRight" });
         document.dispatchEvent(event);
-        paddle.move()
+        paddle.detectMove()
         expect(paddle.x).toEqual(1180)
     })
 

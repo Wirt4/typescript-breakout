@@ -2,8 +2,9 @@ import {CanvasView} from "./view/CanvasView";
 import {createBricks} from "./helper";
 import {Brick} from "./sprites/Brick";
 import {Paddle} from "./sprites/Paddle";
-import {PADDLE_SPEED, PADDLE_STARTX} from "./setup";
+import {BALL_SIZE, BALL_SPEED, BALL_STARTX, BALL_STARTY, PADDLE_SPEED, PADDLE_STARTX} from "./setup";
 import {Size} from "./types";
+import {Ball} from "./sprites/Ball";
 
 enum EndState{
     GAME_OVER = "Game Over!",
@@ -16,11 +17,14 @@ export class Game {
     public score = 0
     private _bricks = createBricks()
     private readonly _paddle: Paddle
+    private readonly _ball: Ball
 
     constructor(view: CanvasView) {
         this._isGameOver = false;
         this._view = view;
         this._paddle = new Paddle(PADDLE_STARTX, this.canvasSize(), PADDLE_SPEED)
+        const ballPosition = {x: BALL_STARTX, y: BALL_STARTY};
+        this._ball =new Ball(ballPosition, BALL_SIZE, BALL_SPEED)
     }
 
     private canvasSize(): Size{
@@ -31,6 +35,9 @@ export class Game {
         return {width:0, height:0}
     }
 
+    get ball(): Ball{
+        return this._ball
+    }
     get paddle(): Paddle{
         return this._paddle
     }
@@ -65,7 +72,9 @@ export class Game {
         this._view.clear()
         this._view.drawBricks(this._bricks)
         this._view.drawSprite(this._paddle)
-        this._paddle.move()
+        this._view.drawSprite(this._ball)
+        this._paddle.detectMove()
+        this._ball.move()
         requestAnimationFrame(()=>{this.loop()})
     }
 }
