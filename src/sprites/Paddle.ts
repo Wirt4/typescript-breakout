@@ -43,8 +43,12 @@ export class Paddle extends Sprite{
         return this.x <= ball.rightMostX && this.rightMostX >= ball.x
     }
 
+    private isInYRange(ball: Ball): boolean{
+        return this.y == ball.y + ball.height
+    }
+
     isCollidedWith(ball: Ball):boolean{
-        return this.isInXRange(ball) && this.y >= ball.y && this.y <= ball.y + ball.height
+        return this.isInXRange(ball) && this.isInYRange(ball)
     }
 
     detectMove():void{

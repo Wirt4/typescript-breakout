@@ -158,11 +158,11 @@ describe('isCollideWith',()=>{
     beforeEach(() => {
         mockedSetup = require("../../src/setup");
     })
-    it('the paddle line intersects the ball',()=>{
+    it('the paddle line touches the ball',()=>{
         mockedSetup.PADDLE_WIDTH = 20
         mockedSetup.PADDLE_HEIGHT = 5
         mockedSetup.STAGE_PADDING = 10
-        ball = new Ball({x:45, y:1185}, 5, 50, 8)
+        ball = new Ball({x:45, y:1180}, 5, 50, 8)
         paddle = new Paddle(40, {width: 50, height:1200}, 2);
         expect(paddle.isCollidedWith(ball)).toEqual(true)
     })
@@ -170,7 +170,7 @@ describe('isCollideWith',()=>{
         mockedSetup.PADDLE_WIDTH = 20
         mockedSetup.PADDLE_HEIGHT = 5
         mockedSetup.STAGE_PADDING = 10
-        ball = new Ball({x:400, y:1185}, 5, 50, 8)
+        ball = new Ball({x:400, y:1180}, 5, 50, 8)
         paddle = new Paddle(40, {width: 500, height:1200}, 2);
         expect(paddle.isCollidedWith(ball)).toEqual(false)
     })
