@@ -2,7 +2,7 @@ import {Size, Vector} from "../types";
 
 export class Sprite {
     protected _x: number;
-    private readonly _y: number;
+    protected _y: number;
     private readonly _w: number;
     private readonly _h: number;
     protected _img: HTMLImageElement;
