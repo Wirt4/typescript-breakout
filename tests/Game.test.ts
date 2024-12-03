@@ -3,10 +3,12 @@ import {CanvasView} from "../src/view/CanvasView";
 import {createBricks} from "../src/helper";
 import {Brick} from "../src/sprites/Brick";
 import {Paddle} from "../src/sprites/Paddle";
-import {PADDLE_SPEED, PADDLE_STARTX} from "../src/setup";
+import {BALL_SIZE, BALL_SPEED, BALL_STARTX, BALL_STARTY, PADDLE_SPEED, PADDLE_STARTX} from "../src/setup";
+import {Ball} from "../src/sprites/Ball";
 
 jest.mock("../src/helper");
 jest.mock("../src/sprites/Paddle");
+jest.mock("../src/sprites/Ball");
 
 describe('Game.setGameOver tests',()=>{
     let view: CanvasView
@@ -143,17 +145,24 @@ describe('Game.loop tests',()=>{
     it('Game.loop calls view.drawBricks() with the bricks argument, different data', ()=>{
         (createBricks as jest.Mock).mockReturnValue([]);
         game = new Game(view);
-
         game.loop();
-
         expect(drawBricksSpy).toHaveBeenCalledWith([]);
     })
     it('Game.loop calls view.drawSprite with the paddle argument',()=>{
         game.loop();
         expect(drawSpriteSpy).toHaveBeenCalledWith(game.paddle);
     })
-    it('Game.loop calls Game.paddle.move()',()=>{
-        const moveSpy = jest.spyOn(game.paddle, 'move')
+    it('Game.loop calls view.drawSprite with the ball argument',()=>{
+        game.loop();
+        expect(drawSpriteSpy).toHaveBeenCalledWith(game.ball);
+    })
+    it('Game.loop calls ball.move',()=>{
+        const moveSpy = jest.spyOn(game.ball, 'move')
+        game.loop();
+        expect(moveSpy).toHaveBeenCalled()
+    })
+    it('Game.loop calls Game.paddle.detectMove()',()=>{
+        const moveSpy = jest.spyOn(game.paddle, 'detectMove')
         game.loop();
         expect(moveSpy).toHaveBeenCalled()
     })
@@ -164,8 +173,9 @@ describe('Game.loop tests',()=>{
 })
 
 describe('constructor tests',()=>{
+    let view: CanvasView
     it('game.bricks is set with the output of createBricks',()=>{
-        const view = new CanvasView('#playField');
+        view = new CanvasView('#playField');
         const brick = new Brick('stub',{x:0, y:0});
         const expected = [brick];
         (createBricks as jest.Mock).mockReturnValue(expected);
@@ -176,9 +186,15 @@ describe('constructor tests',()=>{
         document.body.innerHTML = `
       <canvas id="playField" width="1000" height="600"></canvas>
       <button id="start"></button>`
-        const view = new CanvasView('#playField');
+        view = new CanvasView('#playField');
 
         new Game(view)
         expect(Paddle).toHaveBeenCalledWith(PADDLE_STARTX, {width: 1000, height:600}, PADDLE_SPEED)
+    })
+    it('a ball is instantiated with BALL_SPEED const, BALL_SIZE const, and BALL_STARTX and BALL_STARTY cords',()=>{
+        view = new CanvasView('#playField');
+        new Game(view)
+        const expectedPosition = {x: BALL_STARTX, y: BALL_STARTY};
+        expect(Ball).toHaveBeenCalledWith(expectedPosition, BALL_SIZE, BALL_SPEED)
     })
 })

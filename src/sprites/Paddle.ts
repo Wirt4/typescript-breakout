@@ -38,7 +38,7 @@ export class Paddle extends Sprite{
         this._moveLeft = false
     }
 
-    move():void{
+    detectMove():void{
        if (this.isMovingLeft) {
            const newX = this.x - this._speed
            this._x = newX >= this._leftHandLimit? newX : this._leftHandLimit

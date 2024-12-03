@@ -46,4 +46,16 @@ describe('move tests',()=>{
         expect(ball.x).toEqual(32)
         expect(ball.y).toEqual(37)
     })
+    it('call to bounceX',()=>{
+        const pos = {x:25, y:30}
+        const diameter = 5
+        const speed = 7
+        const ball = new Ball(pos, diameter, speed)
+        expect(ball.x).toEqual(25)
+        expect(ball.y).toEqual(30)
+        ball.bounceX()
+        ball.move()
+        expect(ball.x).toEqual(18)
+        expect(ball.y).toEqual(23)
+    })
 })
