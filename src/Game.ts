@@ -18,6 +18,10 @@ export class Game {
     constructor(view: CanvasView) {
         this._isGameOver = false;
         this._view = view;
+        if (view.canvas){
+            const {width, height} = view.canvas;
+            new Paddle(PADDLE_STARTX,{width, height})
+        }
     }
 
     get isGameOver(): boolean {

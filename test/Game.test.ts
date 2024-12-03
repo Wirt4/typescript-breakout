@@ -192,4 +192,13 @@ describe('constructor tests',()=>{
         const game = new Game(view)
         expect(game.bricks).toEqual(expected);
     })
+    it('a paddle in instantiated with STARTX const and canvas dimentions',()=>{
+        document.body.innerHTML = `
+      <canvas id="playField" width="1000" height="600"></canvas>
+      <button id="start"></button>`
+        const view = new CanvasView('#playField');
+
+        new Game(view)
+        expect(Paddle).toHaveBeenCalledWith(PADDLE_STARTX, {width: 1000, height:600})
+    })
 })
