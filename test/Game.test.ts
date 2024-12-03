@@ -3,7 +3,7 @@ import {CanvasView} from "../src/view/CanvasView";
 import {createBricks} from "../src/helper";
 import {Brick} from "../src/sprites/Brick";
 import {Paddle} from "../src/sprites/Paddle";
-import { PADDLE_STARTX} from "../src/setup";
+import {PADDLE_SPEED, PADDLE_STARTX} from "../src/setup";
 
 jest.mock("../src/helper");
 jest.mock("../src/sprites/Paddle");
@@ -101,13 +101,13 @@ describe('Game.start tests',()=>{
     it('expect game.start to call game.loop with the view object',()=>{
         const loopSpy = jest.spyOn(game, 'loop')
         game.start()
-        expect(loopSpy).toHaveBeenCalledWith(view, expect.anything(), expect.anything())
+        expect(loopSpy).toHaveBeenCalledWith(view, expect.anything())
     })
     it('expect game.start to call game.loop with the output of createBricks',()=>{
         const loopSpy = jest.spyOn(game, 'loop');
         (createBricks as jest.Mock).mockReturnValue([])
         game.start()
-        expect(loopSpy).toHaveBeenCalledWith(expect.anything(), [], expect.anything())
+        expect(loopSpy).toHaveBeenCalledWith(expect.anything(), [],)
     })
     it('expect game.start to call game.loop with the output of createBricks',()=>{
         const loopSpy = jest.spyOn(game, 'loop');
@@ -115,11 +115,7 @@ describe('Game.start tests',()=>{
         const expected = [brick];
         (createBricks as jest.Mock).mockReturnValue(expected);
         game.start()
-        expect(loopSpy).toHaveBeenCalledWith(view, expected, expect.anything())
-    })
-    it('expect game.start to invoke a paddle with the startX of the constant PADDLE_STARTX',()=>{
-        game.start()
-        expect(Paddle).toHaveBeenCalledWith(PADDLE_STARTX, expect.anything(), expect.anything())
+        expect(loopSpy).toHaveBeenCalledWith(view, expected)
     })
 })
 
@@ -130,7 +126,6 @@ describe('Game.loop tests',()=>{
     let drawBricksSpy: jest.SpyInstance
     let drawSpriteSpy: jest.SpyInstance
     let animationSpy: jest.SpyInstance
-    let paddle: Paddle
     beforeEach(()=>{
         view = new CanvasView('#playField');
         clearSpy = jest.spyOn(view, 'clear')
@@ -138,13 +133,12 @@ describe('Game.loop tests',()=>{
         drawSpriteSpy = jest.spyOn(view, 'drawSprite')
         animationSpy = jest.spyOn(global, 'requestAnimationFrame').mockReturnValue(1)
         game = new Game(view);
-        paddle = new Paddle(0,{width:0, height:0})
     })
     afterEach(()=>{
         jest.resetAllMocks()
     })
     it('Game.loop calls view.clear()', ()=>{
-        game.loop(view, [], paddle)
+        game.loop(view, [])
         expect(clearSpy).toHaveBeenCalled()
     })
     it('Game.loop calls view.drawBricks() with the bricks argument', ()=>{
@@ -153,7 +147,7 @@ describe('Game.loop tests',()=>{
         (createBricks as jest.Mock).mockReturnValue(expected);
         game = new Game(view)
 
-        game.loop(view, [], paddle)
+        game.loop(view, [])
 
         expect(drawBricksSpy).toHaveBeenCalledWith(expected)
     })
@@ -162,23 +156,21 @@ describe('Game.loop tests',()=>{
         (createBricks as jest.Mock).mockReturnValue([]);
         game = new Game(view);
 
-        game.loop(view, surplus, paddle);
+        game.loop(view, surplus);
 
         expect(drawBricksSpy).toHaveBeenCalledWith([]);
     })
     it('Game.loop calls view.drawSprite with the paddle argument',()=>{
-        const expected = new Paddle(0,{width:0,height:0});
-        game.loop(view, [], expected);
-        expect(drawSpriteSpy).toHaveBeenCalledWith(expected);
+        game.loop(view, []);
+        expect(drawSpriteSpy).toHaveBeenCalledWith(game.paddle);
     })
     it('Game.loop calls Game.paddle.move()',()=>{
-        const expected = new Paddle(0,{width:0,height:0});
         const moveSpy = jest.spyOn(game.paddle, 'move')
-        game.loop(view, [], expected);
+        game.loop(view, []);
         expect(moveSpy).toHaveBeenCalled()
     })
     it('Game.loop ends by calling requestAnimationFrame', ()=>{
-        game.loop(view, [], paddle)
+        game.loop(view, [])
         expect(animationSpy).toHaveBeenCalled()
     })
 })
@@ -192,13 +184,13 @@ describe('constructor tests',()=>{
         const game = new Game(view)
         expect(game.bricks).toEqual(expected);
     })
-    it('a paddle in instantiated with STARTX const and canvas dimentions',()=>{
+    it('a paddle in instantiated with STARTX const, canvas dimensions, and PADDLE_SPEED const',()=>{
         document.body.innerHTML = `
       <canvas id="playField" width="1000" height="600"></canvas>
       <button id="start"></button>`
         const view = new CanvasView('#playField');
 
         new Game(view)
-        expect(Paddle).toHaveBeenCalledWith(PADDLE_STARTX, {width: 1000, height:600})
+        expect(Paddle).toHaveBeenCalledWith(PADDLE_STARTX, {width: 1000, height:600}, PADDLE_SPEED)
     })
 })

@@ -2,7 +2,8 @@ import {CanvasView} from "./view/CanvasView";
 import {createBricks} from "./helper";
 import {Brick} from "./sprites/Brick";
 import {Paddle} from "./sprites/Paddle";
-import {PADDLE_STARTX} from "./setup";
+import {PADDLE_SPEED, PADDLE_STARTX} from "./setup";
+import {Size} from "./types";
 
 enum EndState{
     GAME_OVER = "Game Over!",
@@ -14,17 +15,20 @@ export class Game {
     private readonly _view: CanvasView
     public score = 0
     private _bricks = createBricks()
-    private _paddle: Paddle
+    private readonly _paddle: Paddle
 
     constructor(view: CanvasView) {
         this._isGameOver = false;
         this._view = view;
-        if (view.canvas){
-            const {width, height} = view.canvas;
-            this._paddle = new Paddle(PADDLE_STARTX,{width, height})
-        }else{
-            this._paddle = new Paddle(PADDLE_STARTX,{width:0, height:0})
+        this._paddle = new Paddle(PADDLE_STARTX, this.canvasSize(), PADDLE_SPEED)
+    }
+
+    private canvasSize(): Size{
+        if(this._view.canvas){
+            const {width, height} = this._view.canvas;
+            return {width, height};
         }
+        return {width:0, height:0}
     }
 
     get paddle(): Paddle{
@@ -54,16 +58,14 @@ export class Game {
     start(){
         this._view.drawInfo("")
         this._view.drawScore(0)
-        const canvasSize = {width: this._view.canvas?.width||0, height: this._view.canvas?.height||0}
-        const paddle = new Paddle(PADDLE_STARTX, canvasSize, 8)
-        this.loop(this._view, createBricks(), paddle)
+        this.loop(this._view, createBricks())
     }
 
-    loop(view: CanvasView, bricks: Brick[], paddle: Paddle):void{
+    loop(view: CanvasView, bricks: Brick[]):void{
         view.clear()
         view.drawBricks(this._bricks)
-        view.drawSprite(paddle)
+        view.drawSprite(this._paddle)
         this._paddle.move()
-        requestAnimationFrame(()=>{this.loop(view, bricks, paddle)})
+        requestAnimationFrame(()=>{this.loop(view, bricks)})
     }
 }
