@@ -68,12 +68,21 @@ export class Game {
         this.loop()
     }
 
-    loop():void{
-        this._view.clear()
+    private drawSprites(){
         this._view.drawBricks(this._bricks)
         this._view.drawSprite(this._paddle)
         this._view.drawSprite(this._ball)
+    }
+
+    private detectEvents(){
         this._paddle.detectMove()
+        this._ball.detectCollision()
+    }
+
+    loop():void{
+        this._view.clear()
+        this.drawSprites()
+        this.detectEvents()
         this._ball.move()
         requestAnimationFrame(()=>{this.loop()})
     }

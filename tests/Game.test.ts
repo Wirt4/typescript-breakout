@@ -161,6 +161,11 @@ describe('Game.loop tests',()=>{
         game.loop();
         expect(moveSpy).toHaveBeenCalled()
     })
+    it('Game.loop calls ball.detectCollision',()=>{
+        const collisionSpy = jest.spyOn(game.ball, 'detectCollision')
+        game.loop();
+        expect(collisionSpy).toHaveBeenCalled()
+    })
     it('Game.loop calls Game.paddle.detectMove()',()=>{
         const moveSpy = jest.spyOn(game.paddle, 'detectMove')
         game.loop();
