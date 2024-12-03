@@ -14,14 +14,21 @@ export class Game {
     private readonly _view: CanvasView
     public score = 0
     private _bricks = createBricks()
+    private _paddle: Paddle
 
     constructor(view: CanvasView) {
         this._isGameOver = false;
         this._view = view;
         if (view.canvas){
             const {width, height} = view.canvas;
-            new Paddle(PADDLE_STARTX,{width, height})
+            this._paddle = new Paddle(PADDLE_STARTX,{width, height})
+        }else{
+            this._paddle = new Paddle(PADDLE_STARTX,{width:0, height:0})
         }
+    }
+
+    get paddle(): Paddle{
+        return this._paddle
     }
 
     get isGameOver(): boolean {
@@ -56,7 +63,7 @@ export class Game {
         view.clear()
         view.drawBricks(this._bricks)
         view.drawSprite(paddle)
-        paddle.move()
+        this._paddle.move()
         requestAnimationFrame(()=>{this.loop(view, bricks, paddle)})
     }
 }

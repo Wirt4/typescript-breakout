@@ -171,9 +171,9 @@ describe('Game.loop tests',()=>{
         game.loop(view, [], expected);
         expect(drawSpriteSpy).toHaveBeenCalledWith(expected);
     })
-    it('Game.loop calls paddle.move()',()=>{
+    it('Game.loop calls Game.paddle.move()',()=>{
         const expected = new Paddle(0,{width:0,height:0});
-        const moveSpy = jest.spyOn(expected, 'move')
+        const moveSpy = jest.spyOn(game.paddle, 'move')
         game.loop(view, [], expected);
         expect(moveSpy).toHaveBeenCalled()
     })
