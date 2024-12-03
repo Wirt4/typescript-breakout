@@ -58,14 +58,14 @@ export class Game {
     start(){
         this._view.drawInfo("")
         this._view.drawScore(0)
-        this.loop(this._view, createBricks())
+        this.loop()
     }
 
-    loop(view: CanvasView, bricks: Brick[]):void{
-        view.clear()
-        view.drawBricks(this._bricks)
-        view.drawSprite(this._paddle)
+    loop():void{
+        this._view.clear()
+        this._view.drawBricks(this._bricks)
+        this._view.drawSprite(this._paddle)
         this._paddle.move()
-        requestAnimationFrame(()=>{this.loop(view, bricks)})
+        requestAnimationFrame(()=>{this.loop()})
     }
 }

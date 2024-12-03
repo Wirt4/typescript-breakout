@@ -98,24 +98,13 @@ describe('Game.start tests',()=>{
         game.start()
         expect(loopSpy).toHaveBeenCalled()
     })
-    it('expect game.start to call game.loop with the view object',()=>{
-        const loopSpy = jest.spyOn(game, 'loop')
-        game.start()
-        expect(loopSpy).toHaveBeenCalledWith(view, expect.anything())
-    })
-    it('expect game.start to call game.loop with the output of createBricks',()=>{
-        const loopSpy = jest.spyOn(game, 'loop');
-        (createBricks as jest.Mock).mockReturnValue([])
-        game.start()
-        expect(loopSpy).toHaveBeenCalledWith(expect.anything(), [],)
-    })
     it('expect game.start to call game.loop with the output of createBricks',()=>{
         const loopSpy = jest.spyOn(game, 'loop');
         const brick = new Brick('stub',{x:0, y:0});
         const expected = [brick];
         (createBricks as jest.Mock).mockReturnValue(expected);
         game.start()
-        expect(loopSpy).toHaveBeenCalledWith(view, expected)
+        expect(loopSpy).toHaveBeenCalled()
     })
 })
 
@@ -138,7 +127,7 @@ describe('Game.loop tests',()=>{
         jest.resetAllMocks()
     })
     it('Game.loop calls view.clear()', ()=>{
-        game.loop(view, [])
+        game.loop()
         expect(clearSpy).toHaveBeenCalled()
     })
     it('Game.loop calls view.drawBricks() with the bricks argument', ()=>{
@@ -147,30 +136,29 @@ describe('Game.loop tests',()=>{
         (createBricks as jest.Mock).mockReturnValue(expected);
         game = new Game(view)
 
-        game.loop(view, [])
+        game.loop()
 
         expect(drawBricksSpy).toHaveBeenCalledWith(expected)
     })
     it('Game.loop calls view.drawBricks() with the bricks argument, different data', ()=>{
-        const surplus = [ new Brick('stub',{x:0, y:0})];
         (createBricks as jest.Mock).mockReturnValue([]);
         game = new Game(view);
 
-        game.loop(view, surplus);
+        game.loop();
 
         expect(drawBricksSpy).toHaveBeenCalledWith([]);
     })
     it('Game.loop calls view.drawSprite with the paddle argument',()=>{
-        game.loop(view, []);
+        game.loop();
         expect(drawSpriteSpy).toHaveBeenCalledWith(game.paddle);
     })
     it('Game.loop calls Game.paddle.move()',()=>{
         const moveSpy = jest.spyOn(game.paddle, 'move')
-        game.loop(view, []);
+        game.loop();
         expect(moveSpy).toHaveBeenCalled()
     })
     it('Game.loop ends by calling requestAnimationFrame', ()=>{
-        game.loop(view, [])
+        game.loop()
         expect(animationSpy).toHaveBeenCalled()
     })
 })
