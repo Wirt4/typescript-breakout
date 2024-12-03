@@ -17,6 +17,10 @@ export class Ball extends Sprite{
         if (!(this.x > 0 && this.x + this.width < this.canvasWidth)) this.bounceX()
     }
 
+    get speed(): number {
+        return Math.abs(this._speed.x)
+    }
+
     move():void{
         this._x += this._speed.x;
         this._y += this._speed.y;

@@ -1,10 +1,10 @@
 import {CanvasView} from "./view/CanvasView";
 import {createBricks} from "./helper";
-import {Brick} from "./sprites/Brick";
 import {Paddle} from "./sprites/Paddle";
 import {BALL_SIZE, BALL_SPEED, BALL_STARTX, BALL_STARTY, PADDLE_SPEED, PADDLE_STARTX} from "./setup";
 import {Size} from "./types";
 import {Ball} from "./sprites/Ball";
+import {BricksWrapper} from "./sprites/BricksWrapper";
 
 enum EndState{
     GAME_OVER = "Game Over!",
@@ -14,8 +14,8 @@ enum EndState{
 export class Game {
     private readonly _isGameOver: boolean
     private readonly _view: CanvasView
-    public score = 0
-    private _bricks = createBricks()
+    private _score = 0
+    private _bricks = new BricksWrapper(createBricks())
     private readonly _paddle: Paddle
     private readonly _ball: Ball
 
@@ -42,11 +42,15 @@ export class Game {
         return this._paddle
     }
 
+    get score():number{
+        return this._score;
+    }
+
     get isGameOver(): boolean {
         return this._isGameOver
     }
 
-    get bricks(): Brick[] {
+    get bricks(): BricksWrapper {
         return this._bricks
     }
 
@@ -69,7 +73,7 @@ export class Game {
     }
 
     private drawSprites(){
-        this._view.drawBricks(this._bricks)
+        this._view.drawBricks(this._bricks.arr)
         this._view.drawSprite(this._paddle)
         this._view.drawSprite(this._ball)
     }
@@ -77,6 +81,12 @@ export class Game {
     private detectEvents(){
         this._paddle.detectMove()
         this._ball.detectCollision()
+        const brickCollide = this.bricks.detectCollision(this.ball)
+        if (brickCollide) {
+            this._score ++
+            this._view.drawScore(this._score)
+            this._ball.bounceY()
+        }
         if (this._paddle.isCollidedWith(this.ball)){
             this._ball.bounceY()
         }

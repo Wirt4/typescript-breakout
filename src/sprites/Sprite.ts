@@ -1,4 +1,5 @@
 import {Size, Vector} from "../types";
+import {Ball} from "./Ball";
 
 export class Sprite {
     protected _x: number;
@@ -42,12 +43,20 @@ export class Sprite {
         return this._img.complete && this._img.naturalWidth !== 0
     }
 
+    isInXRange(s: Sprite):boolean{
+        return s.x <= this.rightMostX && s.rightMostX >= this.x
+    }
+
     get image():HTMLImageElement{
         return this._img
     }
 
     get rightMostX():number{
         return this.x + this.width
+    }
+
+    get bottomMostY() : number{
+        return this.y + this.height
     }
 
     get x(): number {

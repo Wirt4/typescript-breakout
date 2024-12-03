@@ -198,4 +198,12 @@ describe('isCollideWith',()=>{
         paddle = new Paddle(40, {width: 50, height:1200}, 2);
         expect(paddle.isCollidedWith(ball)).toEqual(false)
     })
+    it('edge case, ball is directly under panel',()=>{
+        mockedSetup.PADDLE_WIDTH = 150
+        mockedSetup.PADDLE_HEIGHT = 25
+        mockedSetup.STAGE_PADDING = 10
+        ball = new Ball({x:45, y:1146}, 20, 2, 8)
+        paddle = new Paddle(40, {width: 50, height:1200}, 2);
+        expect(paddle.isCollidedWith(ball)).toEqual(true)
+    })
 })

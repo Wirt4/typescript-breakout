@@ -183,6 +183,26 @@ describe('Game.loop tests',()=>{
         game.loop()
         expect(bounceSpy).not.toHaveBeenCalled()
     })
+    it('game loop calls bricks.detectCollision() with the ball object', ()=>{
+        const spy = jest.spyOn(game.bricks, 'detectCollision')
+        game.loop();
+        expect(spy).toHaveBeenCalledWith(game.ball)
+    })
+    it('if bricks.detectCollision() returns true, update the score', ()=>{
+        const spy = jest.spyOn(view, 'drawScore')
+        game = new Game(view)
+        jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(true)
+        game.loop();
+        expect(spy).toHaveBeenCalledWith(1)
+        game.loop()
+        expect(spy).toHaveBeenCalledWith(2)
+    })
+    it('if bricks.detectCollision() returns true, bounce the ball', ()=>{
+        const spy = jest.spyOn(game.ball, 'bounceY')
+        jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(true)
+        game.loop();
+        expect(spy).toHaveBeenCalled()
+    })
     it('Game.loop ends by calling requestAnimationFrame', ()=>{
         game.loop()
         expect(animationSpy).toHaveBeenCalled()
@@ -197,7 +217,7 @@ describe('constructor tests',()=>{
         const expected = [brick];
         (createBricks as jest.Mock).mockReturnValue(expected);
         const game = new Game(view)
-        expect(game.bricks).toEqual(expected);
+        expect(game.bricks.arr).toEqual(expected);
     })
     it('a paddle in instantiated with STARTX const, canvas dimensions, and PADDLE_SPEED const',()=>{
         document.body.innerHTML = `
