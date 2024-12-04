@@ -56,7 +56,7 @@ describe('createBricks', () => {
         mockedSetup.STAGE_COLS = 10
         const bricks = createBricks()
         const brick = bricks[0]
-        expect(brick.x).toBe(4)
+        expect(brick.position.x).toBe(4)
     })
     it('Given the array of bricks is one long, check the x coordinate ',()=>{
         mockedSetup.LEVEL = [1]
@@ -66,7 +66,7 @@ describe('createBricks', () => {
         mockedSetup.BRICK_PADDING = 10
         const bricks = createBricks()
         const brick = bricks[0]
-        expect(brick.x).toBe(10)
+        expect(brick.position.x).toBe(10)
     })
     it('Given the array of bricks is two or more long, check the x coordinate ',()=>{
         mockedSetup.LEVEL = [1,1]
@@ -76,7 +76,7 @@ describe('createBricks', () => {
         mockedSetup.BRICK_PADDING = 5
         const bricks = createBricks()
         const brick = bricks[1]
-        expect(brick.x).toBe(35)
+        expect(brick.position.x).toBe(35)
     })
     it('Given the array of bricks one long, check the y coordinate',()=>{
         mockedSetup.LEVEL = [1]
@@ -84,14 +84,14 @@ describe('createBricks', () => {
         mockedSetup.STAGE_COLS = 1
         const bricks = createBricks()
         const brick = bricks[0]
-        expect(brick.y).toBe(10)
+        expect(brick.position.y).toBe(10)
     })
     it('Given the array of bricks one long, check the y coordinate, different data',()=>{
         mockedSetup.LEVEL = [1]
         mockedSetup.STAGE_PADDING = 2
         const bricks = createBricks()
         const brick = bricks[0]
-        expect(brick.y).toBe(2)
+        expect(brick.position.y).toBe(2)
     })
     it('Given a brick on a lower level, check the y coordinate',()=>{
         mockedSetup.LEVEL = [1, 1]
@@ -101,7 +101,7 @@ describe('createBricks', () => {
         mockedSetup.BRICK_PADDING = 5
         const bricks = createBricks()
         const brick = bricks[1]
-        expect(brick.y).toBe(27)
+        expect(brick.position.y).toBe(27)
     })
     it('The x coordinate should carriage return as function maps around columns',()=>{
         mockedSetup.LEVEL = [1, 1, 1]
@@ -110,7 +110,7 @@ describe('createBricks', () => {
         mockedSetup.BRICK_HEIGHT = 20
         mockedSetup.BRICK_PADDING = 5
         const bricks = createBricks()
-        expect(bricks[2].x).toBe(bricks[0].x)
+        expect(bricks[2].position.x).toBe(bricks[0].position.x)
     })
     it('The function should not create bricks in places where 0 is',()=>{
         mockedSetup.LEVEL = [0, 1, 1]

@@ -91,33 +91,33 @@ describe('Paddle.move', () => {
         const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
         document.dispatchEvent(event);
         paddle.detectMove()
-        expect(paddle.x).toEqual(1)
+        expect(paddle.position.x).toEqual(1)
     })
     it('given paddle is moving left and the speed is 10, when move is called, the the x position is adjusted minus  10 pix',()=>{
         paddle = new Paddle(20, canvasSize,10);
         const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
         document.dispatchEvent(event);
         paddle.detectMove()
-        expect(paddle.x).toEqual(10)
+        expect(paddle.position.x).toEqual(10)
     })
     it('given paddle is not moving and the speed is 10, when move is called, the the x position is not adjusted',()=>{
         paddle = new Paddle(20, canvasSize,10);
         paddle.detectMove()
-        expect(paddle.x).toEqual(20)
+        expect(paddle.position.x).toEqual(20)
     })
     it('given paddle is moving right with a speed of 2, when move is called, the the s position is adjust plus 2pix',()=>{
         paddle = new Paddle(40, canvasSize,2);
         const event = new KeyboardEvent('keydown', { key: "ArrowRight" });
         document.dispatchEvent(event);
         paddle.detectMove()
-        expect(paddle.x).toEqual(42)
+        expect(paddle.position.x).toEqual(42)
     })
     it('given paddle is moving left, the speed is 10 and the initial position is 5, when move is called, the the x position is adjusted only to the border, 0',()=>{
         paddle = new Paddle(5, canvasSize,10);
         const event = new KeyboardEvent('keydown', { key: "ArrowLeft" });
         document.dispatchEvent(event);
         paddle.detectMove()
-        expect(paddle.x).toEqual(0)
+        expect(paddle.position.x).toEqual(0)
     })
     it('given paddle is moving right and about to exit the plain, the x coordinate is stopped at 1180',()=>{
         mockedSetup.PADDLE_WIDTH = 20
@@ -126,7 +126,7 @@ describe('Paddle.move', () => {
         const event = new KeyboardEvent('keydown', { key: "ArrowRight" });
         document.dispatchEvent(event);
         paddle.detectMove()
-        expect(paddle.x).toEqual(1180)
+        expect(paddle.position.x).toEqual(1180)
     })
 
 })
@@ -141,13 +141,13 @@ describe('Paddle start.y', () => {
         mockedSetup.PADDLE_HEIGHT = 25
         mockedSetup.STAGE_PADDING = 5
         paddle = new Paddle(40, {width:500, height:800}, 2);
-        expect(paddle.y).toEqual(770)
+        expect(paddle.position.y).toEqual(770)
     })
     it('given a canvasHeight of 1200 a STAGE_PADDING of 10 and a PADDLE_HEIGHT of 40, when the paddle is created, it should be with the y coordinate of 1170',()=>{
         mockedSetup.PADDLE_HEIGHT = 40
         mockedSetup.STAGE_PADDING = 10
         paddle = new Paddle(40, {width: 50, height:1200}, 2);
-        expect(paddle.y).toEqual(1150)
+        expect(paddle.position.y).toEqual(1150)
     })
 })
 

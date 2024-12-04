@@ -22,27 +22,27 @@ export class Brick extends Sprite{
     }
 
     private upperLeftTouch(ball: Ball):boolean{
-        const yDiff = this.getDiff(ball.bottomMostY, this.y)
-        const xDiff = this.getDiff(ball.rightMostX, this.x)
-        return ball.bottomMostY >= this.y && ball.rightMostX >= this.x && yDiff == xDiff
+        const yDiff = this.getDiff(ball.bottomMostY, this.position.y)
+        const xDiff = this.getDiff(ball.rightMostX, this.position.x)
+        return ball.bottomMostY >= this.position.y && ball.rightMostX >= this.position.x && yDiff == xDiff
     }
 
     private upperRightTouch(ball: Ball):boolean{
-        const yDiff = this.getDiff(ball.bottomMostY, this.y)
-        const xDiff = this.getDiff(ball.x, this.rightMostX)
-        return ball.bottomMostY >= this.y && ball.x <= this.rightMostX && yDiff == xDiff
+        const yDiff = this.getDiff(ball.bottomMostY, this.position.y)
+        const xDiff = this.getDiff(ball.position.x, this.rightMostX)
+        return ball.bottomMostY >= this.position.y && ball.position.x <= this.rightMostX && yDiff == xDiff
     }
 
     private lowerLeftTouch(ball: Ball):boolean{
-        const yDiff = this.getDiff(ball.y, this.bottomMostY)
-        const xDiff = this.getDiff(ball.rightMostX, this.x)
-        return ball.y <= this.bottomMostY && ball.rightMostX >= this.x && yDiff == xDiff
+        const yDiff = this.getDiff(ball.position.y, this.bottomMostY)
+        const xDiff = this.getDiff(ball.rightMostX, this.position.x)
+        return ball.position.y <= this.bottomMostY && ball.rightMostX >= this.position.x && yDiff == xDiff
     }
 
     private lowerRightTouch(ball: Ball):boolean{
-        const xDiff = this.getDiff(ball.x, this.rightMostX)
-        const yDiff = this.getDiff(ball.y, this.bottomMostY)
-        return ball.x <= this.rightMostX && ball.y <= this.bottomMostY && xDiff == yDiff
+        const xDiff = this.getDiff(ball.position.x, this.rightMostX)
+        const yDiff = this.getDiff(ball.position.y, this.bottomMostY)
+        return ball.position.x <= this.rightMostX && ball.position.y <= this.bottomMostY && xDiff == yDiff
     }
 
     private setCornerTouch(ball:Ball):void{
@@ -51,7 +51,7 @@ export class Brick extends Sprite{
     }
 
     isCollidingWith(ball: Ball):boolean{
-        this._verticalCollision = ball.centerX >= this.x && ball.centerX <= this.rightMostX
+        this._verticalCollision = ball.centerX >= this.position.x && ball.centerX <= this.rightMostX
         const inX = this.isInXRange(ball)
         const ans = inX && this.isInYRange(ball);
 
@@ -59,23 +59,22 @@ export class Brick extends Sprite{
             this.setCornerTouch(ball);
             if(this.isInside(ball) ){
                if (ball.centerPoint.y < this.centerPoint.y){
-                   ball.y = this.y - ball.height - 1
+                   ball.position.y = ball.position.y - ball.height - 1
                }else{
-                   ball.y = this.y + this.height + 1
+                   ball.position.y = this.bottomMostY + 1
                }
             }
-            if (ball.x == this.rightMostX && ball.y== this.bottomMostY){
-                ball.x ++
-                ball.y ++
+            if (ball.position.x == this.rightMostX && ball.position.y== this.bottomMostY){
+                ball.position.x ++
+                ball.position.y ++
             }
         }
-        console.log('brick.isCollidingWith:', ans)
         return ans;
     }
 
     private isInside(ball: Ball){
-        if (ball.x < this.rightMostX && ball.rightMostX > this.x){
-            return ball.y < this.bottomMostY && ball.bottomMostY > this.y
+        if (ball.position.x < this.rightMostX && ball.rightMostX > this.position.x){
+            return ball.position.y < this.bottomMostY && ball.bottomMostY > ball.position.y
         }
         return false
     }
@@ -85,7 +84,7 @@ export class Brick extends Sprite{
     }
 
     isInYRange(ball:Ball):boolean{
-        return ball.y <= this.bottomMostY && ball.bottomMostY >= this.y
+        return ball.position.y <= this.bottomMostY && ball.bottomMostY >= ball.position.y
     }
 }
 

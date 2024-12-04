@@ -14,11 +14,11 @@ export class Ball extends Sprite{
     }
 
     detectCollision(){
-        if (this.y <= 0){
+        if (this.position.y <= 0){
             console.log(this)
             this.bounceY()
         }
-        if (this.x <= 0 || this.x + this.width >= this.canvasWidth) {
+        if (this.position.x <= 0 || this.position.x + this.width >= this.canvasWidth) {
             console.log('calling ball.bounce x from ball.detectCollision')
             this.bounceX()
         }
@@ -29,14 +29,14 @@ export class Ball extends Sprite{
     }
 
     get centerX():number{
-        return this.x + this.width/2
+        return this.position.x + this.width/2
     }
 
 
     move():void{
         if(!this.sleep){
-            this.x += this._speed.x;
-            this.y += this._speed.y;
+            this.position.x += this._speed.x;
+            this.position.y += this._speed.y;
         }
         this.sleep = false
     }

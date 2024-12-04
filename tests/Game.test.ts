@@ -136,7 +136,10 @@ describe('Game.loop tests',()=>{
         const brick = new Brick('stub',{x:0, y:0});
         const expected = [brick];
         (createBricks as jest.Mock).mockReturnValue(expected);
+        jest.spyOn(view, 'drawSprite').mockImplementation(()=>{})
+        drawBricksSpy = jest.spyOn(view, 'drawBricks').mockImplementation(()=>{})
         game = new Game(view)
+        jest.spyOn(game, 'detectEvents').mockImplementation(()=>{})
 
         game.loop()
 

@@ -41,7 +41,7 @@ export class Paddle extends Sprite{
 
 
     private isInYRange(ball: Ball): boolean{
-        return this.y <= ball.y + ball.height && ball.y + ball.height < this.y + ball.speed
+        return this.position.y <= ball.position.y + ball.height && ball.position.y + ball.height < this.position.y + ball.speed
     }
 
     isCollidedWith(ball: Ball):boolean{
@@ -50,12 +50,12 @@ export class Paddle extends Sprite{
 
     detectMove():void{
        if (this.isMovingLeft) {
-           const newX = this.x - this._speed
-           this.x = newX >= this._leftHandLimit? newX : this._leftHandLimit
+           const newX = this.position.x - this._speed
+           this.position.x = newX >= this._leftHandLimit? newX : this._leftHandLimit
        }
        if (this.isMovingRight) {
-           const newX = this.x + this._speed
-           this.x = newX <= this._rightHandLimit ? newX :this._rightHandLimit
+           const newX = this.position.x + this._speed
+           this.position.x = newX <= this._rightHandLimit ? newX :this._rightHandLimit
        }
     }
 

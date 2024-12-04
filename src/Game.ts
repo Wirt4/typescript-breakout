@@ -78,11 +78,13 @@ export class Game {
         this._view.drawSprite(this._ball)
     }
 
-    private detectEvents(){
+     detectEvents(){
+        console.log('detectEvents called')
         this._paddle.detectMove()
         this._ball.detectCollision()
+        console.log('ball.detectCollision called')
         const brickCollide = this.bricks.detectCollision(this.ball)
-        console.log('brick collision detected:', brickCollide)
+        console.log('detectCollision completed')
         if (brickCollide) {
             this._score ++
             this._view.drawScore(this._score)

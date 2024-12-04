@@ -4,11 +4,11 @@ import {Size} from "../../src/types";
 
 describe('Ball constructor', () => {
     it('Ball should be an instance of Sprite',()=>{
-        const pos = {x:0, y:0};
+        const position = {x:0, y:0};
         const diameter = 5
         const canvasWidth =1200
         const speed = 6
-        const ball = new Ball(pos, diameter,canvasWidth, speed)
+        const ball = new Ball(position, diameter,canvasWidth, speed)
         expect(ball).toBeInstanceOf(Sprite)
     })
 })
@@ -16,50 +16,50 @@ describe('Ball constructor', () => {
 describe('move tests',()=>{
     const canvasWidth = 1200
     it('starting angle of the ball should be 45 degrees',()=>{
-        const pos = {x:10, y:10}
+        const position = {x:10, y:10}
         const diameter = 5
         const speed = 5
-        const ball = new Ball(pos, diameter, canvasWidth, speed)
-        expect(ball.x).toEqual(10)
-        expect(ball.y).toEqual(10)
+        const ball = new Ball(position, diameter, canvasWidth, speed)
+        expect(ball.position.x).toEqual(10)
+        expect(ball.position.y).toEqual(10)
         ball.move()
-        expect(ball.x).toEqual(15)
-        expect(ball.y).toEqual(5)
+        expect(ball.position.x).toEqual(15)
+        expect(ball.position.y).toEqual(5)
     })
     it('starting angle of the ball should be 45 degrees, different data',()=>{
         const pos = {x:25, y:30}
         const diameter = 5
         const speed = 7
         const ball = new Ball(pos, diameter, canvasWidth, speed)
-        expect(ball.x).toEqual(25)
-        expect(ball.y).toEqual(30)
+        expect(ball.position.x).toEqual(25)
+        expect(ball.position.y).toEqual(30)
         ball.move()
-        expect(ball.x).toEqual(32)
-        expect(ball.y).toEqual(23)
+        expect(ball.position.x).toEqual(32)
+        expect(ball.position.y).toEqual(23)
     })
     it('call to bounceY',()=>{
         const pos = {x:25, y:30}
         const diameter = 5
         const speed = 7
         const ball = new Ball(pos, diameter, canvasWidth, speed)
-        expect(ball.x).toEqual(25)
-        expect(ball.y).toEqual(30)
+        expect(ball.position.x).toEqual(25)
+        expect(ball.position.y).toEqual(30)
         ball.bounceY()
         ball.move()
-        expect(ball.x).toEqual(32)
-        expect(ball.y).toEqual(37)
+        expect(ball.position.x).toEqual(32)
+        expect(ball.position.y).toEqual(37)
     })
     it('call to bounceX',()=>{
         const pos = {x:25, y:30}
         const diameter = 5
         const speed = 7
         const ball = new Ball(pos, diameter, canvasWidth, speed)
-        expect(ball.x).toEqual(25)
-        expect(ball.y).toEqual(30)
+        expect(ball.position.x).toEqual(25)
+        expect(ball.position.y).toEqual(30)
         ball.bounceX()
         ball.move()
-        expect(ball.x).toEqual(18)
-        expect(ball.y).toEqual(23)
+        expect(ball.position.x).toEqual(18)
+        expect(ball.position.y).toEqual(23)
     })
 })
 
@@ -75,7 +75,7 @@ describe('Detect Collision tests', () => {
         const ball = new Ball(pos, diameter,canvasWidth,  speed)
         ball.detectCollision()
         ball.move()
-        expect(ball.y).toEqual(7)
+        expect(ball.position.y).toEqual(7)
     })
     it("if ball doesn't hit the ceiling, then it doesn't bounce ",()=>{
         const pos = {x:25, y:30}
@@ -84,7 +84,7 @@ describe('Detect Collision tests', () => {
         const ball = new Ball(pos, diameter, canvasWidth,  speed)
         ball.detectCollision()
         ball.move()
-        expect(ball.y).toEqual(23)
+        expect(ball.position.y).toEqual(23)
     })
     it('if ball hits the ceiling, then it bounces -- overlap',()=>{
         const pos = {x:25, y:-4}
@@ -93,7 +93,7 @@ describe('Detect Collision tests', () => {
         const ball = new Ball(pos,  diameter, canvasWidth, speed)
         ball.detectCollision()
         ball.move()
-        expect(ball.y).toEqual(6)
+        expect(ball.position.y).toEqual(6)
     })
     it('if ball hits left wall, then it bounces',()=>{
         const pos = {x:-1, y:50}
@@ -103,7 +103,7 @@ describe('Detect Collision tests', () => {
         ball.bounceX()
         ball.detectCollision()
         ball.move()
-        expect(ball.x).toEqual(9)
+        expect(ball.position.x).toEqual(9)
     })
     it('if ball hits right wall, then it bounces',()=>{
         canvasWidth = 800
@@ -113,7 +113,7 @@ describe('Detect Collision tests', () => {
         const ball = new Ball(pos, diameter, canvasWidth, speed)
         ball.detectCollision()
         ball.move()
-        expect(ball.x).toEqual(780)
+        expect(ball.position.x).toEqual(780)
     })
 })
 
@@ -123,11 +123,11 @@ describe('bounceXY', ()=>{
             const diameter = 5
             const speed = 7
             const ball = new Ball(pos, diameter, 800, speed)
-            expect(ball.x).toEqual(25)
-            expect(ball.y).toEqual(30)
+            expect(ball.position.x).toEqual(25)
+            expect(ball.position.y).toEqual(30)
             ball.bounceXY()
             ball.move()
-            expect(ball.x).toEqual(18)
-            expect(ball.y).toEqual(37)
+            expect(ball.position.x).toEqual(18)
+            expect(ball.position.y).toEqual(37)
     })
 })
