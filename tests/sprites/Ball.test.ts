@@ -116,3 +116,18 @@ describe('Detect Collision tests', () => {
         expect(ball.x).toEqual(780)
     })
 })
+
+describe('bounceXY', ()=>{
+    it('going upperRight', ()=>{
+            const pos = {x:25, y:30}
+            const diameter = 5
+            const speed = 7
+            const ball = new Ball(pos, diameter, 800, speed)
+            expect(ball.x).toEqual(25)
+            expect(ball.y).toEqual(30)
+            ball.bounceXY()
+            ball.move()
+            expect(ball.x).toEqual(18)
+            expect(ball.y).toEqual(37)
+    })
+})

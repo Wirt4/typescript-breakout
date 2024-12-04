@@ -99,6 +99,30 @@ describe('isCornerCollision',()=>{
         expect(brick.isCollidingWith(ball)).toEqual(true);
         expect(brick.isCornerCollision()).toEqual(true)
     })
+    it('tangent at bottom left',()=>{
+        const brick = new Brick('stub',{x:100,y:100}, 3);
+        const ball = new Ball({x: 95, y:brick.bottomMostY}, 5, 400, 1);
+        expect(brick.isCollidingWith(ball)).toEqual(true);
+        expect(brick.isCornerCollision()).toEqual(true)
+    })
+    it('overlap at bottom left',()=>{
+        const brick = new Brick('stub',{x:100,y:100}, 3);
+        const ball = new Ball({x: 97, y:brick.bottomMostY-2}, 5, 400, 1);
+        expect(brick.isCollidingWith(ball)).toEqual(true);
+        expect(brick.isCornerCollision()).toEqual(true)
+    })
+    it('tangent at bottom right',()=>{
+        const brick = new Brick('stub',{x:100,y:100}, 3);
+        const ball = new Ball({x: brick.x + BRICK_WIDTH, y:brick.bottomMostY}, 5, 400, 1);
+        expect(brick.isCollidingWith(ball)).toEqual(true);
+        expect(brick.isCornerCollision()).toEqual(true)
+    })
+    it('exact overlap at bottom right',()=>{
+        const brick = new Brick('stub',{x:100,y:100}, 3);
+        const ball = new Ball({x: brick.x + BRICK_WIDTH-1, y:brick.bottomMostY-1}, 5, 400, 1);
+        expect(brick.isCollidingWith(ball)).toEqual(true);
+        expect(brick.isCornerCollision()).toEqual(true)
+    })
 })
 
 describe('isVerticalCollision tests',()=>{

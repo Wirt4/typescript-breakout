@@ -5,6 +5,7 @@ import BALL_IMAGE from "../images/ball.png"
 export class Ball extends Sprite{
     private _speed: Speed
     private readonly canvasWidth: number
+    public sleep = false
 
     constructor(position: Vector, size: number, canvasWidth: number,  speed: number) {
         super(BALL_IMAGE, position, {width: size, height: size});
@@ -13,8 +14,12 @@ export class Ball extends Sprite{
     }
 
     detectCollision(){
-        if (this.y <= 0) this.bounceY()
+        if (this.y <= 0){
+            console.log(this)
+            this.bounceY()
+        }
         if (this.x <= 0 || this.x + this.width >= this.canvasWidth) {
+            console.log('calling ball.bounce x from ball.detectCollision')
             this.bounceX()
         }
     }
@@ -27,24 +32,30 @@ export class Ball extends Sprite{
         return this.x + this.width/2
     }
 
-    isMovingLeft(){
-        return false
-    }
 
     move():void{
-        this.x += this._speed.x;
-        this.y += this._speed.y;
+        if(!this.sleep){
+            this.x += this._speed.x;
+            this.y += this._speed.y;
+        }
+        this.sleep = false
     }
 
-    bounceY(){
+    bounceY():void{
+        console.log('bounceY called')
         this._speed.bounceY()
     }
 
-    bounceX(){
+    bounceX():void{
+        console.log('bounceX called')
         this._speed.bounceX()
     }
 
-    bounceXY(){}
+    bounceXY():void{
+        console.log('calling BounceX fro bounceXY')
+        this.bounceX()
+        this.bounceY()
+    }
 
 }
 

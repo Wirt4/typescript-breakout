@@ -211,14 +211,6 @@ describe('Game.loop tests',()=>{
         game.loop();
         expect(spy).toHaveBeenCalled()
     })
-    it('if bricks.detectCollision() returns true and it is a a corner bounce, bounce the ball XY', ()=>{
-        const spy = jest.spyOn(game.ball, 'bounceXY')
-        jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(true)
-        jest.spyOn(game.bricks, 'isVerticalCollision').mockReturnValue(false)
-        jest.spyOn(game.bricks, 'isCornerCollision').mockReturnValue(true)
-        game.loop();
-        expect(spy).toHaveBeenCalled()
-    })
     it('if bricks.detectCollision() returns false and it is a a corner bounce, do not bounce the ball XY', ()=>{
         const spy = jest.spyOn(game.ball, 'bounceXY')
         jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(true)

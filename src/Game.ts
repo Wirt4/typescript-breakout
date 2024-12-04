@@ -82,14 +82,17 @@ export class Game {
         this._paddle.detectMove()
         this._ball.detectCollision()
         const brickCollide = this.bricks.detectCollision(this.ball)
+        console.log('brick collision detected:', brickCollide)
         if (brickCollide) {
             this._score ++
             this._view.drawScore(this._score)
-            this._ball.bounceY()
-            this.bricks.isVerticalCollision() ? this._ball.bounceY() : this._ball.bounceX()
-            if (this._bricks.isCornerCollision())this._ball.bounceXY()
-        }
-        if (this._paddle.isCollidedWith(this.ball)){
+            if (this.bricks.isVerticalCollision()){
+                console.log('calling ball.bounce y from game.detectEvents')
+                this._ball.bounceY()
+            }else{
+                this._ball.bounceX() //this is causing corner hang issues -- TODO: log all the coordinates and write a test case from that
+            }
+        }else if (this._paddle.isCollidedWith(this.ball)){
             this._ball.bounceY()
         }
     }

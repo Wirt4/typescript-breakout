@@ -33,14 +33,28 @@ export class Brick extends Sprite{
         return ball.bottomMostY >= this.y && ball.x <= this.rightMostX && yDiff == xDiff
     }
 
+    private lowerLeftTouch(ball: Ball):boolean{
+        const yDiff = this.getDiff(ball.y, this.bottomMostY)
+        const xDiff = this.getDiff(ball.rightMostX, this.x)
+        return ball.y <= this.bottomMostY && ball.rightMostX >= this.x && yDiff == xDiff
+    }
+
+    private lowerRightTouch(ball: Ball):boolean{
+        const xDiff = this.getDiff(ball.x, this.rightMostX)
+        const yDiff = this.getDiff(ball.y, this.bottomMostY)
+        return ball.x <= this.rightMostX && ball.y <= this.bottomMostY && xDiff == yDiff
+    }
+
     private setCornerTouch(ball:Ball):void{
-        this._cornerTouch = this.upperLeftTouch(ball) || this.upperRightTouch(ball);
+        this._cornerTouch = this.upperLeftTouch(ball) || this.upperRightTouch(ball) ||
+            this.lowerLeftTouch(ball) || this.lowerRightTouch(ball)
     }
 
     isCollidingWith(ball: Ball):boolean{
         this._verticalCollision = ball.centerX >= this.x && ball.centerX <= this.rightMostX
         const inX = this.isInXRange(ball)
         const ans = inX && this.isInYRange(ball);
+
         if (ans){
             this.setCornerTouch(ball);
             if(this.isInside(ball) ){
@@ -55,6 +69,7 @@ export class Brick extends Sprite{
                 ball.y ++
             }
         }
+        console.log('brick.isCollidingWith:', ans)
         return ans;
     }
 
