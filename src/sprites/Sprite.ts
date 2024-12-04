@@ -1,16 +1,16 @@
 import {Size, Vector} from "../types";
 
 export class Sprite {
-    protected _x: number;
-    protected _y: number;
+    public x: number;
+    public y: number;
     private readonly _w: number;
     private readonly _h: number;
     protected _img: HTMLImageElement;
 
     constructor(imageSrc: string, coords:Vector, size: Size) {
         this._img = new Image();
-        this._x = coords.x
-        this._y = coords.y
+        this.x = coords.x
+        this.y = coords.y
         this._w = size.width;
         this._h = size.height;
 
@@ -42,16 +42,20 @@ export class Sprite {
         return this._img.complete && this._img.naturalWidth !== 0
     }
 
+    isInXRange(s: Sprite):boolean{
+        return s.x <= this.rightMostX && s.rightMostX >= this.x
+    }
+
     get image():HTMLImageElement{
         return this._img
     }
 
-    get x(): number {
-        return this._x
+    get rightMostX():number{
+        return this.x + this.width
     }
 
-    get y(): number{
-        return this._y
+    get bottomMostY() : number{
+        return this.y + this.height
     }
 
     get width(): number{
@@ -60,5 +64,9 @@ export class Sprite {
 
     get height(): number{
         return this._h
+    }
+
+    get centerPoint():Vector{
+        return {x: this.x + this.width/2, y: this.y + this.y/2};
     }
 }
