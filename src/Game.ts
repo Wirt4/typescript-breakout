@@ -77,7 +77,7 @@ export class Game {
 
      detectEvents(){
         this._paddle.detectMove()
-         const canvasTouch = this._ball.detectCanvasCollision()
+         const canvasTouch = this._ball.hasCanvasCollision()
          if (canvasTouch === CanvasContact.CEILING){
              this.ball.bounceY()
              return

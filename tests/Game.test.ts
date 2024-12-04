@@ -145,13 +145,13 @@ describe('Game.loop tests',()=>{
         expect(moveSpy).toHaveBeenCalled()
     })
     it ('if ball.detectCanvasCollision returns Ceiling, then ball.bounceY is called',()=>{
-        jest.spyOn(game.ball, 'detectCanvasCollision').mockReturnValue(CanvasContact.CEILING)
+        jest.spyOn(game.ball, 'hasCanvasCollision').mockReturnValue(CanvasContact.CEILING)
         const bounceSpy = jest.spyOn(game.ball, 'bounceY')
         game.loop()
         expect(bounceSpy).toHaveBeenCalled()
     })
     it ('if ball.detectCanvasCollision returns Wall, then ball.bounceX is called',()=>{
-        jest.spyOn(game.ball, 'detectCanvasCollision').mockReturnValue(CanvasContact.WALL)
+        jest.spyOn(game.ball, 'hasCanvasCollision').mockReturnValue(CanvasContact.WALL)
         const bounceSpy = jest.spyOn(game.ball, 'bounceX')
         game.loop()
         expect(bounceSpy).toHaveBeenCalled()
@@ -224,8 +224,14 @@ describe('constructor tests',()=>{
     it('a paddle in instantiated with PADDLE_SPEED const',()=>{
         expect(Paddle).toHaveBeenCalledWith(expect.anything(), expect.anything(), PADDLE_SPEED)
     })
-    it('a ball is instantiated with BALL_SPEED const, BALL_SIZE const, and BALL_STARTX and BALL_STARTY cords',()=>{
+    it('a ball is instantiated with  BALL_STARTX and BALL_STARTY cords',()=>{
         const expectedPosition = {x: BALL_STARTX, y: BALL_STARTY};
-        expect(Ball).toHaveBeenCalledWith(expectedPosition, BALL_SIZE, expect.anything(), BALL_SPEED)
+        expect(Ball).toHaveBeenCalledWith(expectedPosition, expect.anything(), expect.anything(), expect.anything())
+    })
+    it('a ball is instantiated with  BALL_SIZE const,',()=>{
+        expect(Ball).toHaveBeenCalledWith(expect.anything(), BALL_SIZE, expect.anything(), expect.anything())
+    })
+    it('a ball is instantiated with BALL_SPEED const,',()=>{
+        expect(Ball).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.anything(), BALL_SPEED)
     })
 })
