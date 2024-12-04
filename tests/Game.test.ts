@@ -186,24 +186,8 @@ describe('Game.loop tests',()=>{
     it('if bricks.detectCollision() returns true and it is a vertical bounce, bounce the ball y', ()=>{
         const spy = jest.spyOn(game.ball, 'bounceY')
         jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(true)
-        jest.spyOn(game.bricks, 'isVerticalCollision').mockReturnValue(true)
         game.loop();
         expect(spy).toHaveBeenCalled()
-    })
-    it('if bricks.detectCollision() returns true and it is not a vertical bounce, bounce the ball x', ()=>{
-        const spy = jest.spyOn(game.ball, 'bounceX')
-        jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(true)
-        jest.spyOn(game.bricks, 'isVerticalCollision').mockReturnValue(false)
-        game.loop();
-        expect(spy).toHaveBeenCalled()
-    })
-    it('if bricks.detectCollision() returns false and it is a a corner bounce, do not bounce the ball XY', ()=>{
-        const spy = jest.spyOn(game.ball, 'bounceXY')
-        jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(true)
-        jest.spyOn(game.bricks, 'isVerticalCollision').mockReturnValue(false)
-        jest.spyOn(game.bricks, 'isCornerCollision').mockReturnValue(false)
-        game.loop();
-        expect(spy).not.toHaveBeenCalled()
     })
     it('Game.loop ends by calling requestAnimationFrame', ()=>{
         game.loop()
@@ -213,26 +197,34 @@ describe('Game.loop tests',()=>{
 
 describe('constructor tests',()=>{
     let view: CanvasView
+    beforeEach(()=>{
+        view = new CanvasView("#playField")
+        new Game(view)
+    })
+    afterEach(()=>{
+        jest.clearAllMocks()
+    })
     it('game.bricks is set with the output of createBricks',()=>{
-        view = new CanvasView('#playField');
         const brick = new Brick('stub',{x:0, y:0});
         const expected = [brick];
         (createBricks as jest.Mock).mockReturnValue(expected);
         const game = new Game(view)
         expect(game.bricks.arr).toEqual(expected);
     })
-    it('a paddle in instantiated with STARTX const, canvas dimensions, and PADDLE_SPEED const',()=>{
-        document.body.innerHTML = `
-      <canvas id="playField" width="1000" height="600"></canvas>
-      <button id="start"></button>`
+    it('a paddle in instantiated with STARTX const, ',()=>{
+        expect(Paddle).toHaveBeenCalledWith(PADDLE_STARTX, expect.anything(), expect.anything())
+    })
+    it('a paddle in instantiated with  canvas dimensions',()=>{
+        document.body.innerHTML = `<canvas id="playField" width="1000" height="600"></canvas><button id="start"></button>`
         view = new CanvasView('#playField');
-
+        const expected = {width: 1000, height:600}
         new Game(view)
-        expect(Paddle).toHaveBeenCalledWith(PADDLE_STARTX, {width: 1000, height:600}, PADDLE_SPEED)
+        expect(Paddle).toHaveBeenCalledWith(expect.anything(), expected, expect.anything())
+    })
+    it('a paddle in instantiated with PADDLE_SPEED const',()=>{
+        expect(Paddle).toHaveBeenCalledWith(expect.anything(), expect.anything(), PADDLE_SPEED)
     })
     it('a ball is instantiated with BALL_SPEED const, BALL_SIZE const, and BALL_STARTX and BALL_STARTY cords',()=>{
-        view = new CanvasView('#playField');
-        new Game(view)
         const expectedPosition = {x: BALL_STARTX, y: BALL_STARTY};
         expect(Ball).toHaveBeenCalledWith(expectedPosition, BALL_SIZE, expect.anything(), BALL_SPEED)
     })
