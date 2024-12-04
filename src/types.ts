@@ -1,4 +1,4 @@
-export type Vector = {
+export type Position = {
     x: number;
     y: number;
 }

@@ -1,133 +1,114 @@
 import {Sprite} from "../../src/sprites/Sprite";
 import {Ball} from "../../src/sprites/Ball";
-import {Size} from "../../src/types";
+import {Position, Size} from "../../src/types";
+import {CanvasContact} from "../../src/enums";
 
 describe('Ball constructor', () => {
-    it('Ball should be an instance of Sprite',()=>{
-        const position = {x:0, y:0};
-        const diameter = 5
-        const canvasWidth =1200
-        const speed = 6
-        const ball = new Ball(position, diameter,canvasWidth, speed)
+    let startPosition: Position;
+    let diameter: number;
+    let canvasWidth:number
+    let speed: number
+    let ball: Ball
+
+    beforeEach(() => {
+        startPosition = {x:0, y:0};
+        diameter = 5
+        canvasWidth =1200
+        speed =6
+        ball = new Ball(startPosition, diameter, canvasWidth, speed)
+    })
+    it('Ball should be an instance of a Sprite',()=>{
         expect(ball).toBeInstanceOf(Sprite)
     })
 })
 
 describe('move tests',()=>{
-    const canvasWidth = 1200
-    it('starting angle of the ball should be 45 degrees',()=>{
-        const position = {x:10, y:10}
-        const diameter = 5
-        const speed = 5
-        const ball = new Ball(position, diameter, canvasWidth, speed)
-        expect(ball.position.x).toEqual(10)
-        expect(ball.position.y).toEqual(10)
-        ball.move()
-        expect(ball.position.x).toEqual(15)
-        expect(ball.position.y).toEqual(5)
+    let startPosition: Position;
+    let diameter: number;
+    let canvasWidth:number
+    let speed: number
+    let ball: Ball
+    beforeEach(() => {
+        startPosition = {x:10, y:10};
+        diameter = 5
+        canvasWidth =1200
+        speed = 5
+        ball = new Ball(startPosition, diameter, canvasWidth, speed)
     })
-    it('starting angle of the ball should be 45 degrees, different data',()=>{
-        const pos = {x:25, y:30}
-        const diameter = 5
-        const speed = 7
-        const ball = new Ball(pos, diameter, canvasWidth, speed)
-        expect(ball.position.x).toEqual(25)
-        expect(ball.position.y).toEqual(30)
-        ball.move()
-        expect(ball.position.x).toEqual(32)
-        expect(ball.position.y).toEqual(23)
+    it('ball instantiates with the correct position',()=>{
+        expect(ball.position).toEqual(startPosition)
     })
-    it('call to bounceY',()=>{
-        const pos = {x:25, y:30}
-        const diameter = 5
-        const speed = 7
-        const ball = new Ball(pos, diameter, canvasWidth, speed)
-        expect(ball.position.x).toEqual(25)
-        expect(ball.position.y).toEqual(30)
+    it('starting angle of the ball is 45 degrees',()=>{
+        ball.move()
+        expect(ball.position).toEqual({x:15, y:5})
+    })
+    it('starting angle of the ball is 45 degrees: different starting data',()=>{
+        startPosition = {x:25, y:30}
+        speed = 7
+        ball = new Ball(startPosition, diameter, canvasWidth, speed)
+        const expectedPosition = {x:32, y:23}
+        ball.move()
+        expect(ball.position).toEqual(expectedPosition)
+    })
+    it('call to bounceY reverses the vertical direction',()=>{
+        startPosition = {x:25, y:30}
+        speed = 7
+        ball = new Ball(startPosition, diameter, canvasWidth, speed)
+        const expectedPosition = {x:32, y:37}
         ball.bounceY()
         ball.move()
-        expect(ball.position.x).toEqual(32)
-        expect(ball.position.y).toEqual(37)
+        expect(ball.position).toEqual(expectedPosition)
     })
-    it('call to bounceX',()=>{
-        const pos = {x:25, y:30}
-        const diameter = 5
-        const speed = 7
-        const ball = new Ball(pos, diameter, canvasWidth, speed)
-        expect(ball.position.x).toEqual(25)
-        expect(ball.position.y).toEqual(30)
+    it('call to bounceX reversed the horizontal direction',()=>{
+        startPosition = {x:25, y:30}
+        speed = 7
+        ball = new Ball(startPosition, diameter, canvasWidth, speed)
+        const expectedPosition = {x:18, y:23}
         ball.bounceX()
         ball.move()
-        expect(ball.position.x).toEqual(18)
-        expect(ball.position.y).toEqual(23)
+        expect(ball.position).toEqual(expectedPosition)
     })
 })
 
-describe('Detect Collision tests', () => {
+describe('detectCanvasCollision tests', () => {
     let canvasWidth: number
+    let startPosition: Position
+    let diameter: number
+    let speed: number
+    let ball: Ball
         beforeEach(()=>{
             canvasWidth =  1200
+            diameter = 5
+            speed = 7
         })
-    it('if ball hits the ceiling, then it bounces -- tangent',()=>{
-        const pos = {x:25, y:0}
-        const diameter = 5
-        const speed = 7
-        const ball = new Ball(pos, diameter,canvasWidth,  speed)
-        ball.detectCollision()
-        ball.move()
-        expect(ball.position.y).toEqual(7)
+    it('If ball forms a tangent when it hits the ceiling, then it is a collision',()=>{
+        startPosition = {x:25, y:0}
+        ball = new Ball(startPosition, diameter,canvasWidth,  speed)
+        expect(ball.detectCanvasCollision()).toEqual(CanvasContact.CEILING)
     })
-    it("if ball doesn't hit the ceiling, then it doesn't bounce ",()=>{
-        const pos = {x:25, y:30}
-        const diameter = 5
-        const speed = 7
-        const ball = new Ball(pos, diameter, canvasWidth,  speed)
-        ball.detectCollision()
-        ball.move()
-        expect(ball.position.y).toEqual(23)
+    it("if ball doesn't touch or interset the ceiling or walls, then is't not a collision ",()=>{
+        startPosition = {x:25, y:30}
+        ball = new Ball(startPosition, diameter, canvasWidth,  speed)
+        expect(ball.detectCanvasCollision()).toEqual(CanvasContact.NO_CONTACT)
     })
-    it('if ball hits the ceiling, then it bounces -- overlap',()=>{
-        const pos = {x:25, y:-4}
-        const diameter = 12
-        const speed = 10
-        const ball = new Ball(pos,  diameter, canvasWidth, speed)
-        ball.detectCollision()
-        ball.move()
-        expect(ball.position.y).toEqual(6)
+    it('if ball overlaps the ceiling, then it is a collision',()=>{
+        startPosition = {x:25, y:-4}
+        diameter = 12
+        ball = new Ball(startPosition, diameter, canvasWidth, speed)
+        expect(ball.detectCanvasCollision()).toEqual(CanvasContact.CEILING)
     })
-    it('if ball hits left wall, then it bounces',()=>{
-        const pos = {x:-1, y:50}
-        const diameter = 12
-        const speed = 10
-        const ball = new Ball(pos, diameter, canvasWidth, speed)
+    it('if ball overlaps left wall, then it is a collision',()=>{
+        startPosition = {x:-1, y:50}
+        diameter = 12
+        ball = new Ball(startPosition, diameter, canvasWidth, speed)
         ball.bounceX()
-        ball.detectCollision()
-        ball.move()
-        expect(ball.position.x).toEqual(9)
+        expect(ball.detectCanvasCollision()).toEqual(CanvasContact.WALL)
     })
-    it('if ball hits right wall, then it bounces',()=>{
+    it('if ball overlaps right wall, then its a collision',()=>{
         canvasWidth = 800
-        const pos = {x:790, y:50}
-        const diameter = 12
-        const speed = 10
-        const ball = new Ball(pos, diameter, canvasWidth, speed)
-        ball.detectCollision()
-        ball.move()
-        expect(ball.position.x).toEqual(780)
-    })
-})
-
-describe('bounceXY', ()=>{
-    it('going upperRight', ()=>{
-            const pos = {x:25, y:30}
-            const diameter = 5
-            const speed = 7
-            const ball = new Ball(pos, diameter, 800, speed)
-            expect(ball.position.x).toEqual(25)
-            expect(ball.position.y).toEqual(30)
-            ball.bounceXY()
-            ball.move()
-            expect(ball.position.x).toEqual(18)
-            expect(ball.position.y).toEqual(37)
+        startPosition = {x:790, y:50}
+        diameter = 12
+        ball = new Ball(startPosition, diameter, canvasWidth, speed)
+        expect(ball.detectCanvasCollision()).toEqual(CanvasContact.WALL)
     })
 })

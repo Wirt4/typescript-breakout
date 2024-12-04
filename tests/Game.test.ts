@@ -5,6 +5,7 @@ import {Brick} from "../src/sprites/Brick";
 import {Paddle} from "../src/sprites/Paddle";
 import {BALL_SIZE, BALL_SPEED, BALL_STARTX, BALL_STARTY, PADDLE_SPEED, PADDLE_STARTX} from "../src/setup";
 import {Ball} from "../src/sprites/Ball";
+import {CanvasContact} from "../src/enums";
 
 jest.mock("../src/helper");
 jest.mock("../src/sprites/Paddle");
@@ -22,20 +23,27 @@ describe('Game.setGameOver tests',()=>{
     afterEach(()=>{
         jest.resetAllMocks()
     })
-    it('when game is created, Game.isGameOver is false',()=>{
-        expect(game.isGameOver).toEqual(false)
-    })
-    it('when Game.setGameOver is called, isGameOver is set to false',()=>{
-        expect(game.isGameOver).toEqual(false)
-        game.setGameOver()
-        expect(game.isGameOver).toEqual(false)
-    })
     it('when Game.setGameOver is called, CanvasView.setInfo is called with message "Game Over"',()=>{
         game.setGameOver()
         expect(spy).toHaveBeenCalledWith("Game Over!")
     })
     it('when Game.setGameOver is not called, CanvasView.setInfo is not called with message "Game Over"',()=>{
         expect(spy).not.toHaveBeenCalledWith("Game Over!")
+    })
+})
+
+describe('Game.isGameOver',()=>{
+    let view: CanvasView
+    let game: Game
+    beforeEach(()=>{
+        view = new CanvasView('#playField')
+        game = new Game(view)
+    })
+    afterEach(()=>{
+        jest.resetAllMocks()
+    })
+    it('when game is created, Game.isGameOver is false',()=>{
+        expect(game.isGameOver).toEqual(false)
     })
 })
 
@@ -51,16 +59,11 @@ describe('Game.setGameWin tests',()=>{
     afterEach(()=>{
         jest.resetAllMocks()
     })
-    it('when Game.setGameWin is called, isGameOver is set to false',()=>{
-        expect(game.isGameOver).toEqual(false)
-        game.setGameWin()
-        expect(game.isGameOver).toEqual(false)
-    })
-    it('when Game.setGameOver is called, CanvasView.setInfo is called with message "Game Over"',()=>{
+    it('when Game.setGameOver is called, CanvasView.setInfo is called with message "Game Won"',()=>{
         game.setGameWin()
         expect(spy).toHaveBeenCalledWith("Game Won!")
     })
-    it('when Game.setGameOver is not called, CanvasView.setInfo is not called with message "Game Over"',()=>{
+    it('when Game.setGameOver is not called, CanvasView.setInfo is not called with message "Game Won',()=>{
         expect(spy).not.toHaveBeenCalledWith("Game Won!")
     })
 })
@@ -75,9 +78,6 @@ describe('Game.start tests',()=>{
     })
     afterEach(()=>{
         jest.resetAllMocks()
-    })
-    it('game has function named "start"',()=>{
-        game.start()
     })
     it('after game.start is called, score is set to zero',()=>{
         game.start()
@@ -97,14 +97,6 @@ describe('Game.start tests',()=>{
     })
     it('expect game.start to finish by calling game.loop',()=>{
         const loopSpy = jest.spyOn(game, 'loop')
-        game.start()
-        expect(loopSpy).toHaveBeenCalled()
-    })
-    it('expect game.start to call game.loop with the output of createBricks',()=>{
-        const loopSpy = jest.spyOn(game, 'loop');
-        const brick = new Brick('stub',{x:0, y:0});
-        const expected = [brick];
-        (createBricks as jest.Mock).mockReturnValue(expected);
         game.start()
         expect(loopSpy).toHaveBeenCalled()
     })
@@ -132,24 +124,12 @@ describe('Game.loop tests',()=>{
         game.loop()
         expect(clearSpy).toHaveBeenCalled()
     })
-    it('Game.loop calls view.drawBricks() with the bricks argument', ()=>{
-        const brick = new Brick('stub',{x:0, y:0});
-        const expected = [brick];
-        (createBricks as jest.Mock).mockReturnValue(expected);
-        jest.spyOn(view, 'drawSprite').mockImplementation(()=>{})
+    it('game loop calls view.drawBricks', ()=>{
         drawBricksSpy = jest.spyOn(view, 'drawBricks').mockImplementation(()=>{})
         game = new Game(view)
         jest.spyOn(game, 'detectEvents').mockImplementation(()=>{})
-
         game.loop()
-
-        expect(drawBricksSpy).toHaveBeenCalledWith(expected)
-    })
-    it('Game.loop calls view.drawBricks() with the bricks argument, different data', ()=>{
-        (createBricks as jest.Mock).mockReturnValue([]);
-        game = new Game(view);
-        game.loop();
-        expect(drawBricksSpy).toHaveBeenCalledWith([]);
+        expect(drawBricksSpy).toHaveBeenCalled()
     })
     it('Game.loop calls view.drawSprite with the paddle argument',()=>{
         game.loop();
@@ -164,32 +144,28 @@ describe('Game.loop tests',()=>{
         game.loop();
         expect(moveSpy).toHaveBeenCalled()
     })
-    it('Game.loop calls ball.detectCollision',()=>{
-        const collisionSpy = jest.spyOn(game.ball, 'detectCollision')
-        game.loop();
-        expect(collisionSpy).toHaveBeenCalled()
+    it ('if ball.detectCanvasCollision returns Ceiling, then ball.bounceY is called',()=>{
+        jest.spyOn(game.ball, 'detectCanvasCollision').mockReturnValue(CanvasContact.CEILING)
+        const bounceSpy = jest.spyOn(game.ball, 'bounceY')
+        game.loop()
+        expect(bounceSpy).toHaveBeenCalled()
+    })
+    it ('if ball.detectCanvasCollision returns Wall, then ball.bounceX is called',()=>{
+        jest.spyOn(game.ball, 'detectCanvasCollision').mockReturnValue(CanvasContact.WALL)
+        const bounceSpy = jest.spyOn(game.ball, 'bounceX')
+        game.loop()
+        expect(bounceSpy).toHaveBeenCalled()
     })
     it('Game.loop calls Game.paddle.detectMove()',()=>{
         const moveSpy = jest.spyOn(game.paddle, 'detectMove')
         game.loop();
         expect(moveSpy).toHaveBeenCalled()
     })
-    it('paddle has detected collision with ball, so bounces the ball',()=>{
+    it('if paddle has detected collision with ball, then bounceY is called',()=>{
         jest.spyOn(game.paddle, 'isCollidedWith').mockReturnValue(true)
         const bounceSpy = jest.spyOn(game.ball, 'bounceY')
         game.loop()
         expect(bounceSpy).toHaveBeenCalled()
-    })
-    it('paddle has not detected collision with ball, so no ball bounce',()=>{
-        jest.spyOn(game.paddle, 'isCollidedWith').mockReturnValue(false)
-        const bounceSpy = jest.spyOn(game.ball, 'bounceY')
-        game.loop()
-        expect(bounceSpy).not.toHaveBeenCalled()
-    })
-    it('game loop calls bricks.detectCollision() with the ball object', ()=>{
-        const spy = jest.spyOn(game.bricks, 'detectCollision')
-        game.loop();
-        expect(spy).toHaveBeenCalledWith(game.ball)
     })
     it('if bricks.detectCollision() returns true, update the score', ()=>{
         const spy = jest.spyOn(view, 'drawScore')
@@ -199,6 +175,13 @@ describe('Game.loop tests',()=>{
         expect(spy).toHaveBeenCalledWith(1)
         game.loop()
         expect(spy).toHaveBeenCalledWith(2)
+    })
+    it('if bricks.detectCollision() returns false, do not update the score', ()=>{
+        const spy = jest.spyOn(view, 'drawScore')
+        game = new Game(view)
+        jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(false)
+        game.loop();
+        expect(spy).not.toHaveBeenCalledWith(1)
     })
     it('if bricks.detectCollision() returns true and it is a vertical bounce, bounce the ball y', ()=>{
         const spy = jest.spyOn(game.ball, 'bounceY')

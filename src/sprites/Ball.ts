@@ -1,27 +1,28 @@
 import {Sprite} from "./Sprite";
-import { Vector} from "../types";
-import BALL_IMAGE from "../images/ball.png"
+import {Position} from "../types";
+import BALL_IMAGE from "../images/ball.png";
+import {CanvasContact} from "../enums";
 
 export class Ball extends Sprite{
     private _speed: Speed
     private readonly canvasWidth: number
     public sleep = false
 
-    constructor(position: Vector, size: number, canvasWidth: number,  speed: number) {
+    constructor(position: Position, size: number, canvasWidth: number, speed: number) {
         super(BALL_IMAGE, position, {width: size, height: size});
         this._speed = new Speed(speed);
         this.canvasWidth =canvasWidth
     }
-
-    detectCollision(){
+// Functions should do something or answer something, but not both
+    detectCanvasCollision(): CanvasContact{
         if (this.position.y <= 0){
-            console.log(this)
-            this.bounceY()
+            return CanvasContact.CEILING
         }
         if (this.position.x <= 0 || this.position.x + this.width >= this.canvasWidth) {
-            console.log('calling ball.bounce x from ball.detectCollision')
             this.bounceX()
+            return CanvasContact.WALL
         }
+        return CanvasContact.NO_CONTACT
     }
 
     get speed(): number {

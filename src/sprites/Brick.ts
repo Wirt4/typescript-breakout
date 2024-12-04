@@ -1,5 +1,5 @@
 import {Sprite} from "./Sprite";
-import { Vector} from "../types";
+import { Position} from "../types";
 import {BRICK_HEIGHT, BRICK_WIDTH} from "../setup";
 import {Ball} from "./Ball";
 
@@ -8,7 +8,7 @@ export class Brick extends Sprite{
     private _verticalCollision =  false
     private _cornerTouch = false
 
-    constructor(imgSrc: string,  coords: Vector, energy: number = 1) {
+    constructor(imgSrc: string, coords: Position, energy: number = 1) {
         super(imgSrc, coords, {width: BRICK_WIDTH, height: BRICK_HEIGHT});
         this.energy = energy;
     }

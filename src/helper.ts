@@ -12,7 +12,7 @@ import GREEN_BRICK_IMAGE from "./images/brick-green.png";
 import YELLOW_BRICK_IMAGE from "./images/brick-yellow.png";
 import PURPLE_BRICK_IMAGE from "./images/brick-purple.png";
 import {Brick} from "./sprites/Brick";
-import {Vector} from "./types";
+import {Position} from "./types";
 
 export function createBricks(): Brick[] {
     return LEVEL.reduce((accumulated, element, ndx)=>{
@@ -22,7 +22,7 @@ export function createBricks(): Brick[] {
     },[] as Brick[] );
 }
 
-function adjustedCoords(i: number): Vector{
+function adjustedCoords(i: number): Position{
     const x = STAGE_PADDING + (i%STAGE_COLS) * (BRICK_WIDTH + BRICK_PADDING)
     const y = STAGE_PADDING + Math.floor(i/STAGE_COLS) * (BRICK_HEIGHT + BRICK_PADDING)
     return {x, y}

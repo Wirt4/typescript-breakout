@@ -1,12 +1,12 @@
-import {Size, Vector} from "../types";
+import {Size, Position} from "../types";
 
 export class Sprite {
-    public position: Vector;
+    public position: Position;
     private readonly _w: number;
     private readonly _h: number;
     protected _img: HTMLImageElement;
 
-    constructor(imageSrc: string, startPosition:Vector, size: Size) {
+    constructor(imageSrc: string, startPosition:Position, size: Size) {
         this._img = new Image();
         this.position = startPosition
         this._w = size.width;
@@ -64,7 +64,7 @@ export class Sprite {
         return this._h
     }
 
-    get centerPoint():Vector{
+    get centerPoint():Position{
         return {x: this.position.x + this.width/2, y: this.position.y + this.height/2};
     }
 }
