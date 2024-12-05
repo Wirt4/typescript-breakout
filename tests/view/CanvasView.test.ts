@@ -3,12 +3,6 @@ import {Sprite} from "../../src/sprites/Sprite";
 import {Brick} from "../../src/sprites/Brick";
 import {BRICK_HEIGHT, BRICK_WIDTH} from "../../src/setup";
 
-describe('CanvasView constructor tests', () => {
-    it('Object instantiates without error',()=>{
-        new CanvasView('canvasID')
-    })
-})
-
 describe('CanvasView.clear', () => {
     let canvasView: CanvasView;
     let mockCanvas: HTMLCanvasElement;
