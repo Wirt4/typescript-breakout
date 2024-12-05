@@ -84,16 +84,16 @@ describe('Game.start tests',()=>{
         expect(game.score).toEqual(0)
     })
     it('expect view.drawInfo to have been called with an empty string',()=>{
-        const spy = jest.spyOn(view, 'drawInfo').mockImplementation(()=>{})
+        const drawInfoSpy = jest.spyOn(view, 'drawInfo').mockImplementation(()=>{})
         game = new Game(view)
         game.start()
-        expect(spy).toHaveBeenCalledWith("")
+        expect(drawInfoSpy).toHaveBeenCalledWith("")
     })
     it('expect view.drawScore to have been called with 0',()=>{
-        const spy = jest.spyOn(view, 'drawScore').mockImplementation(()=>{})
+        const drawScoreSpy = jest.spyOn(view, 'drawScore').mockImplementation(()=>{})
         game = new Game(view)
         game.start()
-        expect(spy).toHaveBeenCalledWith(0)
+        expect(drawScoreSpy).toHaveBeenCalledWith(0)
     })
     it('expect game.start to finish by calling game.loop',()=>{
         const loopSpy = jest.spyOn(game, 'loop')
