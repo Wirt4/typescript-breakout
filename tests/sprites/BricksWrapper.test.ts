@@ -34,30 +34,25 @@ describe('detectCollision tests', () => {
         expect(wrapper.detectCollision(ball)).toEqual(true);
     })
     it('if the colliding brick has a true y collision, then the method returns true',()=>{
-        jest.spyOn(brick1, 'hasCollision').mockReturnValue(false)
-        jest.spyOn(brick2, 'hasCollision').mockReturnValue(false)
-        jest.spyOn(brick3, 'hasCollision').mockReturnValue(true)
-        jest.spyOn(brick3, 'isVerticalCollision').mockReturnValue(true)
-        wrapper = new BricksWrapper([brick1, brick2, brick3])
+        jest.spyOn(brick1, 'hasCollision').mockReturnValue(true)
+        jest.spyOn(brick2, 'isVerticalCollision').mockReturnValue(true)
+        wrapper = new BricksWrapper([brick1])
         ball = new Ball(startPosition, ballSize, canvasSize, ballSpeed)
         wrapper.detectCollision(ball)
         expect(wrapper.isVerticalCollision()).toEqual(true);
     })
     it('if the colliding brick has a true corner collision, then the method returns true',()=>{
-        jest.spyOn(brick1, 'hasCollision').mockReturnValue(false)
-        jest.spyOn(brick2, 'hasCollision').mockReturnValue(false)
-        jest.spyOn(brick3, 'hasCollision').mockReturnValue(true)
-        jest.spyOn(brick3, 'isCornerCollision').mockReturnValue(true)
+        jest.spyOn(brick1, 'hasCollision').mockReturnValue(true)
+        jest.spyOn(brick1, 'isCornerCollision').mockReturnValue(true)
+        wrapper = new BricksWrapper([brick1])
         ball = new Ball(startPosition, ballSize, canvasSize, ballSpeed)
         wrapper.detectCollision(ball)
         expect(wrapper.isCornerCollision()).toEqual(true);
     })
     it('if the colliding brick has a false corner collision, then the method returns false',()=>{
-        jest.spyOn(brick1, 'hasCollision').mockReturnValue(false)
-        jest.spyOn(brick2, 'hasCollision').mockReturnValue(false)
-        jest.spyOn(brick3, 'hasCollision').mockReturnValue(true)
-        jest.spyOn(brick3, 'isCornerCollision').mockReturnValue(false)
-        wrapper = new BricksWrapper([brick1, brick2, brick3])
+        jest.spyOn(brick1, 'hasCollision').mockReturnValue(true)
+        jest.spyOn(brick1, 'isCornerCollision').mockReturnValue(false)
+        wrapper = new BricksWrapper([brick1])
         ball = new Ball(startPosition, ballSize, canvasSize, ballSpeed)
         wrapper.detectCollision(ball)
         expect(wrapper.isCornerCollision()).toEqual(false);
