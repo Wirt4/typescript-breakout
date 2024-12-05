@@ -91,7 +91,9 @@ export class Game {
             this._score ++
             this._view.drawScore(this._score)
             this._ball.bounceY()
-        }else if (this._paddle.isCollidedWith(this.ball)){
+            return
+        }
+        if (this._paddle.isCollidedWith(this.ball)){
             this._ball.bounceY()
         }
     }
