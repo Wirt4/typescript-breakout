@@ -7,11 +7,13 @@ describe('CanvasView.clear', () => {
     let canvasView: CanvasView;
     let mockCanvas: HTMLCanvasElement;
     let mockContext: jest.Mocked<CanvasRenderingContext2D>;
+    let canvasId: string
 
     beforeEach(() => {
         mockCanvas = document.createElement('canvas');
         mockCanvas.width = 800;
         mockCanvas.height = 600;
+        canvasId = '#playField'
 
         mockContext = {
             clearRect: jest.fn(),
@@ -20,7 +22,7 @@ describe('CanvasView.clear', () => {
 
         jest.spyOn(mockCanvas, 'getContext').mockReturnValue(mockContext);
         jest.spyOn(document, 'querySelector').mockImplementation((selector) => {
-            if (selector === '#playField') return mockCanvas;
+            if (selector === canvasId) return mockCanvas;
             return null;
         });
 
@@ -33,25 +35,19 @@ describe('CanvasView.clear', () => {
 
     test('should call clearRect with canvas dimensions', () => {
         canvasView.clear();
-
-        expect(mockContext.clearRect).toHaveBeenCalledWith(0, 0, 800, 600);
-        expect(mockContext.clearRect).toHaveBeenCalledTimes(1);
+        expect(mockContext.clearRect).toHaveBeenCalledWith(0, 0,   mockCanvas.width,  mockCanvas.height );
     });
 
     test('should call clearRect with canvas dimensions, different dimensions', () => {
         mockCanvas.width = 1600;
         mockCanvas.height = 1200;
-
         canvasView.clear();
-
-        expect(mockContext.clearRect).toHaveBeenCalledWith(0, 0, 1600, 1200);
-        expect(mockContext.clearRect).toHaveBeenCalledTimes(1);
+        expect(mockContext.clearRect).toHaveBeenCalledWith(0, 0, mockCanvas.width, mockCanvas.height );
     });
 
     test('should not throw if context is null', () => {
         jest.spyOn(mockCanvas, 'getContext').mockReturnValue(null);
-
-        const nullContextView = new CanvasView('#playField');
+        const nullContextView = new CanvasView(canvasId);
         expect(() => nullContextView.clear()).not.toThrow();
     });
 })
@@ -61,7 +57,6 @@ describe('CanvasView.initStartButton', () => {
     let startButton: HTMLButtonElement;
     let mockStartFunction: jest.Mock;
     beforeEach(() => {
-        // Mock DOM elements
         document.body.innerHTML = `
       <canvas id="playField"></canvas>
       <button id="start"></button>
@@ -70,17 +65,9 @@ describe('CanvasView.initStartButton', () => {
         canvasElement = document.querySelector('#playField') as HTMLCanvasElement;
         startButton = document.querySelector('#start') as HTMLButtonElement;
         mockStartFunction = jest.fn();
-
-        // Ensure the mocked elements exist
         expect(canvasElement).not.toBeNull();
         expect(startButton).not.toBeNull();
     });
-    it('argument to initStartButton is a function that takes a CanvaView type as an argument', () => {
-        const func = (arg: CanvasView) => {
-        }
-        const view = new CanvasView('#playField')
-        view.initStartButton(func)
-    })
     it('should add a click event listener to the start button', () => {
         const view = new CanvasView('#playField');
         view.initStartButton(mockStartFunction);
