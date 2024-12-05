@@ -7,6 +7,7 @@ export class Brick extends Sprite{
     public energy: number;
     private _verticalCollision =  false
     private _cornerTouch = false
+    private _hasCollision = false
 
     constructor(imgSrc: string, coords: Position, energy: number = 1) {
         super(imgSrc, coords, {width: BRICK_WIDTH, height: BRICK_HEIGHT});
@@ -50,33 +51,14 @@ export class Brick extends Sprite{
             this.lowerLeftTouch(ball) || this.lowerRightTouch(ball)
     }
 
-    isCollidingWith(ball: Ball):boolean{
+    detectCollision(ball: Ball):void{
         this._verticalCollision = ball.centerX >= this.position.x && ball.centerX <= this.rightMostX
         const inX = this.isInXRange(ball)
-        const ans = inX && this.isInYRange(ball);
+        this._hasCollision = inX && this.isInYRange(ball);
 
-        if (ans){
+        if (this._hasCollision) {
             this.setCornerTouch(ball);
-            if(this.isInside(ball) ){
-               if (ball.centerPoint.y < this.centerPoint.y){
-                   ball.position.y = ball.position.y - ball.height - 1
-               }else{
-                   ball.position.y = this.bottomMostY + 1
-               }
-            }
-            if (ball.position.x == this.rightMostX && ball.position.y== this.bottomMostY){
-                ball.position.x ++
-                ball.position.y ++
-            }
         }
-        return ans;
-    }
-
-    private isInside(ball: Ball){
-        if (ball.position.x < this.rightMostX && ball.rightMostX > this.position.x){
-            return ball.position.y < this.bottomMostY && ball.bottomMostY > ball.position.y
-        }
-        return false
     }
 
     isVerticalCollision(){
@@ -84,7 +66,11 @@ export class Brick extends Sprite{
     }
 
     isInYRange(ball:Ball):boolean{
-        return ball.position.y <= this.bottomMostY && ball.bottomMostY >= ball.position.y
+        return ball.position.y <= this.bottomMostY && ball.bottomMostY >= this.position.y
+    }
+
+    hasCollision():boolean{
+        return this._hasCollision
     }
 }
 

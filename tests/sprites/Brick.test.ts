@@ -118,14 +118,12 @@ describe('isVerticalCollision tests',()=>{
     it('ball hits brick from below',()=>{
         const brick = new Brick('stub',{x:0,y:0}, 3);
         const ball = new Ball({x:2, y:brick.height}, 5, 400, 1);
-
         brick.detectCollision(ball)
         expect(brick.isVerticalCollision()).toEqual(true);
     })
     it('ball hits brick from side',()=>{
         const brick = new Brick('stub',{x:5,y:0}, 3);
         const ball = new Ball({x:0, y:1}, 5, 400, 1);
-
         brick.detectCollision(ball)
         expect(brick.isVerticalCollision()).toEqual(false);
     })
