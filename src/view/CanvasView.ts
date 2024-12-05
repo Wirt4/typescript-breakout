@@ -3,7 +3,7 @@ import {Brick} from "../sprites/Brick";
 
 export class CanvasView {
     canvas: HTMLCanvasElement;
-    private readonly context: CanvasRenderingContext2D | null;
+    context: CanvasRenderingContext2D | null;
     private start: HTMLObjectElement | null;
     private scoreDisplay: HTMLObjectElement | null;
     private infoDisplay: HTMLObjectElement | null;
@@ -59,8 +59,8 @@ export class CanvasView {
         if (this.context && sprite.hasValidImage()) {
             this.context.drawImage(
                 sprite.image,
-                sprite.x,
-                sprite.y,
+                sprite.position.x,
+                sprite.position.y,
                 sprite.width,
                 sprite.height
             );

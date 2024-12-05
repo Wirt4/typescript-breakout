@@ -1,5 +1,5 @@
 import {Sprite} from "./Sprite";
-import { Vector} from "../types";
+import { Position} from "../types";
 import {BRICK_HEIGHT, BRICK_WIDTH} from "../setup";
 import {Ball} from "./Ball";
 
@@ -7,8 +7,9 @@ export class Brick extends Sprite{
     public energy: number;
     private _verticalCollision =  false
     private _cornerTouch = false
+    private _hasCollision = false
 
-    constructor(imgSrc: string,  coords: Vector, energy: number = 1) {
+    constructor(imgSrc: string, coords: Position, energy: number = 1) {
         super(imgSrc, coords, {width: BRICK_WIDTH, height: BRICK_HEIGHT});
         this.energy = energy;
     }
@@ -22,27 +23,27 @@ export class Brick extends Sprite{
     }
 
     private upperLeftTouch(ball: Ball):boolean{
-        const yDiff = this.getDiff(ball.bottomMostY, this.y)
-        const xDiff = this.getDiff(ball.rightMostX, this.x)
-        return ball.bottomMostY >= this.y && ball.rightMostX >= this.x && yDiff == xDiff
+        const yDiff = this.getDiff(ball.bottomMostY, this.position.y)
+        const xDiff = this.getDiff(ball.rightMostX, this.position.x)
+        return ball.bottomMostY >= this.position.y && ball.rightMostX >= this.position.x && yDiff == xDiff
     }
 
     private upperRightTouch(ball: Ball):boolean{
-        const yDiff = this.getDiff(ball.bottomMostY, this.y)
-        const xDiff = this.getDiff(ball.x, this.rightMostX)
-        return ball.bottomMostY >= this.y && ball.x <= this.rightMostX && yDiff == xDiff
+        const yDiff = this.getDiff(ball.bottomMostY, this.position.y)
+        const xDiff = this.getDiff(ball.position.x, this.rightMostX)
+        return ball.bottomMostY >= this.position.y && ball.position.x <= this.rightMostX && yDiff == xDiff
     }
 
     private lowerLeftTouch(ball: Ball):boolean{
-        const yDiff = this.getDiff(ball.y, this.bottomMostY)
-        const xDiff = this.getDiff(ball.rightMostX, this.x)
-        return ball.y <= this.bottomMostY && ball.rightMostX >= this.x && yDiff == xDiff
+        const yDiff = this.getDiff(ball.position.y, this.bottomMostY)
+        const xDiff = this.getDiff(ball.rightMostX, this.position.x)
+        return ball.position.y <= this.bottomMostY && ball.rightMostX >= this.position.x && yDiff == xDiff
     }
 
     private lowerRightTouch(ball: Ball):boolean{
-        const xDiff = this.getDiff(ball.x, this.rightMostX)
-        const yDiff = this.getDiff(ball.y, this.bottomMostY)
-        return ball.x <= this.rightMostX && ball.y <= this.bottomMostY && xDiff == yDiff
+        const xDiff = this.getDiff(ball.position.x, this.rightMostX)
+        const yDiff = this.getDiff(ball.position.y, this.bottomMostY)
+        return ball.position.x <= this.rightMostX && ball.position.y <= this.bottomMostY && xDiff == yDiff
     }
 
     private setCornerTouch(ball:Ball):void{
@@ -50,34 +51,14 @@ export class Brick extends Sprite{
             this.lowerLeftTouch(ball) || this.lowerRightTouch(ball)
     }
 
-    isCollidingWith(ball: Ball):boolean{
-        this._verticalCollision = ball.centerX >= this.x && ball.centerX <= this.rightMostX
+    detectCollision(ball: Ball):void{
+        this._verticalCollision = ball.centerX >= this.position.x && ball.centerX <= this.rightMostX
         const inX = this.isInXRange(ball)
-        const ans = inX && this.isInYRange(ball);
+        this._hasCollision = inX && this.isInYRange(ball);
 
-        if (ans){
+        if (this._hasCollision) {
             this.setCornerTouch(ball);
-            if(this.isInside(ball) ){
-               if (ball.centerPoint.y < this.centerPoint.y){
-                   ball.y = this.y - ball.height - 1
-               }else{
-                   ball.y = this.y + this.height + 1
-               }
-            }
-            if (ball.x == this.rightMostX && ball.y== this.bottomMostY){
-                ball.x ++
-                ball.y ++
-            }
         }
-        console.log('brick.isCollidingWith:', ans)
-        return ans;
-    }
-
-    private isInside(ball: Ball){
-        if (ball.x < this.rightMostX && ball.rightMostX > this.x){
-            return ball.y < this.bottomMostY && ball.bottomMostY > this.y
-        }
-        return false
     }
 
     isVerticalCollision(){
@@ -85,7 +66,11 @@ export class Brick extends Sprite{
     }
 
     isInYRange(ball:Ball):boolean{
-        return ball.y <= this.bottomMostY && ball.bottomMostY >= this.y
+        return ball.position.y <= this.bottomMostY && ball.bottomMostY >= this.position.y
+    }
+
+    hasCollision():boolean{
+        return this._hasCollision
     }
 }
 

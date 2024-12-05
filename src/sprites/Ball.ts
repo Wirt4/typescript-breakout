@@ -1,86 +1,76 @@
 import {Sprite} from "./Sprite";
-import { Vector} from "../types";
-import BALL_IMAGE from "../images/ball.png"
+import {Position} from "../types";
+import BALL_IMAGE from "../images/ball.png";
+import {CanvasContact} from "../enums";
 
 export class Ball extends Sprite{
-    private _speed: Speed
+    private velocity: Velocity
     private readonly canvasWidth: number
-    public sleep = false
 
-    constructor(position: Vector, size: number, canvasWidth: number,  speed: number) {
+    constructor(position: Position, size: number, canvasWidth: number, speed: number) {
         super(BALL_IMAGE, position, {width: size, height: size});
-        this._speed = new Speed(speed);
+        this.velocity = new Velocity(speed);
         this.canvasWidth =canvasWidth
     }
 
-    detectCollision(){
-        if (this.y <= 0){
-            console.log(this)
-            this.bounceY()
+    hasCanvasCollision(): CanvasContact{
+        if (this.position.y <= 0){
+            return CanvasContact.CEILING
         }
-        if (this.x <= 0 || this.x + this.width >= this.canvasWidth) {
-            console.log('calling ball.bounce x from ball.detectCollision')
-            this.bounceX()
+
+        if (this.position.x <= 0 || this.rightMostX >= this.canvasWidth) {
+            return CanvasContact.WALL
         }
+
+        return CanvasContact.NO_CONTACT
     }
 
     get speed(): number {
-        return Math.abs(this._speed.x)
+        return this.velocity.absoluteSpeed
     }
 
     get centerX():number{
-        return this.x + this.width/2
+        return this.position.x + this.width/2
     }
-
 
     move():void{
-        if(!this.sleep){
-            this.x += this._speed.x;
-            this.y += this._speed.y;
-        }
-        this.sleep = false
+        this.position = this.velocity.nextPosition(this.position)
     }
 
     bounceY():void{
-        console.log('bounceY called')
-        this._speed.bounceY()
+        this.velocity.bounceY()
     }
 
     bounceX():void{
-        console.log('bounceX called')
-        this._speed.bounceX()
+        this.velocity.bounceX()
     }
-
-    bounceXY():void{
-        console.log('calling BounceX fro bounceXY')
-        this.bounceX()
-        this.bounceY()
-    }
-
 }
 
-class Speed{
-    private  _xSpeed:number
-    private _ySpeed:number
+class Velocity{
+    private xComponent:number
+    private yComponent:number
 
     constructor(speed: number){
-        this._xSpeed = speed;
-        this._ySpeed = -speed
+        this.xComponent = speed;
+        this.yComponent = -speed
     }
 
-    get x():number{
-        return this._xSpeed;
+    get absoluteSpeed():number{
+        return Math.abs(this.xComponent)
     }
 
-    get y(): number{
-        return this._ySpeed;
-    }
-
-    bounceY():void{
-        this._ySpeed *= -1
+    nextPosition(initialPostition: Position):Position{
+        return {
+            x: initialPostition.x + this.xComponent,
+            y: initialPostition.y + this.yComponent
+        };
     }
 
     bounceX():void{
-        this._xSpeed *= -1
+        this.xComponent *= -1
+    }
+
+    bounceY():void{
+        this.yComponent *= -1
     }
 }

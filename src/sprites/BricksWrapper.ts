@@ -12,9 +12,9 @@ export class BricksWrapper{
 
     detectCollision(ball: Ball):boolean{
         if (!this._bricks?.length) return false
-
         for (let i=0; i < this._bricks.length; i++){
-            if (this._bricks[i].isCollidingWith(ball)){
+            this._bricks[i].detectCollision(ball);
+            if (this._bricks[i].hasCollision()){
                 this._isVertical = this._bricks[i].isVerticalCollision()
                 this._isCorner = this._bricks[i].isCornerCollision()
                 return true
