@@ -243,6 +243,14 @@ describe('CanvasView.drawBricks',()=>{
     let canvasView: CanvasView;
     let mockCanvas: HTMLCanvasElement;
     let mockContext: jest.Mocked<CanvasRenderingContext2D>;
+    let brickPosition: Position
+    let brick: Brick
+    let brickImage: string
+
+    const makeBrick=()=>{
+        brick = new Brick(brickImage, brickPosition)
+        jest.spyOn(brick, 'hasValidImage').mockReturnValue(true)
+    }
 
     beforeEach(()=>{
         mockCanvas = document.createElement('canvas');
@@ -251,11 +259,17 @@ describe('CanvasView.drawBricks',()=>{
             drawImage: jest.fn(),
         } as unknown as jest.Mocked<CanvasRenderingContext2D>;
 
+        const canvasTag = "#playField"
+
         jest.spyOn(mockCanvas, 'getContext').mockReturnValue(mockContext);
         jest.spyOn(document, 'querySelector').mockImplementation((selector) => {
-            if (selector === '#playField') return mockCanvas;
+            if (selector === canvasTag) return mockCanvas;
             return null;
         });
+
+        canvasView = new CanvasView('#playField');
+        brickPosition = {x: 5, y: 8};
+        brickImage = './brick-image2.png'
 
     })
 
@@ -263,28 +277,21 @@ describe('CanvasView.drawBricks',()=>{
         jest.restoreAllMocks()
     })
     it('if bricks Array has one brick, then draw the contents of that brick to canvas',()=>{
-        canvasView = new CanvasView('#playField');
-        const pos = {x: 0, y: 0};
-        const brick = new Brick('./brick-image.png', pos)
-        jest.spyOn(brick, 'hasValidImage').mockReturnValue(true)
+        brickPosition = {x: 0, y: 0};
+        brickImage = './brick-image.png'
+        makeBrick()
         const bricks = [brick]
         canvasView.drawBricks(bricks)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('brick-image.png')}), 0, 0, BRICK_WIDTH, BRICK_HEIGHT);
     })
     it('if bricks Array has one brick, then draw the contents of that brick to canvas, different data',()=>{
-        canvasView = new CanvasView('#playField');
-        const pos = {x: 5, y: 8};
-        const brick = new Brick('./brick-image2.png',pos)
-        jest.spyOn(brick, 'hasValidImage').mockReturnValue(true)
+        makeBrick()
         const bricks = [brick]
         canvasView.drawBricks(bricks)
         expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('brick-image2.png')}), 5, 8, BRICK_WIDTH, BRICK_HEIGHT);
     })
     it('if bricks Array has three bricks, then draw three bricks to canvas',()=>{
-        canvasView = new CanvasView('#playField');
-        const pos = {x: 5, y: 8};
-        const brick = new Brick('./brick-image2.png',pos)
-        jest.spyOn(brick, 'hasValidImage').mockReturnValue(true)
+        makeBrick()
         const bricks = [brick, brick, brick]
         canvasView.drawBricks(bricks)
         expect(mockContext.drawImage).toHaveBeenCalledTimes(3)
