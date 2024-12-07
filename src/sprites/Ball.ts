@@ -4,12 +4,12 @@ import BALL_IMAGE from "../images/ball.png";
 import {CanvasContact} from "../enums";
 
 export class Ball extends Sprite{
-    private velocity: Velocity
+    private _speed: Position;
     private readonly canvasWidth: number
 
-    constructor(position: Position, size: number, canvasWidth: number, speed: number) {
+    constructor(position: Position, size: number, canvasWidth: number, speed: Position) {
         super(BALL_IMAGE, position, {width: size, height: size});
-        this.velocity = new Velocity(speed);
+        this._speed = speed
         this.canvasWidth =canvasWidth
     }
 
@@ -26,7 +26,7 @@ export class Ball extends Sprite{
     }
 
     get speed(): number {
-        return this.velocity.absoluteSpeed
+        return Math.abs(this._speed.x)
     }
 
     get centerX():number{
@@ -34,43 +34,16 @@ export class Ball extends Sprite{
     }
 
     move():void{
-        this.position = this.velocity.nextPosition(this.position)
+        this.position.x += this._speed.x
+        this.position.y += this._speed.y
     }
 
     bounceY():void{
-        this.velocity.bounceY()
+        this._speed.y *= -1
     }
 
     bounceX():void{
-        this.velocity.bounceX()
+        this._speed.x *= -1
     }
 }
 
-class Velocity{
-    private xComponent:number
-    private yComponent:number
-
-    constructor(speed: number){
-        this.xComponent = speed;
-        this.yComponent = -speed
-    }
-
-    get absoluteSpeed():number{
-        return Math.abs(this.xComponent)
-    }
-
-    nextPosition(initialPostition: Position):Position{
-        return {
-            x: initialPostition.x + this.xComponent,
-            y: initialPostition.y + this.yComponent
-        };
-    }
-
-    bounceX():void{
-        this.xComponent *= -1
-    }
-
-    bounceY():void{
-        this.yComponent *= -1
-    }
-}

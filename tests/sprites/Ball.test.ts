@@ -7,14 +7,14 @@ describe('Ball constructor', () => {
     let startPosition: Position;
     let diameter: number;
     let canvasWidth:number
-    let speed: number
+    let speed: Position;
     let ball: Ball
 
     beforeEach(() => {
         startPosition = {x:0, y:0};
         diameter = 5
         canvasWidth =1200
-        speed =6
+        speed ={x:6, y:-6}
         ball = new Ball(startPosition, diameter, canvasWidth, speed)
     })
     it('Ball should be an instance of a Sprite',()=>{
@@ -26,13 +26,13 @@ describe('move tests',()=>{
     let startPosition: Position;
     let diameter: number;
     let canvasWidth:number
-    let speed: number
+    let speed: Position
     let ball: Ball
     beforeEach(() => {
         startPosition = {x:10, y:10};
         diameter = 5
         canvasWidth =1200
-        speed = 5
+        speed = {x: 5, y:-5}
         ball = new Ball(startPosition, diameter, canvasWidth, speed)
     })
     it('ball instantiates with the correct position',()=>{
@@ -44,7 +44,7 @@ describe('move tests',()=>{
     })
     it('starting angle of the ball is 45 degrees: different starting data',()=>{
         startPosition = {x:25, y:30}
-        speed = 7
+        speed = {x: 7, y:-7}
         ball = new Ball(startPosition, diameter, canvasWidth, speed)
         const expectedPosition = {x:32, y:23}
         ball.move()
@@ -52,7 +52,7 @@ describe('move tests',()=>{
     })
     it('call to bounceY reverses the vertical direction',()=>{
         startPosition = {x:25, y:30}
-        speed = 7
+        speed = {x: 7, y:-7}
         ball = new Ball(startPosition, diameter, canvasWidth, speed)
         const expectedPosition = {x:32, y:37}
         ball.bounceY()
@@ -61,7 +61,7 @@ describe('move tests',()=>{
     })
     it('call to bounceX reversed the horizontal direction',()=>{
         startPosition = {x:25, y:30}
-        speed = 7
+        speed = {x: 7, y:-7}
         ball = new Ball(startPosition, diameter, canvasWidth, speed)
         const expectedPosition = {x:18, y:23}
         ball.bounceX()
@@ -74,12 +74,12 @@ describe('detectCanvasCollision tests', () => {
     let canvasWidth: number
     let startPosition: Position
     let diameter: number
-    let speed: number
+    let speed: Position
     let ball: Ball
         beforeEach(()=>{
             canvasWidth =  1200
             diameter = 5
-            speed = 7
+            speed = {x: 7, y:-7}
         })
     it('If ball forms a tangent when it hits the ceiling, then it is a collision',()=>{
         startPosition = {x:25, y:0}

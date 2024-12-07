@@ -167,14 +167,14 @@ describe('isCollideWith',()=>{
     let canvasSize: Size
     let paddleStartXPosition: number
     let paddleSpeed: number
-    let ballSpeed: number
+    let ballSpeed: Position
     beforeEach(() => {
         mockedSetup = require("../../src/setup");
         ballStartPosition = {x:45, y:1180}
         ballSize = 5
         canvasSize = {width: 50, height:1200}
         paddleStartXPosition = 40
-        ballSpeed = 8
+        ballSpeed = {x: 8, y:-8}
         paddleSpeed = 2
         mockedSetup.PADDLE_WIDTH = 20
         mockedSetup.PADDLE_HEIGHT = 5

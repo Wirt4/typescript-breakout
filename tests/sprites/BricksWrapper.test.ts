@@ -11,13 +11,13 @@ describe('detectCollision tests', () => {
     let brick3:Brick
     let ballSize: number
     let canvasSize: number
-    let ballSpeed: number
+    let ballSpeed: Position
     let ball: Ball
     beforeEach(() => {
         startPosition = {x:0, y:0};
         ballSize = 5
         canvasSize = 400
-        ballSpeed = 1
+        ballSpeed = {x: 1, y: -1}
         brick1 = new Brick('stub',startPosition)
         brick2 = new Brick('stub',startPosition)
         brick3 = new Brick('stub',startPosition)

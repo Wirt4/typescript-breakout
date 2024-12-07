@@ -25,7 +25,8 @@ export class Game {
         this._view = view;
         this._paddle = new Paddle(PADDLE_STARTX, this.canvasSize(), PADDLE_SPEED)
         const ballPosition = {x: BALL_STARTX, y: BALL_STARTY};
-        this._ball = new Ball(ballPosition, BALL_SIZE, this.canvasSize().width, BALL_SPEED)
+        let speed = {x: BALL_SPEED, y: -BALL_SPEED};
+        this._ball = new Ball(ballPosition, BALL_SIZE, this.canvasSize().width, speed)
     }
 
     private canvasSize(): Size{
