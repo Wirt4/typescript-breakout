@@ -31,7 +31,7 @@ describe('detectCollision tests', () => {
         jest.spyOn(brick2, 'hasCollision').mockReturnValue(Contact.NO_CONTACT)
         jest.spyOn(brick3, 'hasCollision').mockReturnValue(Contact.NO_CONTACT)
         wrapper = new BricksWrapper([brick1, brick2, brick3])
-        ball = new Ball(startPosition, ballSize, canvasSize, ballSpeed)
+        ball = new Ball(startPosition, ballSize,  ballSpeed)
         expect(wrapper.detectCollision(ball)).toEqual(Contact.SIDE);
     })
     it('the array contains a TOP_OR_BOTTOM collision, return TOP_OR_BOTTOM',()=>{
@@ -39,7 +39,7 @@ describe('detectCollision tests', () => {
         jest.spyOn(brick2, 'hasCollision').mockReturnValue(Contact.TOP_OR_BOTTOM)
         jest.spyOn(brick3, 'hasCollision').mockReturnValue(Contact.NO_CONTACT)
         wrapper = new BricksWrapper([brick1, brick2, brick3])
-        ball = new Ball(startPosition, ballSize, canvasSize, ballSpeed)
+        ball = new Ball(startPosition, ballSize,  ballSpeed)
         expect(wrapper.detectCollision(ball)).toEqual(Contact.TOP_OR_BOTTOM);
     })
 
@@ -52,7 +52,7 @@ describe('collisionOverLap tests',()=>{
         const distance = 3
         jest.spyOn(brick, 'collisionOverlapDistance').mockReturnValue(distance)
         const wrapper = new BricksWrapper([brick])
-        const ball = new Ball({x:0, y:0}, 3, 42, {xComponent:1, yComponent:-1})
+        const ball = new Ball({x:0, y:0}, 3,  {xComponent:1, yComponent:-1})
         wrapper.detectCollision(ball)
         expect(wrapper.collisionOverlap()).toEqual(distance)
     })

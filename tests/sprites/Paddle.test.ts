@@ -179,34 +179,34 @@ describe('isCollideWith',()=>{
         mockedSetup.STAGE_PADDING = 10
     })
     it('the paddle line touches the ball',()=>{
-        ball = new Ball(ballStartPosition, ballSize,canvasSize.width, ballSpeed)
+        ball = new Ball(ballStartPosition, ballSize, ballSpeed)
         paddle = new Paddle(paddleStartXPosition, canvasSize, paddleSpeed);
         expect(paddle.isCollidedWith(ball)).toEqual(true)
     })
     it('the paddle line does not intersect the ball, ball is too far right',()=>{
         canvasSize = {width: 500, height:1200}
         ballStartPosition = {x:400, y:1180}
-        ball = new Ball(ballStartPosition, ballSize, canvasSize.width, ballSpeed)
+        ball = new Ball(ballStartPosition, ballSize, ballSpeed)
         paddle = new Paddle(paddleStartXPosition, canvasSize, paddleSpeed);
         expect(paddle.isCollidedWith(ball)).toEqual(false)
     })
     it('the paddle line does not intersect the ball, ball is too far left',()=>{
         ballStartPosition = {x:5, y:1185}
         canvasSize = {width: 500, height:1200}
-        ball = new Ball(ballStartPosition, ballSize, canvasSize.width, ballSpeed)
+        ball = new Ball(ballStartPosition, ballSize,  ballSpeed)
         paddle = new Paddle(paddleStartXPosition, canvasSize, paddleSpeed);
         expect(paddle.isCollidedWith(ball)).toEqual(false)
     })
     it('edge case, ball is directly above panel',()=>{
         ballStartPosition={x:45, y:2}
-        ball = new Ball(ballStartPosition, ballSize, canvasSize.width, ballSpeed)
+        ball = new Ball(ballStartPosition, ballSize,  ballSpeed)
         paddle = new Paddle(40, canvasSize, paddleSpeed);
         expect(paddle.isCollidedWith(ball)).toEqual(false)
     })
     it('edge case, ball is directly under panel',()=>{
         ballStartPosition = {x:45, y:1300}
         canvasSize = {width: 50, height:1200}
-        ball = new Ball(ballStartPosition, ballSize, canvasSize.width, ballSpeed)
+        ball = new Ball(ballStartPosition, ballSize, ballSpeed)
         paddle = new Paddle(paddleStartXPosition, canvasSize, paddleSpeed);
         expect(paddle.isCollidedWith(ball)).toEqual(false)
     })
@@ -217,7 +217,7 @@ describe('isCollideWith',()=>{
         ballStartPosition= {x:45, y:1146}
         ballSize = 20
         canvasSize = {width: 50, height:1200}
-        ball = new Ball(ballStartPosition, ballSize, canvasSize.width, ballSpeed)
+        ball = new Ball(ballStartPosition, ballSize,ballSpeed)
         paddle = new Paddle(paddleStartXPosition, canvasSize, paddleSpeed);
         expect(paddle.isCollidedWith(ball)).toEqual(true)
     })

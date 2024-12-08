@@ -19,6 +19,7 @@ export class Game {
     public bricks = new BricksWrapper(createBricks())
     private readonly _paddle: Paddle
     private readonly _ball: Ball
+    private canvasWidth: number;
 
     constructor(view: CanvasView) {
         this._isGameOver = false;
@@ -26,7 +27,9 @@ export class Game {
         this._paddle = new Paddle(PADDLE_STARTX, this.canvasSize(), PADDLE_SPEED)
         const ballPosition = {x: BALL_STARTX, y: BALL_STARTY};
         let speed = {xComponent: BALL_SPEED, yComponent: -BALL_SPEED};
-        this._ball = new Ball(ballPosition, BALL_SIZE, this.canvasSize().width, speed)
+        const canvasSize = this.canvasSize()
+        this.canvasWidth = canvasSize.width
+        this._ball = new Ball(ballPosition, BALL_SIZE,speed)
     }
 
     private canvasSize(): Size{
@@ -78,13 +81,12 @@ export class Game {
 
      detectEvents(){
         this._paddle.detectMove()
-         const canvasTouch = this._ball.hasCanvasCollision()
-         if (canvasTouch === Contact.TOP_OR_BOTTOM){
-             this.ball.bounceY()
+         if (this._ball.y <=0){
+             this._ball.bounceY()
              return
          }
-         if (canvasTouch === Contact.SIDE){
-             this.ball.bounceX()
+         if (this._ball.x <= 0 || this._ball.rightMostX >= this.canvasWidth){
+             this._ball.bounceX()
              return
          }
          if (this._paddle.isCollidedWith(this.ball)){

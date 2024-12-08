@@ -111,7 +111,13 @@ describe('Game.loop tests',()=>{
     let animationSpy: jest.SpyInstance
     let drawScoreSpy: jest.SpyInstance
     let ballRewindSpy: jest.SpyInstance
+    function mockGetter(ball: Ball, property: string, value: number){
+        Object.defineProperty(ball, property, {
+            get: () => value,
+        });
+    }
     beforeEach(()=>{
+        document.body.innerHTML = `<canvas id="playField" width="1000" height="600"></canvas><button id="start"></button>`
         view = new CanvasView('#playField');
         clearSpy = jest.spyOn(view, 'clear')
         drawBricksSpy = jest.spyOn(view, 'drawBricks')
@@ -147,18 +153,6 @@ describe('Game.loop tests',()=>{
         const moveSpy = jest.spyOn(game.ball, 'move')
         game.loop();
         expect(moveSpy).toHaveBeenCalled()
-    })
-    it ('if ball.detectCanvasCollision returns Ceiling, then ball.bounceY is called',()=>{
-        jest.spyOn(game.ball, 'hasCanvasCollision').mockReturnValue(Contact.TOP_OR_BOTTOM)
-        const bounceSpy = jest.spyOn(game.ball, 'bounceY')
-        game.loop()
-        expect(bounceSpy).toHaveBeenCalled()
-    })
-    it ('if ball.detectCanvasCollision returns SIDE, then ball.bounceX is called',()=>{
-        jest.spyOn(game.ball, 'hasCanvasCollision').mockReturnValue(Contact.SIDE)
-        const bounceSpy = jest.spyOn(game.ball, 'bounceX')
-        game.loop()
-        expect(bounceSpy).toHaveBeenCalled()
     })
     it('Game.loop calls Game.paddle.detectMove()',()=>{
         const moveSpy = jest.spyOn(game.paddle, 'detectMove')
@@ -226,6 +220,25 @@ describe('Game.loop tests',()=>{
         game.loop();
         expect(ballRewindSpy).toHaveBeenCalledWith(overlapDistance)
     })
+    it('if ball y goes lower than 0, then call ball.bounceY',()=>{
+        const bounceYSpy = jest.spyOn(game.ball, 'bounceY')
+        mockGetter(game.ball, 'y', -1)
+        game.loop()
+        expect(bounceYSpy).toHaveBeenCalled()
+    })
+    it('if ball x goes lower than 0, then call ball.bounceX',()=>{
+        const bounceXSpy = jest.spyOn(game.ball, 'bounceX')
+        mockGetter(game.ball, 'x', -1)
+        game.loop()
+        expect(bounceXSpy).toHaveBeenCalled()
+    })
+    it('if ball.rightmostX is higher than the canvas width, then call ball.bounceX',()=>{
+        const bounceXSpy = jest.spyOn(game.ball, 'bounceX')
+        //canvas width is 1000
+        mockGetter(game.ball, 'rightMostX', 1001)
+        game.loop()
+        expect(bounceXSpy).toHaveBeenCalled()
+    })
 })
 
 describe('constructor tests',()=>{
@@ -259,12 +272,12 @@ describe('constructor tests',()=>{
     })
     it('a ball is instantiated with  BALL_STARTX and BALL_STARTY cords',()=>{
         const expectedPosition = {x: BALL_STARTX, y: BALL_STARTY};
-        expect(Ball).toHaveBeenCalledWith(expectedPosition, expect.anything(), expect.anything(), expect.anything())
+        expect(Ball).toHaveBeenCalledWith(expectedPosition, expect.anything(), expect.anything())
     })
     it('a ball is instantiated with  BALL_SIZE const,',()=>{
-        expect(Ball).toHaveBeenCalledWith(expect.anything(), BALL_SIZE, expect.anything(), expect.anything())
+        expect(Ball).toHaveBeenCalledWith(expect.anything(), BALL_SIZE, expect.anything())
     })
     it('a ball is instantiated with BALL_SPEED const,',()=>{
-        expect(Ball).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.anything(), expect.objectContaining({xComponent: BALL_SPEED}))
+        expect(Ball).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.objectContaining({xComponent: BALL_SPEED}))
     })
 })

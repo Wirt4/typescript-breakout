@@ -42,7 +42,6 @@ describe('brick.isCollidingWith',()=>{
     let ball: Ball
     let originPosition: Position
     let diameter: number
-    const canvasSize = 400
     const ballSped = {xComponent: 1, yComponent: -1}
     beforeEach(() => {
         originPosition = {x:0, y:0}
@@ -50,28 +49,28 @@ describe('brick.isCollidingWith',()=>{
     })
     it('detects collision from side, coming from left',()=>{
          brick = new Brick('stub', {x: diameter, y:0}, 3);
-         ball = new Ball(originPosition, diameter, canvasSize, ballSped);
+         ball = new Ball(originPosition, diameter,  ballSped);
          brick.detectCollision(ball)
          expect(brick.hasCollision()).toEqual(Contact.SIDE);
     })
     it('detects collision, coming from top, are occupying the same space',()=>{
         brick = new Brick('stub', {x:0, y:diameter}, 3);
-        ball = new Ball(originPosition, 5, canvasSize, ballSped);
+        ball = new Ball(originPosition, 5, ballSped);
         brick.detectCollision(ball)
         expect(brick.hasCollision()).toEqual(Contact.TOP_OR_BOTTOM);
     })
     it('detects collision ,no contact',()=>{
          brick = new Brick('stub',originPosition, 3);
-         ball = new Ball({x:100, y:100}, 5, canvasSize, ballSped);
+         ball = new Ball({x:100, y:100}, 5, ballSped);
          brick.detectCollision(ball)
          expect(brick.hasCollision()).toEqual(Contact.NO_CONTACT);
     })
     it('detects collision, coming from top, followed by checking a fresh value',()=>{
         brick = new Brick('stub', {x:0, y:diameter}, 3);
-        ball = new Ball(originPosition, 5, canvasSize, ballSped);
+        ball = new Ball(originPosition, 5, ballSped);
         brick.detectCollision(ball)
         expect(brick.hasCollision()).toEqual(Contact.TOP_OR_BOTTOM);
-        ball = new Ball({x:100, y:100}, 5, canvasSize, ballSped);
+        ball = new Ball({x:100, y:100}, 5,  ballSped);
         brick.detectCollision(ball)
         expect(brick.hasCollision()).toEqual(Contact.NO_CONTACT);
     })
@@ -82,7 +81,7 @@ describe('brick.collisionOverlap tests',()=>{
     let  diameter: number
     let ball : Ball
     function constructBall(position:Position,){
-        ball =  new Ball(position, diameter, 3000, {xComponent: 1, yComponent: -1});
+        ball =  new Ball(position, diameter, {xComponent: 1, yComponent: -1});
     }
     beforeEach(() => {
         diameter = 5

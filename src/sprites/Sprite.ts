@@ -56,6 +56,14 @@ export class Sprite {
         return this.position.y  + this.height
     }
 
+    get y(): number{
+        return this.position.y
+    }
+
+    get x(): number{
+        return this.position.x
+    }
+
     get width(): number{
         return this._w
     }
