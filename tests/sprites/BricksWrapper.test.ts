@@ -44,3 +44,16 @@ describe('detectCollision tests', () => {
     })
 
 })
+
+describe('collisionOverLap tests',()=>{
+    it('If the array contains a brick that has a collision, then the return vaule of bricksWrapper collision distance is that value',()=>{
+        const brick = new Brick('stub',{x:0, y:0})
+        jest.spyOn(brick, 'hasCollision').mockReturnValue(Contact.TOP_OR_BOTTOM)
+        const distance = 3
+        jest.spyOn(brick, 'collisionOverlapDistance').mockReturnValue(distance)
+        const wrapper = new BricksWrapper([brick])
+        const ball = new Ball({x:0, y:0}, 3, 42, {x:1, y:-1})
+        wrapper.detectCollision(ball)
+        expect(wrapper.collisionOverlap()).toEqual(distance)
+    })
+})

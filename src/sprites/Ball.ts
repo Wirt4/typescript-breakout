@@ -29,8 +29,9 @@ export class Ball extends Sprite{
         return Math.abs(this._speed.x)
     }
 
-    get centerX():number{
-        return this.position.x + this.width/2
+
+    rewind(distance: number):void{
+        //TODO: implement this
     }
 
     move():void{

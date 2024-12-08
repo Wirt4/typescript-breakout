@@ -7,13 +7,16 @@ import {Contact} from "../enums";
 export class Brick extends Sprite{
     public energy: number;
     private _contactType = Contact.NO_CONTACT
+    private _collisionOverlapDistance = 0
 
     constructor(imgSrc: string, coords: Position, energy: number = 1) {
         super(imgSrc, coords, {width: BRICK_WIDTH, height: BRICK_HEIGHT});
         this.energy = energy;
     }
 
-
+    collisionOverlapDistance():number {
+        return this._collisionOverlapDistance
+    }
 
     detectCollision(ball: Ball):void{
         if (!this.isInXRange(ball) || !this.isInYRange(ball)) {

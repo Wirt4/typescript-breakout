@@ -76,3 +76,12 @@ describe('brick.isCollidingWith',()=>{
         expect(brick.hasCollision()).toEqual(Contact.NO_CONTACT);
     })
 })
+
+describe('brick.collisionOverlap tests',()=>{
+    it('if a brick and ball do not overlap, then the overlap distance is 0',()=>{
+        const brick = new Brick('stub', {x:100, y:100}, 3);
+        const ball = new Ball({x:0, y:0}, 5, 3000, {x: 1, y: -1});
+        brick.detectCollision(ball)
+        expect(brick.collisionOverlapDistance()).toEqual(0);
+    })
+})

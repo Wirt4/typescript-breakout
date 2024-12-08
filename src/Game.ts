@@ -94,6 +94,7 @@ export class Game {
          if (brickCollide == Contact.NO_CONTACT){
              return
          }
+            this.ball.rewind(this.bricks.collisionOverlap())
             this._score ++
             this._view.drawScore(this._score)
             if (brickCollide == Contact.TOP_OR_BOTTOM){
