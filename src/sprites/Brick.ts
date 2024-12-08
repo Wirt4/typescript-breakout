@@ -1,76 +1,64 @@
 import {Sprite} from "./Sprite";
-import { Position} from "../types";
+import {Position} from "../types";
 import {BRICK_HEIGHT, BRICK_WIDTH} from "../setup";
 import {Ball} from "./Ball";
-
+import {Contact} from "../enums";
+interface overlapRange{
+    start: number,
+    end: number
+}
 export class Brick extends Sprite{
     public energy: number;
-    private _verticalCollision =  false
-    private _cornerTouch = false
-    private _hasCollision = false
+    private _contactType = Contact.NO_CONTACT
+    private _collisionOverlapDistance = 0
 
     constructor(imgSrc: string, coords: Position, energy: number = 1) {
         super(imgSrc, coords, {width: BRICK_WIDTH, height: BRICK_HEIGHT});
         this.energy = energy;
     }
 
-    isCornerCollision():boolean{
-        return this._cornerTouch
-    }
-
-    private getDiff(a: number, b: number){
-        return Math.abs(a- b)
-    }
-
-    private upperLeftTouch(ball: Ball):boolean{
-        const yDiff = this.getDiff(ball.bottomMostY, this.position.y)
-        const xDiff = this.getDiff(ball.rightMostX, this.position.x)
-        return ball.bottomMostY >= this.position.y && ball.rightMostX >= this.position.x && yDiff == xDiff
-    }
-
-    private upperRightTouch(ball: Ball):boolean{
-        const yDiff = this.getDiff(ball.bottomMostY, this.position.y)
-        const xDiff = this.getDiff(ball.position.x, this.rightMostX)
-        return ball.bottomMostY >= this.position.y && ball.position.x <= this.rightMostX && yDiff == xDiff
-    }
-
-    private lowerLeftTouch(ball: Ball):boolean{
-        const yDiff = this.getDiff(ball.position.y, this.bottomMostY)
-        const xDiff = this.getDiff(ball.rightMostX, this.position.x)
-        return ball.position.y <= this.bottomMostY && ball.rightMostX >= this.position.x && yDiff == xDiff
-    }
-
-    private lowerRightTouch(ball: Ball):boolean{
-        const xDiff = this.getDiff(ball.position.x, this.rightMostX)
-        const yDiff = this.getDiff(ball.position.y, this.bottomMostY)
-        return ball.position.x <= this.rightMostX && ball.position.y <= this.bottomMostY && xDiff == yDiff
-    }
-
-    private setCornerTouch(ball:Ball):void{
-        this._cornerTouch = this.upperLeftTouch(ball) || this.upperRightTouch(ball) ||
-            this.lowerLeftTouch(ball) || this.lowerRightTouch(ball)
+    collisionOverlapDistance():number {
+        return this._collisionOverlapDistance
     }
 
     detectCollision(ball: Ball):void{
-        this._verticalCollision = ball.centerX >= this.position.x && ball.centerX <= this.rightMostX
-        const inX = this.isInXRange(ball)
-        this._hasCollision = inX && this.isInYRange(ball);
-
-        if (this._hasCollision) {
-            this.setCornerTouch(ball);
+        if (!this.isInXRange(ball) || !this.isInYRange(ball)) {
+            this._contactType = Contact.NO_CONTACT
+            return
         }
+        if (ball.position.y >= this.position.y && ball.bottomMostY <= this.bottomMostY) {
+            this._collisionOverlapDistance = this.xOverlapDistance({start: ball.position.x, end: ball.rightMostX})
+            this._contactType = Contact.SIDE
+            return
+        }
+        this._collisionOverlapDistance = this.YOverlapDistance({start: ball.position.y, end: ball.bottomMostY})
+        this._contactType = Contact.TOP_OR_BOTTOM
     }
 
-    isVerticalCollision(){
-        return this._verticalCollision
+    private overlapTemplate(ballRange: overlapRange, currentRange: overlapRange):number{
+        if (ballRange.start < currentRange.start) {
+            return ballRange.end  - currentRange.start
+        }
+        if (ballRange.end > currentRange.end) {
+            return currentRange.end  - ballRange.start
+        }
+        return ballRange.end - ballRange.start
+    }
+
+    private YOverlapDistance(ballRange: overlapRange):number{
+        return this.overlapTemplate(ballRange, {start: this.position.y, end: this.bottomMostY})
+    }
+
+    private xOverlapDistance(ballRange: overlapRange): number{
+        return this.overlapTemplate(ballRange, {start: this.position.x, end: this.rightMostX})
     }
 
     isInYRange(ball:Ball):boolean{
         return ball.position.y <= this.bottomMostY && ball.bottomMostY >= this.position.y
     }
 
-    hasCollision():boolean{
-        return this._hasCollision
+    hasCollision():Contact{
+        return this._contactType
     }
 }
 
