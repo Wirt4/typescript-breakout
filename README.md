@@ -1,7 +1,6 @@
 # typescript-breakout
 Vanilla Typescript Breakout
 
-
 ## To build with Docker
 `docker build -t salthouse-breakout .`
 

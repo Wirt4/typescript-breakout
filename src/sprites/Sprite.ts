@@ -56,15 +56,19 @@ export class Sprite {
         return this.position.y  + this.height
     }
 
+    get y(): number{
+        return this.position.y
+    }
+
+    get x(): number{
+        return this.position.x
+    }
+
     get width(): number{
         return this._w
     }
 
     get height(): number{
         return this._h
-    }
-
-    get centerPoint():Position{
-        return {x: this.position.x + this.width/2, y: this.position.y + this.height/2};
     }
 }

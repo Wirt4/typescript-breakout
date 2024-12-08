@@ -2,6 +2,7 @@ import {Brick} from "../../src/sprites/Brick";
 import {BRICK_HEIGHT, BRICK_WIDTH} from "../../src/setup";
 import {Ball} from "../../src/sprites/Ball";
 import {Position} from "../../src/types";
+import {Contact} from "../../src/enums";
 
 jest.mock("../../src/setup", () => ({
     BRICK_WIDTH:35,
@@ -40,91 +41,77 @@ describe('brick.isCollidingWith',()=>{
     let brick: Brick
     let ball: Ball
     let originPosition: Position
+    let diameter: number
+    const ballSped = {xComponent: 1, yComponent: -1}
     beforeEach(() => {
         originPosition = {x:0, y:0}
+        diameter = 5
     })
-    it('detects collision, are occupying the same space',()=>{
-         brick = new Brick('stub',originPosition, 3);
-         ball = new Ball(originPosition, 5, 400, 1);
+    it('detects collision from side, coming from left',()=>{
+         brick = new Brick('stub', {x: diameter, y:0}, 3);
+         ball = new Ball(originPosition, diameter,  ballSped);
          brick.detectCollision(ball)
-         expect(brick.hasCollision()).toEqual(true);
+         expect(brick.hasCollision()).toEqual(Contact.SIDE);
     })
-    it('detects collision, are not occupying the same space',()=>{
+    it('detects collision, coming from top, are occupying the same space',()=>{
+        brick = new Brick('stub', {x:0, y:diameter}, 3);
+        ball = new Ball(originPosition, 5, ballSped);
+        brick.detectCollision(ball)
+        expect(brick.hasCollision()).toEqual(Contact.TOP_OR_BOTTOM);
+    })
+    it('detects collision ,no contact',()=>{
          brick = new Brick('stub',originPosition, 3);
-         ball = new Ball({x:100, y:100}, 5, 400, 1);
+         ball = new Ball({x:100, y:100}, 5, ballSped);
          brick.detectCollision(ball)
-         expect(brick.hasCollision()).toEqual(false);
+         expect(brick.hasCollision()).toEqual(Contact.NO_CONTACT);
+    })
+    it('detects collision, coming from top, followed by checking a fresh value',()=>{
+        brick = new Brick('stub', {x:0, y:diameter}, 3);
+        ball = new Ball(originPosition, 5, ballSped);
+        brick.detectCollision(ball)
+        expect(brick.hasCollision()).toEqual(Contact.TOP_OR_BOTTOM);
+        ball = new Ball({x:100, y:100}, 5,  ballSped);
+        brick.detectCollision(ball)
+        expect(brick.hasCollision()).toEqual(Contact.NO_CONTACT);
     })
 })
 
-describe('isCornerCollision',()=>{
-    it('tangent at origin',()=>{
-        const brick = new Brick('stub',{x:100,y:100}, 3);
-        const ball = new Ball({x:95, y:95}, 5, 400, 1);
-        brick.detectCollision(ball)
-        expect(brick.isCornerCollision()).toEqual(true)
+describe('brick.collisionOverlap tests',()=>{
+    const  brick= new Brick('stub', {x:100, y:100}, 3);
+    let  diameter: number
+    let ball : Ball
+    function constructBall(position:Position,){
+        ball =  new Ball(position, diameter, {xComponent: 1, yComponent: -1});
+    }
+    beforeEach(() => {
+        diameter = 5
     })
-    it('tangent at mid top',()=>{
-        const brick = new Brick('stub',{x:100,y:100}, 3);
-        const ball = new Ball({x:110, y:95}, 5, 400, 1);
+    it('if a brick and ball do not overlap, then the overlap distance is 0',()=>{
+        constructBall({x:0, y:0})
         brick.detectCollision(ball)
-        expect(brick.isCornerCollision()).toEqual(false)
+        expect(brick.collisionOverlapDistance()).toEqual(0);
     })
-    it('exact overlap at origin',()=>{
-        const brick = new Brick('stub',{x:100,y:100}, 3);
-        const ball = new Ball({x:98, y:98}, 5, 400, 1);
+    it('if a brick and ball occupy the same space, then the overlap distance is the diameter',()=>{
+        constructBall({x:100, y:100})
         brick.detectCollision(ball)
-        expect(brick.isCornerCollision()).toEqual(true)
+        expect(brick.collisionOverlapDistance()).toEqual(diameter);
     })
-    it('tangent at top right',()=>{
-        const brick = new Brick('stub',{x:100,y:100}, 3);
-        const ball = new Ball({x: brick.position.x + BRICK_WIDTH, y:95}, 5, 400, 1);
+    it('if a brick and ball occupy a partial distance, then the overlap distance is amount of that overlap',()=>{
+        diameter = 6
+        constructBall({x:101, y:97})
         brick.detectCollision(ball)
-        expect(brick.isCornerCollision()).toEqual(true)
+        expect(brick.collisionOverlapDistance()).toEqual(3);
     })
-    it('exact overlap at top right',()=>{
-        const brick = new Brick('stub',{x:100,y:100}, 3);
-        const ball = new Ball({x: brick.position.x + BRICK_WIDTH-2, y:97}, 5, 400, 1);
+    it('if a brick and ball occupy a partial distance, then the overlap distance is amount of that overlap',()=>{
+        const overlap = 2
+        constructBall({x:brick.rightMostX - overlap, y: brick.bottomMostY - overlap})
         brick.detectCollision(ball)
-        expect(brick.isCornerCollision()).toEqual(true)
+        expect(brick.collisionOverlapDistance()).toEqual(overlap);
     })
-    it('tangent at bottom left',()=>{
-        const brick = new Brick('stub',{x:100,y:100}, 3);
-        const ball = new Ball({x: 95, y:brick.bottomMostY}, 5, 400, 1);
+    it('if a brick and ball occupy a partial distance, then the overlap distance is amount of that overlap',()=>{
+        const overlap = 2
+        constructBall({x:brick.rightMostX - overlap, y: brick.position.y})
         brick.detectCollision(ball)
-        expect(brick.isCornerCollision()).toEqual(true)
-    })
-    it('overlap at bottom left',()=>{
-        const brick = new Brick('stub',{x:100,y:100}, 3);
-        const ball = new Ball({x: 97, y:brick.bottomMostY-2}, 5, 400, 1);
-        brick.detectCollision(ball)
-        expect(brick.isCornerCollision()).toEqual(true)
-    })
-    it('tangent at bottom right',()=>{
-        const brick = new Brick('stub',{x:100,y:100}, 3);
-        const ball = new Ball({x: brick.position.x + BRICK_WIDTH, y:brick.bottomMostY}, 5, 400, 1);
-        brick.detectCollision(ball)
-        expect(brick.isCornerCollision()).toEqual(true)
-    })
-    it('exact overlap at bottom right',()=>{
-        const brick = new Brick('stub',{x:100,y:100}, 3);
-        const ball = new Ball({x: brick.position.x + BRICK_WIDTH-1, y:brick.bottomMostY-1}, 5, 400, 1);
-        brick.detectCollision(ball)
-        expect(brick.isCornerCollision()).toEqual(true)
-    })
-})
-
-describe('isVerticalCollision tests',()=>{
-    it('ball hits brick from below',()=>{
-        const brick = new Brick('stub',{x:0,y:0}, 3);
-        const ball = new Ball({x:2, y:brick.height}, 5, 400, 1);
-        brick.detectCollision(ball)
-        expect(brick.isVerticalCollision()).toEqual(true);
-    })
-    it('ball hits brick from side',()=>{
-        const brick = new Brick('stub',{x:5,y:0}, 3);
-        const ball = new Ball({x:0, y:1}, 5, 400, 1);
-        brick.detectCollision(ball)
-        expect(brick.isVerticalCollision()).toEqual(false);
+        expect(brick.collisionOverlapDistance()).toEqual(overlap);
     })
 })

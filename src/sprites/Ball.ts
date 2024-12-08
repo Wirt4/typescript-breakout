@@ -1,76 +1,42 @@
 import {Sprite} from "./Sprite";
-import {Position} from "../types";
+import { Position, Vector} from "../types";
 import BALL_IMAGE from "../images/ball.png";
-import {CanvasContact} from "../enums";
 
 export class Ball extends Sprite{
-    private velocity: Velocity
-    private readonly canvasWidth: number
+    private _speed: Vector;
 
-    constructor(position: Position, size: number, canvasWidth: number, speed: number) {
+    constructor(position: Position, size: number, vector: Vector) {
         super(BALL_IMAGE, position, {width: size, height: size});
-        this.velocity = new Velocity(speed);
-        this.canvasWidth =canvasWidth
-    }
-
-    hasCanvasCollision(): CanvasContact{
-        if (this.position.y <= 0){
-            return CanvasContact.CEILING
-        }
-
-        if (this.position.x <= 0 || this.rightMostX >= this.canvasWidth) {
-            return CanvasContact.WALL
-        }
-
-        return CanvasContact.NO_CONTACT
+        this._speed = vector
     }
 
     get speed(): number {
-        return this.velocity.absoluteSpeed
+        return Math.abs(this._speed.xComponent)
     }
 
-    get centerX():number{
-        return this.position.x + this.width/2
+    private offset(distance: number, speedComponent: number){
+        if (speedComponent > 0){
+            return -distance
+        }
+        return  distance
+    }
+
+    rewind(distance: number):void{
+        this.position.x += this.offset(distance, this._speed.xComponent)
+        this.position.y += this.offset(distance, this._speed.yComponent)
     }
 
     move():void{
-        this.position = this.velocity.nextPosition(this.position)
+        this.position.x += this._speed.xComponent
+        this.position.y += this._speed.yComponent
     }
 
     bounceY():void{
-        this.velocity.bounceY()
+        this._speed.yComponent *= -1
     }
 
     bounceX():void{
-        this.velocity.bounceX()
+        this._speed.xComponent *= -1
     }
 }
 
-class Velocity{
-    private xComponent:number
-    private yComponent:number
-
-    constructor(speed: number){
-        this.xComponent = speed;
-        this.yComponent = -speed
-    }
-
-    get absoluteSpeed():number{
-        return Math.abs(this.xComponent)
-    }
-
-    nextPosition(initialPostition: Position):Position{
-        return {
-            x: initialPostition.x + this.xComponent,
-            y: initialPostition.y + this.yComponent
-        };
-    }
-
-    bounceX():void{
-        this.xComponent *= -1
-    }
-
-    bounceY():void{
-        this.yComponent *= -1
-    }
-}

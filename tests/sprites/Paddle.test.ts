@@ -1,7 +1,7 @@
 import {Sprite} from "../../src/sprites/Sprite";
 import {Paddle} from "../../src/sprites/Paddle";
 import {PADDLE_HEIGHT, PADDLE_WIDTH} from "../../src/setup";
-import {Position, Size} from "../../src/types";
+import {Position, Size, Vector} from "../../src/types";
 import {Ball} from "../../src/sprites/Ball";
 
 jest.mock("../../src/images/paddle.png");
@@ -14,8 +14,6 @@ jest.mock( "../../src/setup",()=>({
 describe('Paddle.isMovingLeft and isMovingRight', () => {
     let paddle: Paddle
     let paddleSize: Size
-    let firstKeystroke: KeyboardEvent
-    let secondKeystroke: KeyboardEvent
     beforeEach(()=>{
         paddleSize = {width: 800, height:600}
         paddle = new Paddle(0, paddleSize);
@@ -167,48 +165,48 @@ describe('isCollideWith',()=>{
     let canvasSize: Size
     let paddleStartXPosition: number
     let paddleSpeed: number
-    let ballSpeed: number
+    let ballSpeed: Vector
     beforeEach(() => {
         mockedSetup = require("../../src/setup");
         ballStartPosition = {x:45, y:1180}
         ballSize = 5
         canvasSize = {width: 50, height:1200}
         paddleStartXPosition = 40
-        ballSpeed = 8
+        ballSpeed = {xComponent: 8, yComponent:-8}
         paddleSpeed = 2
         mockedSetup.PADDLE_WIDTH = 20
         mockedSetup.PADDLE_HEIGHT = 5
         mockedSetup.STAGE_PADDING = 10
     })
     it('the paddle line touches the ball',()=>{
-        ball = new Ball(ballStartPosition, ballSize,canvasSize.width, ballSpeed)
+        ball = new Ball(ballStartPosition, ballSize, ballSpeed)
         paddle = new Paddle(paddleStartXPosition, canvasSize, paddleSpeed);
         expect(paddle.isCollidedWith(ball)).toEqual(true)
     })
     it('the paddle line does not intersect the ball, ball is too far right',()=>{
         canvasSize = {width: 500, height:1200}
         ballStartPosition = {x:400, y:1180}
-        ball = new Ball(ballStartPosition, ballSize, canvasSize.width, ballSpeed)
+        ball = new Ball(ballStartPosition, ballSize, ballSpeed)
         paddle = new Paddle(paddleStartXPosition, canvasSize, paddleSpeed);
         expect(paddle.isCollidedWith(ball)).toEqual(false)
     })
     it('the paddle line does not intersect the ball, ball is too far left',()=>{
         ballStartPosition = {x:5, y:1185}
         canvasSize = {width: 500, height:1200}
-        ball = new Ball(ballStartPosition, ballSize, canvasSize.width, ballSpeed)
+        ball = new Ball(ballStartPosition, ballSize,  ballSpeed)
         paddle = new Paddle(paddleStartXPosition, canvasSize, paddleSpeed);
         expect(paddle.isCollidedWith(ball)).toEqual(false)
     })
     it('edge case, ball is directly above panel',()=>{
         ballStartPosition={x:45, y:2}
-        ball = new Ball(ballStartPosition, ballSize, canvasSize.width, ballSpeed)
+        ball = new Ball(ballStartPosition, ballSize,  ballSpeed)
         paddle = new Paddle(40, canvasSize, paddleSpeed);
         expect(paddle.isCollidedWith(ball)).toEqual(false)
     })
     it('edge case, ball is directly under panel',()=>{
         ballStartPosition = {x:45, y:1300}
         canvasSize = {width: 50, height:1200}
-        ball = new Ball(ballStartPosition, ballSize, canvasSize.width, ballSpeed)
+        ball = new Ball(ballStartPosition, ballSize, ballSpeed)
         paddle = new Paddle(paddleStartXPosition, canvasSize, paddleSpeed);
         expect(paddle.isCollidedWith(ball)).toEqual(false)
     })
@@ -219,7 +217,7 @@ describe('isCollideWith',()=>{
         ballStartPosition= {x:45, y:1146}
         ballSize = 20
         canvasSize = {width: 50, height:1200}
-        ball = new Ball(ballStartPosition, ballSize, canvasSize.width, ballSpeed)
+        ball = new Ball(ballStartPosition, ballSize,ballSpeed)
         paddle = new Paddle(paddleStartXPosition, canvasSize, paddleSpeed);
         expect(paddle.isCollidedWith(ball)).toEqual(true)
     })

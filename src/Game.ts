@@ -5,7 +5,7 @@ import {BALL_SIZE, BALL_SPEED, BALL_STARTX, BALL_STARTY, PADDLE_SPEED, PADDLE_ST
 import {Size} from "./types";
 import {Ball} from "./sprites/Ball";
 import {BricksWrapper} from "./sprites/BricksWrapper";
-import {CanvasContact} from "./enums";
+import {Contact} from "./enums";
 
 enum EndState{
     GAME_OVER = "Game Over!",
@@ -19,13 +19,17 @@ export class Game {
     public bricks = new BricksWrapper(createBricks())
     private readonly _paddle: Paddle
     private readonly _ball: Ball
+    private canvasWidth: number;
 
     constructor(view: CanvasView) {
         this._isGameOver = false;
         this._view = view;
         this._paddle = new Paddle(PADDLE_STARTX, this.canvasSize(), PADDLE_SPEED)
         const ballPosition = {x: BALL_STARTX, y: BALL_STARTY};
-        this._ball = new Ball(ballPosition, BALL_SIZE, this.canvasSize().width, BALL_SPEED)
+        let speed = {xComponent: BALL_SPEED, yComponent: -BALL_SPEED};
+        const canvasSize = this.canvasSize()
+        this.canvasWidth = canvasSize.width
+        this._ball = new Ball(ballPosition, BALL_SIZE,speed)
     }
 
     private canvasSize(): Size{
@@ -77,23 +81,30 @@ export class Game {
 
      detectEvents(){
         this._paddle.detectMove()
-         const canvasTouch = this._ball.hasCanvasCollision()
-         if (canvasTouch === CanvasContact.CEILING){
-             this.ball.bounceY()
+         if (this._ball.y <=0){
+             this._ball.bounceY()
              return
          }
-         if (canvasTouch === CanvasContact.WALL){
-             this.ball.bounceX()
+         if (this._ball.x <= 0 || this._ball.rightMostX >= this.canvasWidth){
+             this._ball.bounceX()
              return
          }
-        const brickCollide = this.bricks.detectCollision(this.ball)
-        if (brickCollide) {
+         if (this._paddle.isCollidedWith(this.ball)){
+             this._ball.bounceY()
+         }
+         this.bricks.detectCollision(this.ball)
+         const brickCollide = this.bricks.collisionType()
+         if (brickCollide == Contact.NO_CONTACT){
+             return
+         }
+            this.ball.rewind(this.bricks.collisionOverlap())
             this._score ++
             this._view.drawScore(this._score)
-            this._ball.bounceY()
-        }else if (this._paddle.isCollidedWith(this.ball)){
-            this._ball.bounceY()
-        }
+            if (brickCollide == Contact.TOP_OR_BOTTOM){
+                this._ball.bounceY()
+                return
+            }
+            this.ball.bounceX()
     }
 
     loop():void{

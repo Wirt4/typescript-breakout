@@ -1,34 +1,36 @@
 import {Brick} from "./Brick";
 import {Ball} from "./Ball";
+import {Contact} from "../enums";
 
 export class BricksWrapper{
     private readonly _bricks: Brick[];
-    private  _isVertical = false
-    private _isCorner = false
+    private _collisionOverlap = 0
+    private _collisiontype = Contact.NO_CONTACT
 
     constructor(bricks: Brick[]){
         this._bricks = bricks;
     }
 
-    detectCollision(ball: Ball):boolean{
-        if (!this._bricks?.length) return false
+    detectCollision(ball: Ball):void{
+        this._collisiontype = Contact.NO_CONTACT
+        if (!this._bricks?.length) {return }
         for (let i=0; i < this._bricks.length; i++){
             this._bricks[i].detectCollision(ball);
-            if (this._bricks[i].hasCollision()){
-                this._isVertical = this._bricks[i].isVerticalCollision()
-                this._isCorner = this._bricks[i].isCornerCollision()
-                return true
+            const hasCollision: Contact = this._bricks[i].hasCollision();
+            if (hasCollision!== Contact.NO_CONTACT){
+                this._collisionOverlap = this._bricks[i].collisionOverlapDistance()
+                this._collisiontype = this._bricks[i].hasCollision()
+                return
             }
         }
-        return false
     }
 
-    isVerticalCollision():boolean{
-        return this._isVertical
+    collisionType(): Contact{
+        return this._collisiontype
     }
 
-    isCornerCollision():boolean{
-        return this._isCorner
+    collisionOverlap():number{
+        return this._collisionOverlap;
     }
 
     get arr(): Brick[]{
