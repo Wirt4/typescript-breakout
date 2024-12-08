@@ -8,13 +8,17 @@ interface overlapRange{
     end: number
 }
 export class Brick extends Sprite{
-    public energy: number;
+    private _energy: number;
     private _contactType = Contact.NO_CONTACT
     private _collisionOverlapDistance = 0
 
     constructor(imgSrc: string, coords: Position, energy: number = 1) {
         super(imgSrc, coords, {width: BRICK_WIDTH, height: BRICK_HEIGHT});
-        this.energy = energy;
+        this._energy = energy;
+    }
+
+    get energy(): number {
+        return this._energy;
     }
 
     collisionOverlapDistance():number {
@@ -55,6 +59,10 @@ export class Brick extends Sprite{
 
     isInYRange(ball:Ball):boolean{
         return ball.position.y <= this.bottomMostY && ball.bottomMostY >= this.position.y
+    }
+
+    reduceEnergy():void{
+        this._energy --
     }
 
     hasCollision():Contact{
