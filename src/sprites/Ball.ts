@@ -1,7 +1,7 @@
 import {Sprite} from "./Sprite";
 import {Position} from "../types";
 import BALL_IMAGE from "../images/ball.png";
-import {CanvasContact} from "../enums";
+import {Contact} from "../enums";
 
 export class Ball extends Sprite{
     private _speed: Position;
@@ -13,16 +13,16 @@ export class Ball extends Sprite{
         this.canvasWidth =canvasWidth
     }
 
-    hasCanvasCollision(): CanvasContact{
+    hasCanvasCollision(): Contact{
         if (this.position.y <= 0){
-            return CanvasContact.CEILING
+            return Contact.TOP_OR_BOTTOM
         }
 
         if (this.position.x <= 0 || this.rightMostX >= this.canvasWidth) {
-            return CanvasContact.WALL
+            return Contact.SIDE
         }
 
-        return CanvasContact.NO_CONTACT
+        return Contact.NO_CONTACT
     }
 
     get speed(): number {

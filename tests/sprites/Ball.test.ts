@@ -1,7 +1,7 @@
 import {Sprite} from "../../src/sprites/Sprite";
 import {Ball} from "../../src/sprites/Ball";
 import {Position, Size} from "../../src/types";
-import {CanvasContact} from "../../src/enums";
+import {Contact} from "../../src/enums";
 
 describe('Ball constructor', () => {
     let startPosition: Position;
@@ -84,31 +84,31 @@ describe('detectCanvasCollision tests', () => {
     it('If ball forms a tangent when it hits the ceiling, then it is a collision',()=>{
         startPosition = {x:25, y:0}
         ball = new Ball(startPosition, diameter,canvasWidth,  speed)
-        expect(ball.hasCanvasCollision()).toEqual(CanvasContact.CEILING)
+        expect(ball.hasCanvasCollision()).toEqual(Contact.TOP_OR_BOTTOM)
     })
     it("if ball doesn't touch or interset the ceiling or walls, then is't not a collision ",()=>{
         startPosition = {x:25, y:30}
         ball = new Ball(startPosition, diameter, canvasWidth,  speed)
-        expect(ball.hasCanvasCollision()).toEqual(CanvasContact.NO_CONTACT)
+        expect(ball.hasCanvasCollision()).toEqual(Contact.NO_CONTACT)
     })
     it('if ball overlaps the ceiling, then it is a collision',()=>{
         startPosition = {x:25, y:-4}
         diameter = 12
         ball = new Ball(startPosition, diameter, canvasWidth, speed)
-        expect(ball.hasCanvasCollision()).toEqual(CanvasContact.CEILING)
+        expect(ball.hasCanvasCollision()).toEqual(Contact.TOP_OR_BOTTOM)
     })
     it('if ball overlaps left wall, then it is a collision',()=>{
         startPosition = {x:-1, y:50}
         diameter = 12
         ball = new Ball(startPosition, diameter, canvasWidth, speed)
         ball.bounceX()
-        expect(ball.hasCanvasCollision()).toEqual(CanvasContact.WALL)
+        expect(ball.hasCanvasCollision()).toEqual(Contact.SIDE)
     })
     it('if ball overlaps right wall, then its a collision',()=>{
         canvasWidth = 800
         startPosition = {x:790, y:50}
         diameter = 12
         ball = new Ball(startPosition, diameter, canvasWidth, speed)
-        expect(ball.hasCanvasCollision()).toEqual(CanvasContact.WALL)
+        expect(ball.hasCanvasCollision()).toEqual(Contact.SIDE)
     })
 })

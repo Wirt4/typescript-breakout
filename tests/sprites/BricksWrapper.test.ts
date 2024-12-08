@@ -2,6 +2,7 @@ import {BricksWrapper} from "../../src/sprites/BricksWrapper";
 import {Brick} from "../../src/sprites/Brick";
 import {Ball} from "../../src/sprites/Ball";
 import {Position} from "../../src/types";
+import {Contact} from "../../src/enums";
 
 describe('detectCollision tests', () => {
     let wrapper: BricksWrapper;
@@ -25,36 +26,21 @@ describe('detectCollision tests', () => {
     afterEach(() => {
         jest.clearAllMocks();
     })
-    it('the array contains a valid collision, return true',()=>{
-        jest.spyOn(brick1, 'hasCollision').mockReturnValue(false)
-        jest.spyOn(brick2, 'hasCollision').mockReturnValue(true)
-        jest.spyOn(brick3, 'hasCollision').mockReturnValue(false)
+    it('the array contains a SIDE, return SIDE',()=>{
+        jest.spyOn(brick1, 'hasCollision').mockReturnValue(Contact.SIDE)
+        jest.spyOn(brick2, 'hasCollision').mockReturnValue(Contact.NO_CONTACT)
+        jest.spyOn(brick3, 'hasCollision').mockReturnValue(Contact.NO_CONTACT)
         wrapper = new BricksWrapper([brick1, brick2, brick3])
         ball = new Ball(startPosition, ballSize, canvasSize, ballSpeed)
-        expect(wrapper.detectCollision(ball)).toEqual(true);
+        expect(wrapper.detectCollision(ball)).toEqual(Contact.SIDE);
     })
-    it('if the colliding brick has a true y collision, then the method returns true',()=>{
-        jest.spyOn(brick1, 'hasCollision').mockReturnValue(true)
-        jest.spyOn(brick2, 'isVerticalCollision').mockReturnValue(true)
-        wrapper = new BricksWrapper([brick1])
+    it('the array contains a TOP_OR_BOTTOM collision, return TOP_OR_BOTTOM',()=>{
+        jest.spyOn(brick1, 'hasCollision').mockReturnValue(Contact.NO_CONTACT)
+        jest.spyOn(brick2, 'hasCollision').mockReturnValue(Contact.TOP_OR_BOTTOM)
+        jest.spyOn(brick3, 'hasCollision').mockReturnValue(Contact.NO_CONTACT)
+        wrapper = new BricksWrapper([brick1, brick2, brick3])
         ball = new Ball(startPosition, ballSize, canvasSize, ballSpeed)
-        wrapper.detectCollision(ball)
-        expect(wrapper.isVerticalCollision()).toEqual(true);
+        expect(wrapper.detectCollision(ball)).toEqual(Contact.TOP_OR_BOTTOM);
     })
-    it('if the colliding brick has a true corner collision, then the method returns true',()=>{
-        jest.spyOn(brick1, 'hasCollision').mockReturnValue(true)
-        jest.spyOn(brick1, 'isCornerCollision').mockReturnValue(true)
-        wrapper = new BricksWrapper([brick1])
-        ball = new Ball(startPosition, ballSize, canvasSize, ballSpeed)
-        wrapper.detectCollision(ball)
-        expect(wrapper.isCornerCollision()).toEqual(true);
-    })
-    it('if the colliding brick has a false corner collision, then the method returns false',()=>{
-        jest.spyOn(brick1, 'hasCollision').mockReturnValue(true)
-        jest.spyOn(brick1, 'isCornerCollision').mockReturnValue(false)
-        wrapper = new BricksWrapper([brick1])
-        ball = new Ball(startPosition, ballSize, canvasSize, ballSpeed)
-        wrapper.detectCollision(ball)
-        expect(wrapper.isCornerCollision()).toEqual(false);
-    })
+
 })
