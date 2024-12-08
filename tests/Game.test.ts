@@ -167,40 +167,40 @@ describe('Game.loop tests',()=>{
     })
     it('if bricks.detectCollision() returns a TOP_OR_BOTTOM contact, update the score', ()=>{
         game = new Game(view)
-        jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(Contact.TOP_OR_BOTTOM)
+        jest.spyOn(game.bricks, 'collisionType').mockReturnValue(Contact.TOP_OR_BOTTOM)
         game.loop();
         expect(drawScoreSpy).toHaveBeenCalledWith(1)
         game.loop()
         expect(drawScoreSpy).toHaveBeenCalledWith(2)
     })
-    it('if bricks.detectCollision returns a SIDE contact, update the score',()=>{
+    it('if bricks.collisionType returns a SIDE contact, update the score',()=>{
         game = new Game(view)
-        jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(Contact.SIDE)
+        jest.spyOn(game.bricks, 'collisionType').mockReturnValue(Contact.SIDE)
         game.loop();
         expect(drawScoreSpy).toHaveBeenCalledWith(1)
     })
-    it('if bricks.detectCollision() returns NO_CONTACT, do not update the score', ()=>{
+    it('if bricks.collisiontype() returns NO_CONTACT, do not update the score', ()=>{
         const spy = jest.spyOn(view, 'drawScore')
         game = new Game(view)
-        jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(Contact.NO_CONTACT)
+        jest.spyOn(game.bricks, 'collisionType').mockReturnValue(Contact.NO_CONTACT)
         game.loop();
         expect(spy).not.toHaveBeenCalledWith(1)
     })
-    it('if bricks.detectCollision() returns TOP_OR_BOTTOM bounce the ball on Y Axis', ()=>{
+    it('if bricks.collisiontype() returns TOP_OR_BOTTOM bounce the ball on Y Axis', ()=>{
         const spy = jest.spyOn(game.ball, 'bounceY')
-        jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(Contact.TOP_OR_BOTTOM)
+        jest.spyOn(game.bricks, 'collisionType').mockReturnValue(Contact.TOP_OR_BOTTOM)
         game.loop();
         expect(spy).toHaveBeenCalled()
     })
-    it('if bricks.detectCollision() returns SIDE bounce the ball on X Axis', ()=>{
+    it('if bricks.collisiontype() returns SIDE bounce the ball on X Axis', ()=>{
         const spy = jest.spyOn(game.ball, 'bounceX')
-        jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(Contact.SIDE)
+        jest.spyOn(game.bricks, 'collisionType').mockReturnValue(Contact.SIDE)
         game.loop();
         expect(spy).toHaveBeenCalled()
     })
-    it('if bricks.detectCollision() does not return SIDE, do not bounce the ball on X Axis', ()=>{
+    it('if bricks.collisiontype() does not return SIDE, do not bounce the ball on X Axis', ()=>{
         const spy = jest.spyOn(game.ball, 'bounceX')
-        jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(Contact.NO_CONTACT)
+        jest.spyOn(game.bricks, 'collisionType').mockReturnValue(Contact.NO_CONTACT)
         game.loop();
         expect(spy).not.toHaveBeenCalled()
     })
@@ -208,13 +208,13 @@ describe('Game.loop tests',()=>{
         game.loop()
         expect(animationSpy).toHaveBeenCalled()
     })
-    it('if bricks.detectCollision() returns NO_CONTACT, then neither ball.rewind is not called',()=>{
-        jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(Contact.NO_CONTACT)
+    it('if bricks.collisiontype() returns NO_CONTACT, then neither ball.rewind is not called',()=>{
+        jest.spyOn(game.bricks, 'collisionType').mockReturnValue(Contact.NO_CONTACT)
         game.loop();
         expect(ballRewindSpy).not.toHaveBeenCalled()
     })
-    it('if bricks.detectCollision() returns SIDE then neither ball.rewind is called with the bricks value "collisionOverlap',()=>{
-        jest.spyOn(game.bricks, 'detectCollision').mockReturnValue(Contact.SIDE)
+    it('if bricks.collisiontype() returns SIDE then neither ball.rewind is called with the bricks value "collisionOverlap',()=>{
+        jest.spyOn(game.bricks, 'collisionType').mockReturnValue(Contact.SIDE)
         const overlapDistance = 2
         jest.spyOn(game.bricks, 'collisionOverlap').mockReturnValue(overlapDistance)
         game.loop();

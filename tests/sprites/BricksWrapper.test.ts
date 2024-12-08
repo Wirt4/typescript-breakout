@@ -11,17 +11,21 @@ describe('detectCollision tests', () => {
     let brick2:Brick
     let brick3:Brick
     let ballSize: number
-    let canvasSize: number
     let ballSpeed: Vector
     let ball: Ball
+    let mockCollision: Function
     beforeEach(() => {
         startPosition = {x:0, y:0};
         ballSize = 5
-        canvasSize = 400
         ballSpeed = {xComponent: 1, yComponent: -1}
         brick1 = new Brick('stub',startPosition)
         brick2 = new Brick('stub',startPosition)
         brick3 = new Brick('stub',startPosition)
+        mockCollision = ()=>{
+            wrapper = new BricksWrapper([brick1, brick2, brick3])
+            ball = new Ball(startPosition, ballSize,  ballSpeed)
+            wrapper.detectCollision(ball)
+        }
     })
     afterEach(() => {
         jest.clearAllMocks();
@@ -30,17 +34,15 @@ describe('detectCollision tests', () => {
         jest.spyOn(brick1, 'hasCollision').mockReturnValue(Contact.SIDE)
         jest.spyOn(brick2, 'hasCollision').mockReturnValue(Contact.NO_CONTACT)
         jest.spyOn(brick3, 'hasCollision').mockReturnValue(Contact.NO_CONTACT)
-        wrapper = new BricksWrapper([brick1, brick2, brick3])
-        ball = new Ball(startPosition, ballSize,  ballSpeed)
-        expect(wrapper.detectCollision(ball)).toEqual(Contact.SIDE);
+        mockCollision()
+        expect(wrapper.collisionType()).toEqual(Contact.SIDE);
     })
     it('the array contains a TOP_OR_BOTTOM collision, return TOP_OR_BOTTOM',()=>{
         jest.spyOn(brick1, 'hasCollision').mockReturnValue(Contact.NO_CONTACT)
         jest.spyOn(brick2, 'hasCollision').mockReturnValue(Contact.TOP_OR_BOTTOM)
         jest.spyOn(brick3, 'hasCollision').mockReturnValue(Contact.NO_CONTACT)
-        wrapper = new BricksWrapper([brick1, brick2, brick3])
-        ball = new Ball(startPosition, ballSize,  ballSpeed)
-        expect(wrapper.detectCollision(ball)).toEqual(Contact.TOP_OR_BOTTOM);
+        mockCollision()
+        expect(wrapper.collisionType()).toEqual(Contact.TOP_OR_BOTTOM);
     })
 
 })

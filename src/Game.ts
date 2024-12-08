@@ -92,7 +92,8 @@ export class Game {
          if (this._paddle.isCollidedWith(this.ball)){
              this._ball.bounceY()
          }
-         const brickCollide = this.bricks.detectCollision(this.ball)
+         this.bricks.detectCollision(this.ball)
+         const brickCollide = this.bricks.collisionType()
          if (brickCollide == Contact.NO_CONTACT){
              return
          }

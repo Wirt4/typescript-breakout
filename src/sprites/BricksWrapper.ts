@@ -4,23 +4,29 @@ import {Contact} from "../enums";
 
 export class BricksWrapper{
     private readonly _bricks: Brick[];
-    private _collisionOverlap = -1
+    private _collisionOverlap = 0
+    private _collisiontype = Contact.NO_CONTACT
 
     constructor(bricks: Brick[]){
         this._bricks = bricks;
     }
 
-    detectCollision(ball: Ball):Contact{
-        if (!this._bricks?.length) return Contact.NO_CONTACT
+    detectCollision(ball: Ball):void{
+        this._collisiontype = Contact.NO_CONTACT
+        if (!this._bricks?.length) {return }
         for (let i=0; i < this._bricks.length; i++){
             this._bricks[i].detectCollision(ball);
             const hasCollision: Contact = this._bricks[i].hasCollision();
             if (hasCollision!== Contact.NO_CONTACT){
                 this._collisionOverlap = this._bricks[i].collisionOverlapDistance()
-                return hasCollision
+                this._collisiontype = this._bricks[i].hasCollision()
+                return
             }
         }
-        return Contact.NO_CONTACT
+    }
+
+    collisionType(): Contact{
+        return this._collisiontype
     }
 
     collisionOverlap():number{
