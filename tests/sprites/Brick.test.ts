@@ -109,4 +109,10 @@ describe('brick.collisionOverlap tests',()=>{
         brick.detectCollision(ball)
         expect(brick.collisionOverlapDistance()).toEqual(overlap);
     })
+    it('if a brick and ball occupy a partial distance, then the overlap distance is amount of that overlap',()=>{
+        const overlap = 2
+        constructBall({x:brick.rightMostX - overlap, y: brick.position.y})
+        brick.detectCollision(ball)
+        expect(brick.collisionOverlapDistance()).toEqual(overlap);
+    })
 })

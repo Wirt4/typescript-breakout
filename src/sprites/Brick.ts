@@ -3,7 +3,10 @@ import {Position} from "../types";
 import {BRICK_HEIGHT, BRICK_WIDTH} from "../setup";
 import {Ball} from "./Ball";
 import {Contact} from "../enums";
-
+interface overlapRange{
+    start: number,
+    end: number
+}
 export class Brick extends Sprite{
     public energy: number;
     private _contactType = Contact.NO_CONTACT
@@ -24,26 +27,30 @@ export class Brick extends Sprite{
             return
         }
         if (ball.position.y >= this.position.y && ball.bottomMostY <= this.bottomMostY) {
-            this._collisionOverlapDistance = this.xOverlapDistance(ball.rightMostX)
+            this._collisionOverlapDistance = this.xOverlapDistance({start: ball.position.x, end: ball.rightMostX})
             this._contactType = Contact.SIDE
             return
         }
-        this._collisionOverlapDistance = this.YOverlapDistance(ball.position.y, ball.bottomMostY)
+        this._collisionOverlapDistance = this.YOverlapDistance({start: ball.position.y, end: ball.bottomMostY})
         this._contactType = Contact.TOP_OR_BOTTOM
     }
 
-    private YOverlapDistance(ballYStart: number, ballYEnd: number):number{
-       if (ballYStart < this.position.y) {
-           return ballYEnd - this.position.y
-       }
-       if (ballYEnd > this.bottomMostY) {
-           return this.bottomMostY - ballYStart
-       }
-        return ballYEnd - ballYStart
+    private overlapTemplate(ballRange: overlapRange, currentRange: overlapRange):number{
+        if (ballRange.start < currentRange.start) {
+            return ballRange.end  - currentRange.start
+        }
+        if (ballRange.end > currentRange.end) {
+            return currentRange.end  - ballRange.start
+        }
+        return ballRange.end - ballRange.start
     }
 
-    private xOverlapDistance(ballXEnd: number): number{
-        return Math.abs( this.position.x - ballXEnd)
+    private YOverlapDistance(ballRange: overlapRange):number{
+        return this.overlapTemplate(ballRange, {start: this.position.y, end: this.bottomMostY})
+    }
+
+    private xOverlapDistance(ballRange: overlapRange): number{
+        return this.overlapTemplate(ballRange, {start: this.position.x, end: this.rightMostX})
     }
 
     isInYRange(ball:Ball):boolean{

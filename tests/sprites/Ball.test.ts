@@ -112,3 +112,10 @@ describe('detectCanvasCollision tests', () => {
         expect(ball.hasCanvasCollision()).toEqual(Contact.SIDE)
     })
 })
+
+
+describe('rewind tests',()=>{
+    const ball = new Ball({x:100, y:100}, 5, 400, {x:10, y:-10})
+    ball.rewind(5)
+    expect(ball.position).toEqual({x:95, y:105})
+})

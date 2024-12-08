@@ -31,7 +31,8 @@ export class Ball extends Sprite{
 
 
     rewind(distance: number):void{
-        //TODO: implement this
+        this.position.x += this._speed.x > 0 ? -distance : distance
+        this.position.y += this._speed.y > 0 ? -distance : distance
     }
 
     move():void{
