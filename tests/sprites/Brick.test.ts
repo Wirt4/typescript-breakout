@@ -78,10 +78,35 @@ describe('brick.isCollidingWith',()=>{
 })
 
 describe('brick.collisionOverlap tests',()=>{
+    const  brick= new Brick('stub', {x:100, y:100}, 3);
+    let  diameter: number
+    let ball : Ball
+    function constructBall(position:Position,){
+        ball =  new Ball(position, diameter, 3000, {x: 1, y: -1});
+    }
+    beforeEach(() => {
+        diameter = 5
+    })
     it('if a brick and ball do not overlap, then the overlap distance is 0',()=>{
-        const brick = new Brick('stub', {x:100, y:100}, 3);
-        const ball = new Ball({x:0, y:0}, 5, 3000, {x: 1, y: -1});
+        constructBall({x:0, y:0})
         brick.detectCollision(ball)
         expect(brick.collisionOverlapDistance()).toEqual(0);
+    })
+    it('if a brick and ball occupy the same space, then the overlap distance is the diameter',()=>{
+        constructBall({x:100, y:100})
+        brick.detectCollision(ball)
+        expect(brick.collisionOverlapDistance()).toEqual(diameter);
+    })
+    it('if a brick and ball occupy a partial distance, then the overlap distance is amount of that overlap',()=>{
+        diameter = 6
+        constructBall({x:101, y:97})
+        brick.detectCollision(ball)
+        expect(brick.collisionOverlapDistance()).toEqual(3);
+    })
+    it('if a brick and ball occupy a partial distance, then the overlap distance is amount of that overlap',()=>{
+        const overlap = 2
+        constructBall({x:brick.rightMostX - overlap, y: brick.bottomMostY - overlap})
+        brick.detectCollision(ball)
+        expect(brick.collisionOverlapDistance()).toEqual(overlap);
     })
 })

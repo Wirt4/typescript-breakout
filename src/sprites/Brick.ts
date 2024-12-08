@@ -24,12 +24,27 @@ export class Brick extends Sprite{
             return
         }
         if (ball.position.y >= this.position.y && ball.bottomMostY <= this.bottomMostY) {
+            this._collisionOverlapDistance = this.xOverlapDistance(ball.rightMostX)
             this._contactType = Contact.SIDE
             return
         }
+        this._collisionOverlapDistance = this.YOverlapDistance(ball.position.y, ball.bottomMostY)
         this._contactType = Contact.TOP_OR_BOTTOM
     }
 
+    private YOverlapDistance(ballYStart: number, ballYEnd: number):number{
+       if (ballYStart < this.position.y) {
+           return ballYEnd - this.position.y
+       }
+       if (ballYEnd > this.bottomMostY) {
+           return this.bottomMostY - ballYStart
+       }
+        return ballYEnd - ballYStart
+    }
+
+    private xOverlapDistance(ballXEnd: number): number{
+        return Math.abs( this.position.x - ballXEnd)
+    }
 
     isInYRange(ball:Ball):boolean{
         return ball.position.y <= this.bottomMostY && ball.bottomMostY >= this.position.y
