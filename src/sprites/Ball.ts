@@ -1,15 +1,15 @@
 import {Sprite} from "./Sprite";
-import {Position} from "../types";
+import { Position, Vector} from "../types";
 import BALL_IMAGE from "../images/ball.png";
 import {Contact} from "../enums";
 
 export class Ball extends Sprite{
-    private _speed: Position;
+    private _speed: Vector;
     private readonly canvasWidth: number
 
-    constructor(position: Position, size: number, canvasWidth: number, speed: Position) {
+    constructor(position: Position, size: number, canvasWidth: number, vector: Vector) {
         super(BALL_IMAGE, position, {width: size, height: size});
-        this._speed = speed
+        this._speed = vector
         this.canvasWidth =canvasWidth
     }
 
@@ -26,26 +26,33 @@ export class Ball extends Sprite{
     }
 
     get speed(): number {
-        return Math.abs(this._speed.x)
+        return Math.abs(this._speed.xComponent)
     }
 
 
+    private offset(distance: number, speedComponent: number){
+        if (speedComponent > 0){
+            return -distance
+        }
+        return  distance
+    }
+
     rewind(distance: number):void{
-        this.position.x += this._speed.x > 0 ? -distance : distance
-        this.position.y += this._speed.y > 0 ? -distance : distance
+        this.position.x += this.offset(distance, this._speed.xComponent)
+        this.position.y += this.offset(distance, this._speed.yComponent)
     }
 
     move():void{
-        this.position.x += this._speed.x
-        this.position.y += this._speed.y
+        this.position.x += this._speed.xComponent
+        this.position.y += this._speed.yComponent
     }
 
     bounceY():void{
-        this._speed.y *= -1
+        this._speed.yComponent *= -1
     }
 
     bounceX():void{
-        this._speed.x *= -1
+        this._speed.xComponent *= -1
     }
 }
 

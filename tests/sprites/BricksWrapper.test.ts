@@ -1,7 +1,7 @@
 import {BricksWrapper} from "../../src/sprites/BricksWrapper";
 import {Brick} from "../../src/sprites/Brick";
 import {Ball} from "../../src/sprites/Ball";
-import {Position} from "../../src/types";
+import {Position, Vector} from "../../src/types";
 import {Contact} from "../../src/enums";
 
 describe('detectCollision tests', () => {
@@ -12,13 +12,13 @@ describe('detectCollision tests', () => {
     let brick3:Brick
     let ballSize: number
     let canvasSize: number
-    let ballSpeed: Position
+    let ballSpeed: Vector
     let ball: Ball
     beforeEach(() => {
         startPosition = {x:0, y:0};
         ballSize = 5
         canvasSize = 400
-        ballSpeed = {x: 1, y: -1}
+        ballSpeed = {xComponent: 1, yComponent: -1}
         brick1 = new Brick('stub',startPosition)
         brick2 = new Brick('stub',startPosition)
         brick3 = new Brick('stub',startPosition)
@@ -52,7 +52,7 @@ describe('collisionOverLap tests',()=>{
         const distance = 3
         jest.spyOn(brick, 'collisionOverlapDistance').mockReturnValue(distance)
         const wrapper = new BricksWrapper([brick])
-        const ball = new Ball({x:0, y:0}, 3, 42, {x:1, y:-1})
+        const ball = new Ball({x:0, y:0}, 3, 42, {xComponent:1, yComponent:-1})
         wrapper.detectCollision(ball)
         expect(wrapper.collisionOverlap()).toEqual(distance)
     })

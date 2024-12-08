@@ -265,6 +265,6 @@ describe('constructor tests',()=>{
         expect(Ball).toHaveBeenCalledWith(expect.anything(), BALL_SIZE, expect.anything(), expect.anything())
     })
     it('a ball is instantiated with BALL_SPEED const,',()=>{
-        expect(Ball).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.anything(), expect.objectContaining({x: BALL_SPEED}))
+        expect(Ball).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.anything(), expect.objectContaining({xComponent: BALL_SPEED}))
     })
 })

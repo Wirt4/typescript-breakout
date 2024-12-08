@@ -43,7 +43,7 @@ describe('brick.isCollidingWith',()=>{
     let originPosition: Position
     let diameter: number
     const canvasSize = 400
-    const ballSped = {x: 1, y: -1}
+    const ballSped = {xComponent: 1, yComponent: -1}
     beforeEach(() => {
         originPosition = {x:0, y:0}
         diameter = 5
@@ -82,7 +82,7 @@ describe('brick.collisionOverlap tests',()=>{
     let  diameter: number
     let ball : Ball
     function constructBall(position:Position,){
-        ball =  new Ball(position, diameter, 3000, {x: 1, y: -1});
+        ball =  new Ball(position, diameter, 3000, {xComponent: 1, yComponent: -1});
     }
     beforeEach(() => {
         diameter = 5
