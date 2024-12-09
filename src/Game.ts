@@ -21,6 +21,7 @@ export class Game {
     private readonly _ball: Ball
     private readonly canvasWidth: number;
     private readonly canvasHeight: number;
+    private _ballHasBounced =  false
 
     constructor(view: CanvasView) {
         this._isGameOver = false;
@@ -81,36 +82,90 @@ export class Game {
         this._view.drawSprite(this._ball)
     }
 
+    private detectCeilingBounce(){
+        if (this._ball.y <=0){
+            this._ball.bounceY()
+            this._ballHasBounced = true
+        }
+    }
+
+    private detectWallBounce(){
+        if (this._ball.x <= 0 || this._ball.rightMostX >= this.canvasWidth){
+            this._ball.bounceX()
+            this._ballHasBounced = true
+        }
+    }
+
+    private detectIfBallOutOfBounds(){
+        if (this._ball.y > this.canvasHeight){
+            this.setGameOver()
+            this._isGameOver = true;
+        }
+    }
+
+    private detectIfAllBricksGone(){
+        if (this.bricks.isEmpty()){
+            this.setGameWin()
+            this._isGameOver = true;
+        }
+    }
+
+    private detectGameEnd(){
+        this.detectIfBallOutOfBounds()
+        this.detectIfAllBricksGone()
+    }
+
+    private detectPaddleBounce(){
+        if (this._paddle.isCollidedWith(this.ball)){
+            this._ball.bounceY()
+            this._ballHasBounced = true
+        }
+    }
+
+    private updateScore(){
+        this._score ++
+        this._view.drawScore(this._score)
+    }
+
+    private adjustBallPosition(){
+        this.ball.rewind(this.bricks.collisionOverlap())
+    }
+
+    private handleBrickBounce(contact: Contact){
+        if (contact == Contact.TOP_OR_BOTTOM){
+            this._ball.bounceY()
+            return
+        }
+        this.ball.bounceX()
+    }
+
      detectEvents(){
         this._paddle.detectMove()
-         if (this._ball.y <=0){
-             this._ball.bounceY()
+         this.detectPaddleBounce()
+         this.detectCeilingBounce()
+
+         this.detectWallBounce()
+         if (this._ballHasBounced){
+             this._ballHasBounced = false
              return
          }
-         if (this._ball.y > this.canvasHeight){
-             this._isGameOver = true;
+
+         this.detectGameEnd()
+         if (this._isGameOver){
              return
          }
-         if (this._ball.x <= 0 || this._ball.rightMostX >= this.canvasWidth){
-             this._ball.bounceX()
-             return
-         }
-         if (this._paddle.isCollidedWith(this.ball)){
-             this._ball.bounceY()
-         }
+
          this.bricks.detectCollision(this.ball)
          const brickCollide = this.bricks.collisionType()
+
          if (brickCollide == Contact.NO_CONTACT){
              return
          }
-            this.ball.rewind(this.bricks.collisionOverlap())
-            this._score ++
-            this._view.drawScore(this._score)
-            if (brickCollide == Contact.TOP_OR_BOTTOM){
-                this._ball.bounceY()
-                return
-            }
-            this.ball.bounceX()
+
+         this.bricks.adjustBricks()
+         this.adjustBallPosition()
+         this.updateScore()
+         this.handleBrickBounce(brickCollide)
     }
 
     loop():void{
@@ -118,6 +173,9 @@ export class Game {
         this.drawSprites()
         this.detectEvents()
         this._ball.move()
+        if (this.isGameOver){
+            return
+        }
         requestAnimationFrame(()=>{this.loop()})
     }
 }
