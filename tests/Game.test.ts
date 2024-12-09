@@ -116,18 +116,18 @@ describe('Game.loop tests',()=>{
             get: () => value,
         });
     }
-    function setCanvas(width: number, height: number){
+    function setGameFromCanvasSize(width: number, height: number){
         document.body.innerHTML = `<canvas id="playField" width="${width}" height="${height}"></canvas><button id="start"></button>`
+        game = new Game(view);
     }
     beforeEach(()=>{
-        setCanvas(1000, 600)
         view = new CanvasView('#playField');
         clearSpy = jest.spyOn(view, 'clear')
         drawBricksSpy = jest.spyOn(view, 'drawBricks')
         drawSpriteSpy = jest.spyOn(view, 'drawSprite')
         animationSpy = jest.spyOn(global, 'requestAnimationFrame').mockReturnValue(1)
         drawScoreSpy = jest.spyOn(view, 'drawScore')
-        game = new Game(view);
+        setGameFromCanvasSize(1000, 600)
         ballRewindSpy = jest.spyOn(game.ball, 'rewind')
     })
     afterEach(()=>{
@@ -236,23 +236,20 @@ describe('Game.loop tests',()=>{
         expect(bounceXSpy).toHaveBeenCalled()
     })
     it('if ball.rightmostX is higher than the canvas width, then call ball.bounceX',()=>{
+        setGameFromCanvasSize(1000, 600)
         const bounceXSpy = jest.spyOn(game.ball, 'bounceX')
-        setCanvas(1000, 600)
-        game = new Game(view)
         mockGetter(game.ball, 'rightMostX', 1001)
         game.loop()
         expect(bounceXSpy).toHaveBeenCalled()
     })
     it('if the ball leaves the canvas, then gameOver is set to true',()=>{
-        setCanvas(1000, 600)
-        game = new Game(view)
+        setGameFromCanvasSize(1000, 600)
         mockGetter(game.ball, 'y', 601)
         game.loop()
         expect(game.isGameOver).toEqual(true)
     })
     it('if the ball does not leave the canvas, then gameOver is false',()=>{
-        setCanvas(1000, 600)
-        game = new Game(view)
+        setGameFromCanvasSize(1000, 600)
         mockGetter(game.ball, 'y', 500)
         game.loop()
         expect(game.isGameOver).toEqual(false)
