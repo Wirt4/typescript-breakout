@@ -19,7 +19,7 @@ export class Game {
     public bricks = new BricksWrapper(createBricks())
     private readonly _paddle: Paddle
     private readonly _ball: Ball
-    private canvasWidth: number;
+    private readonly canvasWidth: number;
 
     constructor(view: CanvasView) {
         this._isGameOver = false;

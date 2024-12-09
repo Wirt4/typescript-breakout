@@ -29,12 +29,6 @@ describe('basic sprite getters', () => {
          brick = new Brick('stub',position, 3);
          expect(brick.energy).toBe(3);
     })
-    it('can reset brick energy to 2',()=>{
-         brick = new Brick('stub',position, 3);
-         expect(brick.energy).toBe(3);
-         brick.energy = 2
-        expect(brick.energy).toBe(2);
-    })
 })
 
 describe('brick.isCollidingWith',()=>{
@@ -113,5 +107,13 @@ describe('brick.collisionOverlap tests',()=>{
         constructBall({x:brick.rightMostX - overlap, y: brick.position.y})
         brick.detectCollision(ball)
         expect(brick.collisionOverlapDistance()).toEqual(overlap);
+    })
+})
+
+describe('brick.reduceEnergy tests',()=>{
+    it('if a brick.reduceEnergy is called, it decrements the energy by one',()=>{
+        const brick = new Brick('stub', {x:100, y:100}, 3);
+        brick.reduceEnergy()
+        expect(brick.energy).toEqual(2)
     })
 })

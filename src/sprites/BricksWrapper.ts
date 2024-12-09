@@ -20,6 +20,11 @@ export class BricksWrapper{
             if (hasCollision!== Contact.NO_CONTACT){
                 this._collisionOverlap = this._bricks[i].collisionOverlapDistance()
                 this._collisiontype = this._bricks[i].hasCollision()
+                if (this._bricks[i].energy==1){
+                    this._bricks.splice(i,1);
+                    return
+                }
+                this._bricks[i].reduceEnergy()
                 return
             }
         }
