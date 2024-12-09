@@ -116,8 +116,11 @@ describe('Game.loop tests',()=>{
             get: () => value,
         });
     }
+    function setCanvas(width: number, height: number){
+        document.body.innerHTML = `<canvas id="playField" width="${width}" height="${height}"></canvas><button id="start"></button>`
+    }
     beforeEach(()=>{
-        document.body.innerHTML = `<canvas id="playField" width="1000" height="600"></canvas><button id="start"></button>`
+        setCanvas(1000, 600)
         view = new CanvasView('#playField');
         clearSpy = jest.spyOn(view, 'clear')
         drawBricksSpy = jest.spyOn(view, 'drawBricks')
@@ -189,19 +192,19 @@ describe('Game.loop tests',()=>{
     it('if bricks.collisiontype() returns TOP_OR_BOTTOM bounce the ball on Y Axis', ()=>{
         const spy = jest.spyOn(game.ball, 'bounceY')
         jest.spyOn(game.bricks, 'collisionType').mockReturnValue(Contact.TOP_OR_BOTTOM)
-        game.loop();
+        game.loop()
         expect(spy).toHaveBeenCalled()
     })
     it('if bricks.collisiontype() returns SIDE bounce the ball on X Axis', ()=>{
         const spy = jest.spyOn(game.ball, 'bounceX')
         jest.spyOn(game.bricks, 'collisionType').mockReturnValue(Contact.SIDE)
-        game.loop();
+        game.loop()
         expect(spy).toHaveBeenCalled()
     })
     it('if bricks.collisiontype() does not return SIDE, do not bounce the ball on X Axis', ()=>{
         const spy = jest.spyOn(game.ball, 'bounceX')
         jest.spyOn(game.bricks, 'collisionType').mockReturnValue(Contact.NO_CONTACT)
-        game.loop();
+        game.loop()
         expect(spy).not.toHaveBeenCalled()
     })
     it('Game.loop ends by calling requestAnimationFrame', ()=>{
@@ -234,10 +237,25 @@ describe('Game.loop tests',()=>{
     })
     it('if ball.rightmostX is higher than the canvas width, then call ball.bounceX',()=>{
         const bounceXSpy = jest.spyOn(game.ball, 'bounceX')
-        //canvas width is 1000
+        setCanvas(1000, 600)
+        game = new Game(view)
         mockGetter(game.ball, 'rightMostX', 1001)
         game.loop()
         expect(bounceXSpy).toHaveBeenCalled()
+    })
+    it('if the ball leaves the canvas, then gameOver is set to true',()=>{
+        setCanvas(1000, 600)
+        game = new Game(view)
+        mockGetter(game.ball, 'y', 601)
+        game.loop()
+        expect(game.isGameOver).toEqual(true)
+    })
+    it('if the ball does not leave the canvas, then gameOver is false',()=>{
+        setCanvas(1000, 600)
+        game = new Game(view)
+        mockGetter(game.ball, 'y', 500)
+        game.loop()
+        expect(game.isGameOver).toEqual(false)
     })
 })
 

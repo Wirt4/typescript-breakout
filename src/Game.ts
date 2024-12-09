@@ -13,13 +13,14 @@ enum EndState{
 }
 
 export class Game {
-    private readonly _isGameOver: boolean
+    private _isGameOver: boolean
     private readonly _view: CanvasView
     private _score = 0
     public bricks = new BricksWrapper(createBricks())
     private readonly _paddle: Paddle
     private readonly _ball: Ball
     private readonly canvasWidth: number;
+    private readonly canvasHeight: number;
 
     constructor(view: CanvasView) {
         this._isGameOver = false;
@@ -29,6 +30,7 @@ export class Game {
         let speed = {xComponent: BALL_SPEED, yComponent: -BALL_SPEED};
         const canvasSize = this.canvasSize()
         this.canvasWidth = canvasSize.width
+        this.canvasHeight = canvasSize.height
         this._ball = new Ball(ballPosition, BALL_SIZE,speed)
     }
 
@@ -83,6 +85,10 @@ export class Game {
         this._paddle.detectMove()
          if (this._ball.y <=0){
              this._ball.bounceY()
+             return
+         }
+         if (this._ball.y > this.canvasHeight){
+             this._isGameOver = true;
              return
          }
          if (this._ball.x <= 0 || this._ball.rightMostX >= this.canvasWidth){
