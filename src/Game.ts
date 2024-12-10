@@ -1,10 +1,19 @@
 import {CanvasView} from "./view/CanvasView";
 import {Paddle} from "./sprites/Paddle";
-import {BALL_SIZE, BALL_SPEED, BALL_STARTX, BALL_STARTY, NUMBER_OF_BRICKS, PADDLE_SPEED, PADDLE_STARTX} from "./setup";
+import {
+    BALL_SIZE,
+    BALL_SPEED,
+    BALL_STARTX,
+    BALL_STARTY,
+    NUMBER_OF_BRICKS,
+    PADDLE_SPEED,
+    PADDLE_STARTX,
+} from "./setup";
 import {Size} from "./types";
 import {Ball} from "./sprites/Ball";
 import {BricksWrapper} from "./sprites/Bricks/BricksWrapper";
 import {Contact} from "./enums";
+import {BricksWrapperClient} from "./sprites/Bricks/BricksWrapperClient";
 
 enum EndState{
     GAME_OVER = "Game Over!",
@@ -15,14 +24,14 @@ export class Game {
     private _isGameOver: boolean
     private readonly _view: CanvasView
     private _score = 0
-    public bricks = new BricksWrapper([])
+    public bricks : BricksWrapper
     private readonly _paddle: Paddle
     private readonly _ball: Ball
     private readonly canvasWidth: number;
     private readonly canvasHeight: number;
     private _ballHasBounced =  false
 
-    constructor(view: CanvasView) {
+    constructor(view: CanvasView, bricksWrapperClient: BricksWrapperClient) {
         this._isGameOver = false;
         this._view = view;
         this._paddle = new Paddle(PADDLE_STARTX, this.canvasSize(), PADDLE_SPEED)
@@ -32,6 +41,8 @@ export class Game {
         this.canvasWidth = canvasSize.width
         this.canvasHeight = canvasSize.height
         this._ball = new Ball(ballPosition, BALL_SIZE,speed)
+        this.bricks = bricksWrapperClient.getBricksWrapper(NUMBER_OF_BRICKS)
+
     }
 
     private canvasSize(): Size{
@@ -72,11 +83,15 @@ export class Game {
     start(){
         this._view.drawInfo("")
         this._view.drawScore(0)
-        this.loop()
+        try{
+            this.loop()
+        }catch(e){
+            console.error('issue with game.loop', e)
+        }
     }
 
     private drawSprites(){
-        this._view.drawBricks(this.bricks.arr)
+        this._view.drawBricks(this.bricks?.arr)
         this._view.drawSprite(this._paddle)
         this._view.drawSprite(this._ball)
     }
@@ -103,7 +118,7 @@ export class Game {
     }
 
     private detectIfAllBricksGone(){
-        if (this.bricks.isEmpty()){
+        if (this.bricks?.isEmpty()){
             this.setGameWin()
             this._isGameOver = true;
         }

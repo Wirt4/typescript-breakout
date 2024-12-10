@@ -5,6 +5,7 @@ import GREEN_BRICK from "../../../src/images/brick-green.png"
 import YELLOW_BRICK from "../../../src/images/brick-yellow.png"
 import BLUE_BRICK from "../../../src/images/brick-blue.png"
 import PURPLE_BRICK from "../../../src/images/brick-purple.png"
+import {BricksWrapper} from "../../../src/sprites/Bricks/BricksWrapper";
 
 jest.mock("../../../src/setup", () => ({
     BRICK_PADDING:0,
@@ -200,5 +201,79 @@ describe('createBricks, Coordinates Checks',()=>{
         jest.spyOn(client, 'generateBrickSchema').mockReturnValue([1, 1, 1])
         bricks = client.createBricks(3)
         expect(bricks[2].x).toBe(bricks[0].x)
+    })
+})
+
+describe('getBricksWrapper tests',()=>{
+    let client: BricksWrapperClient
+    let wrapper: BricksWrapper
+    beforeEach(() => {
+        client = new BricksWrapperClient(1)
+    })
+    afterEach(()=>{
+        jest.clearAllMocks()
+    })
+    it('output of getBricksWrapper is a wrapper',()=>{
+        wrapper = client.getBricksWrapper()
+        expect(wrapper).toBeInstanceOf(BricksWrapper)
+    })
+    it('output of getBricksWrapper takes the argument "number of bricks" and the wrapper has that number of bricks',()=>{
+        const expected = 5
+        jest.spyOn(client, 'generateBrickSchema').mockReturnValue([1,2,3,4,5])
+        wrapper = client.getBricksWrapper(expected)
+        expect(wrapper.arr.length).toBe(expected)
+    })
+})
+
+describe('generateBrickSchema tests',()=>{
+    let client: BricksWrapperClient
+    let actual: number[] = []
+    let assertIsZero: Function
+    let assertIsNonZero: Function
+    beforeEach(() => {
+        client = new BricksWrapperClient(1)
+        actual = client.generateBrickSchema(1)
+        assertIsZero = (indeces: number[]) => {
+            indeces.forEach(ndx => {expect(actual[ndx]).toBe(0)})
+        }
+        assertIsNonZero = (indecs: number[]) => {
+            indecs.forEach(ndx => {expect(actual[ndx]).not.toBe(0)})
+        }
+    })
+    it('minimum case1, 1 brick, 1 column',()=>{
+         client = new BricksWrapperClient(1)
+         actual = client.generateBrickSchema(1)
+        expect(actual.length).toEqual(2)
+        assertIsZero([0])
+        assertIsNonZero([1])
+    })
+    it('1 brick, 2 columns right-hand column zero fills in first',()=>{
+         client = new BricksWrapperClient(2)
+         actual = client.generateBrickSchema(1)
+        expect(actual.length).toEqual(4)
+        //[0, 0,
+        //1, 0]
+        assertIsZero([0, 1, 3])
+        assertIsNonZero([2]);
+    })
+    it('3 bricks, 2 columns right-hand column zero fills in first',()=>{
+         client = new BricksWrapperClient(2)
+         actual = client.generateBrickSchema(3)
+        expect(actual.length).toEqual(8)
+        //[0,0
+        // 1,0,
+        // 1,0
+        // 1,0]
+        assertIsZero([0,1,3,5,7])
+        assertIsNonZero([2,4,6])
+    })
+    it('1 bricks, 3 columns right-hand and lefthand columns are filled in first',()=>{
+        client = new BricksWrapperClient(3)
+        actual = client.generateBrickSchema(1)
+        expect(actual.length).toEqual(6)
+        //[0,0,0
+        // 0,1,0]
+        assertIsZero([0,1,2,3,5])
+        assertIsNonZero([4])
     })
 })

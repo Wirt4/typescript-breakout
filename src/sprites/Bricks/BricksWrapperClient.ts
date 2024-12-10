@@ -6,6 +6,7 @@ import YELLOW_BRICK_IMAGE from "../../images/brick-yellow.png";
 import PURPLE_BRICK_IMAGE from "../../images/brick-purple.png";
 import {Brick} from "./Brick";
 import {Position, Size} from "../../types";
+import {BricksWrapper} from "./BricksWrapper";
 
 interface Padding{
     stage: number
@@ -39,11 +40,14 @@ class BrickCoordinates{
 class BricksWrapperClient{
     private brickCoordinates:BrickCoordinates;
     private readonly brickSize:Size;
+    private columns: number;
 
-
-    constructor(stageColumns: number = 10, brickSize: Size = {width: 10, height: 10}, padding:Padding = {stage:3, brick:1}) {
+    constructor(stageColumns: number = 10,
+                brickSize: Size = {width: 10, height: 10},
+                padding:Padding = {stage:3, brick:1}) {
         this.brickCoordinates = new BrickCoordinates(stageColumns, padding, brickSize);
         this.brickSize = brickSize;
+        this.columns = stageColumns;
     }
 
     private brickStats(energyLevel: number){
@@ -76,15 +80,67 @@ class BricksWrapperClient{
         return {x, y}
     }
 
+    private allocateEnergyNumber(ndx: number){
+        return ndx%this.columns!==0 && ndx%this.columns !== this.columns-1 ? 1: 0
+    }
+
+    private allocateEnergyForTwoColumn(ndx: number){
+        return ndx%this.columns==0 ? 1: 0
+    }
+
+    private templateSchema(numberOfBricks: number): number[]{
+        const schema = new Array(this.columns * (numberOfBricks + 1))
+        schema.fill(0)
+        return schema
+    }
+
+    private twoColumnSchema(numberOfBricks: number){
+        const schema = this.templateSchema(numberOfBricks)
+        for (let i=1; i< schema.length; i++){
+            schema[i] = this.allocateEnergyForTwoColumn(i)
+        }
+        return schema
+    }
+
+    private oneColumnSchema(numberOfBricks: number){
+        const schema = this.templateSchema(numberOfBricks)
+        schema.fill(1, 1)
+        return schema
+    }
+
+    private multiSchema(numberOfBricks: number){
+        const schema = this.templateSchema(numberOfBricks)
+        for (let i=this.columns; i< schema.length; i++){
+            schema[i] = this.allocateEnergyNumber(i)
+        }
+
+        return schema
+    }
 
     public generateBrickSchema(numberOfBricks: number): number[] {
-        return []
+
+        if (this.columns == 1 ){
+           return this.oneColumnSchema(numberOfBricks)
+        }
+
+        if (this.columns == 2){
+           return this.twoColumnSchema(numberOfBricks)
+        }
+
+       return this.multiSchema(numberOfBricks)
     }
 
     public createBricks(numberOfBricks: number): Brick[] {
+        if (numberOfBricks <=0){
+            return[]
+        }
         const schema = this.generateBrickSchema(numberOfBricks)
+        return this.schemaToBricks(schema)
+    }
+
+    private schemaToBricks(schema: number[]): Brick[]{
         return schema.reduce((accumulated, element, ndx)=>{
-            if (element <=0) {
+            if (element <= 0) {
                 return accumulated
             }
             return [...accumulated,this.brickFromIndex(ndx, element) ]
@@ -97,8 +153,9 @@ class BricksWrapperClient{
         return new Brick(img, coordinates, energyLevel, this.brickSize)
     }
 
-    public getBricksWrapper(){}
-
+    public getBricksWrapper(numberOfBricks: number = 1): BricksWrapper {
+        return new BricksWrapper(this.createBricks(numberOfBricks))
+    }
 }
 
 export {BricksWrapperClient}
