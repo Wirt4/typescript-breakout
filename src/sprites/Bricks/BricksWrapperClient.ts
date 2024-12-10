@@ -1,10 +1,4 @@
-import {
-    BRICK_HEIGHT,
-    BRICK_PADDING,
-    BRICK_WIDTH,
-    STAGE_COLS,
-    STAGE_PADDING
-} from "../../setup";
+
 import RED_BRICK_IMAGE from "../../images/brick-red.png";
 import BLUE_BRICK_IMAGE from "../../images/brick-blue.png";
 import GREEN_BRICK_IMAGE from "../../images/brick-green.png";
@@ -13,12 +7,42 @@ import PURPLE_BRICK_IMAGE from "../../images/brick-purple.png";
 import {Brick} from "./Brick";
 import {Position, Size} from "../../types";
 
-class BricksWrapperClient{
-    private readonly columns: number
-    private readonly brickSize: Size
+interface Padding{
+    stage: number
+    brick: number
+}
 
-    constructor(stageColumns: number = 10, brickSize: Size = {width: 10, height: 10}) {
-        this.columns = stageColumns;
+class BrickCoordinates{
+    private readonly columns: number
+    private padding: Padding
+    private brickSize: Size
+
+    constructor(columns: number, padding: Padding, brickSize: Size) {
+        this.columns = columns
+        this.padding = padding
+        this.brickSize = brickSize
+    }
+
+    private template(offset:number, brickSize: number):number{
+        return this.padding.stage + offset * (brickSize+ this.padding.brick);
+    }
+
+    public xCoordinate(index: number){
+        return this.template(index%this.columns, this.brickSize.width)
+    }
+
+    public yCoordinate(index: number){
+        return this.template(Math.floor(index/this.columns), this.brickSize.height);
+    }
+}
+
+class BricksWrapperClient{
+    private brickCoordinates:BrickCoordinates;
+    private readonly brickSize:Size;
+
+
+    constructor(stageColumns: number = 10, brickSize: Size = {width: 10, height: 10}, padding:Padding = {stage:3, brick:1}) {
+        this.brickCoordinates = new BrickCoordinates(stageColumns, padding, brickSize);
         this.brickSize = brickSize;
     }
 
@@ -45,11 +69,13 @@ class BricksWrapperClient{
         }
         return { img:color, energyLevel: level };
     }
-    private  adjustedCoords(i: number): Position{
-        const x = STAGE_PADDING + (i%this.columns) * (this.brickSize.width + BRICK_PADDING)
-        const y = STAGE_PADDING + Math.floor(i/this.columns) * (this.brickSize.height + BRICK_PADDING)
+
+    private adjustedCoords(i: number): Position{
+        const x = this.brickCoordinates.xCoordinate(i)
+        const y = this.brickCoordinates.yCoordinate(i)
         return {x, y}
     }
+
 
     public generateBrickSchema(numberOfBricks: number): number[] {
         return []

@@ -7,10 +7,6 @@ import BLUE_BRICK from "../../../src/images/brick-blue.png"
 import PURPLE_BRICK from "../../../src/images/brick-purple.png"
 
 jest.mock("../../../src/setup", () => ({
-    LEVEL: [],
-    STAGE_PADDING:0,
-    BRICK_WIDTH:0,
-    BRICK_HEIGHT:0,
     BRICK_PADDING:0,
     BRICK_IMAGES: {
     1: 'stub',
@@ -156,64 +152,51 @@ describe('createBricks, Coordinates Checks',()=>{
         jest.clearAllMocks();
     })
     it('Given the array of bricks is one long, check the x coordinate ',()=>{
-        mockedSetup.STAGE_PADDING = 4 //TODO -- make these dumb constants arguments
-        client = new BricksWrapperClient(10);
+        client = new BricksWrapperClient(10,{width: 10, height:5}, {stage: 4, brick:2});
         jest.spyOn(client, 'generateBrickSchema').mockReturnValue([1])
         bricks = client.createBricks(1)
         const brick = bricks[0]
         expect(brick.x).toBe(4)
     })
     it('Given the array of bricks is one long, check the x coordinate ',()=>{
-        mockedSetup.STAGE_PADDING = 10
-        mockedSetup.STAGE_COLS = 10
-        mockedSetup.BRICK_WIDTH = 10
-        mockedSetup.BRICK_PADDING = 10
+        client = new BricksWrapperClient(1,{width: 10, height:5}, {stage: 10, brick:10});
         jest.spyOn(client, 'generateBrickSchema').mockReturnValue([1])
         bricks = client.createBricks(1)
         const brick = bricks[0]
         expect(brick.x).toBe(10)
     })
     it('Given the array of bricks is two or more long, check the x coordinate ',()=>{
-        mockedSetup.STAGE_PADDING = 10
-        mockedSetup.STAGE_COLS = 2
-        mockedSetup.BRICK_WIDTH = 20
         mockedSetup.BRICK_PADDING = 5
-        client = new BricksWrapperClient(2, {width:20, height:5});
+        client = new BricksWrapperClient(2, {width:20, height:5}, {stage: 10, brick:5});
         jest.spyOn(client, 'generateBrickSchema').mockReturnValue([1,1])
         bricks = client.createBricks(2)
         const brick = bricks[1]
         expect(brick.x).toBe(35)
     })
     it('Given the array of bricks one long, check the y coordinate',()=>{
-        mockedSetup.STAGE_PADDING = 10
-        mockedSetup.STAGE_COLS = 1
+        client = new BricksWrapperClient(1, {width:20, height:5}, {stage: 10, brick:2});
         jest.spyOn(client, 'generateBrickSchema').mockReturnValue([1])
         bricks = client.createBricks(1)
         const brick = bricks[0]
         expect(brick.y).toBe(10)
     })
     it('Given the array of bricks one long, check the y coordinate, different data',()=>{
-        mockedSetup.STAGE_PADDING = 2
+        client = new BricksWrapperClient(1, {width:20, height:5}, {stage: 2, brick : 5});
         jest.spyOn(client, 'generateBrickSchema').mockReturnValue([1])
         bricks = client.createBricks(1)
         const brick = bricks[0]
         expect(brick.y).toBe(2)
     })
     it('Given a brick on a lower level, check the y coordinate',()=>{
-        mockedSetup.STAGE_PADDING = 2
-        mockedSetup.BRICK_HEIGHT = 20
-        mockedSetup.BRICK_PADDING = 5
-        client = new BricksWrapperClient(1, {height:20, width:20});
+        client = new BricksWrapperClient(1, {height:20, width:20}, {stage: 2, brick:5});
         jest.spyOn(client, 'generateBrickSchema').mockReturnValue([1,1,1])
         bricks = client.createBricks(2)
         const brick = bricks[1]
         expect(brick.position.y).toBe(27)
     })
     it('The x coordinate should carriage return as function maps around columns',()=>{
-        mockedSetup.STAGE_PADDING = 2
-        mockedSetup.BRICK_HEIGHT = 20
         mockedSetup.BRICK_PADDING = 5
-        client = new BricksWrapperClient(2);
+        client = new BricksWrapperClient(2, {width:20, height:20}, {stage: 2, brick:5});
         jest.spyOn(client, 'generateBrickSchema').mockReturnValue([1, 1, 1])
         bricks = client.createBricks(3)
         expect(bricks[2].x).toBe(bricks[0].x)
