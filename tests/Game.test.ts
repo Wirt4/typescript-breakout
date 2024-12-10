@@ -1,15 +1,20 @@
 import {Game} from "../src/Game";
 import {CanvasView} from "../src/view/CanvasView";
-import {createBricks} from "../src/helper";
 import {Brick} from "../src/sprites/Brick";
 import {Paddle} from "../src/sprites/Paddle";
 import {BALL_SIZE, BALL_SPEED, BALL_STARTX, BALL_STARTY, PADDLE_SPEED, PADDLE_STARTX} from "../src/setup";
 import {Ball} from "../src/sprites/Ball";
 import {Contact} from "../src/enums";
+import {BricksWrapperClient} from "../src/helper";
 
 jest.mock("../src/helper");
 jest.mock("../src/sprites/Paddle");
 jest.mock("../src/sprites/Ball");
+jest.mock( "../src/helper",()=>({
+    BricksWrapperClient: jest.fn(()=>({
+        getBricksWrapper: jest.fn()
+    }))
+}));
 
 describe('Game.setGameOver tests',()=>{
     let view: CanvasView
@@ -74,7 +79,6 @@ describe('Game.start tests',()=>{
     beforeEach(()=>{
         view = new CanvasView('#playField');
         game = new Game(view);
-        (createBricks as jest.Mock).mockReturnValue([]);
     })
     afterEach(()=>{
         jest.resetAllMocks()
@@ -303,13 +307,7 @@ describe('constructor tests',()=>{
     afterEach(()=>{
         jest.clearAllMocks()
     })
-    it('game.bricks is set with the output of createBricks',()=>{
-        const brick = new Brick('stub',{x:0, y:0});
-        const expected = [brick];
-        (createBricks as jest.Mock).mockReturnValue(expected);
-        const game = new Game(view)
-        expect(game.bricks.arr).toEqual(expected);
-    })
+    //TODO: test that Game uses a wrapper created by the Wrapper client
     it('a paddle in instantiated with STARTX const, ',()=>{
         expect(Paddle).toHaveBeenCalledWith(PADDLE_STARTX, expect.anything(), expect.anything())
     })

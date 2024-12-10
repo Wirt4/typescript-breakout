@@ -1,7 +1,6 @@
 import {CanvasView} from "./view/CanvasView";
-import {createBricks} from "./helper";
 import {Paddle} from "./sprites/Paddle";
-import {BALL_SIZE, BALL_SPEED, BALL_STARTX, BALL_STARTY, PADDLE_SPEED, PADDLE_STARTX} from "./setup";
+import {BALL_SIZE, BALL_SPEED, BALL_STARTX, BALL_STARTY, NUMBER_OF_BRICKS, PADDLE_SPEED, PADDLE_STARTX} from "./setup";
 import {Size} from "./types";
 import {Ball} from "./sprites/Ball";
 import {BricksWrapper} from "./sprites/BricksWrapper";
@@ -16,7 +15,7 @@ export class Game {
     private _isGameOver: boolean
     private readonly _view: CanvasView
     private _score = 0
-    public bricks = new BricksWrapper(createBricks())
+    public bricks = new BricksWrapper([])
     private readonly _paddle: Paddle
     private readonly _ball: Ball
     private readonly canvasWidth: number;
