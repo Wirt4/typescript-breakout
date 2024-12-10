@@ -1,6 +1,6 @@
 import {Brick} from "./Brick";
-import {Ball} from "./Ball";
-import {Contact} from "../enums";
+import {Ball} from "../Ball";
+import {Contact} from "../../enums";
 
 export class BricksWrapper{
     private readonly _bricks: Brick[];

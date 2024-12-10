@@ -1,16 +1,16 @@
 import {Game} from "../src/Game";
 import {CanvasView} from "../src/view/CanvasView";
-import {Brick} from "../src/sprites/Brick";
+import {Brick} from "../src/sprites/Bricks/Brick";
 import {Paddle} from "../src/sprites/Paddle";
 import {BALL_SIZE, BALL_SPEED, BALL_STARTX, BALL_STARTY, PADDLE_SPEED, PADDLE_STARTX} from "../src/setup";
 import {Ball} from "../src/sprites/Ball";
 import {Contact} from "../src/enums";
-import {BricksWrapperClient} from "../src/helper";
+import {BricksWrapperClient} from "../src/sprites/Bricks/BricksWrapperClient";
 
-jest.mock("../src/helper");
+jest.mock("../src/sprites/Bricks/BricksWrapperClient");
 jest.mock("../src/sprites/Paddle");
 jest.mock("../src/sprites/Ball");
-jest.mock( "../src/helper",()=>({
+jest.mock( "../src/sprites/Bricks/BricksWrapperClient",()=>({
     BricksWrapperClient: jest.fn(()=>({
         getBricksWrapper: jest.fn()
     }))

@@ -3,7 +3,7 @@ import {Paddle} from "./sprites/Paddle";
 import {BALL_SIZE, BALL_SPEED, BALL_STARTX, BALL_STARTY, NUMBER_OF_BRICKS, PADDLE_SPEED, PADDLE_STARTX} from "./setup";
 import {Size} from "./types";
 import {Ball} from "./sprites/Ball";
-import {BricksWrapper} from "./sprites/BricksWrapper";
+import {BricksWrapper} from "./sprites/Bricks/BricksWrapper";
 import {Contact} from "./enums";
 
 enum EndState{

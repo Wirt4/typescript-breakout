@@ -1,8 +1,8 @@
-import {BricksWrapper} from "../../src/sprites/BricksWrapper";
-import {Brick} from "../../src/sprites/Brick";
-import {Ball} from "../../src/sprites/Ball";
-import {Position, Vector} from "../../src/types";
-import {Contact} from "../../src/enums";
+import {BricksWrapper} from "../../../src/sprites/Bricks/BricksWrapper";
+import {Brick} from "../../../src/sprites/Bricks/Brick";
+import {Ball} from "../../../src/sprites/Ball";
+import {Position, Vector} from "../../../src/types";
+import {Contact} from "../../../src/enums";
 import mock = jest.mock;
 
 describe('detectCollision tests', () => {
