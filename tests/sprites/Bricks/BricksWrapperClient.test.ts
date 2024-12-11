@@ -276,4 +276,27 @@ describe('generateBrickSchema tests',()=>{
         assertIsZero([0,1,2,3,5])
         assertIsNonZero([4])
     })
+    it('1 brick, 4 columns, Bricks should fill into the left-hand side',()=>{
+        client = new BricksWrapperClient(4)
+        actual = client.generateBrickSchema(1)
+        //[0,0,0,0
+        // 0,1,0,0]
+        assertIsZero([0,1,2,3,4,6,7])
+        assertIsNonZero([5])
+    })
+})
+
+describe('energyInputGenerator tests',()=>{
+    it('energyInputGenerator should output a pseudorandom value between 1 and 5, inclusive',()=>{
+        const client = new BricksWrapperClient()
+        jest.spyOn(Math, 'random').mockReturnValueOnce(1).mockReturnValue(0)
+        expect(client.energyInputGenerator()).toEqual(5)
+        expect(client.energyInputGenerator()).toEqual(1)
+    })
+    it('generateBrickSchema should use the output of energyInputGenerator function',()=>{
+       const client = new BricksWrapperClient()
+        const spy = jest.spyOn(client, 'energyInputGenerator')
+        client.generateBrickSchema(5)
+        expect(spy).toHaveBeenCalledTimes(5)
+    })
 })

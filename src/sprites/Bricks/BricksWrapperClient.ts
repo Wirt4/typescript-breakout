@@ -40,7 +40,7 @@ class BrickCoordinates{
 class BricksWrapperClient{
     private brickCoordinates:BrickCoordinates;
     private readonly brickSize:Size;
-    private columns: number;
+    private readonly columns: number;
 
     constructor(stageColumns: number = 10,
                 brickSize: Size = {width: 10, height: 10},
@@ -81,11 +81,11 @@ class BricksWrapperClient{
     }
 
     private allocateEnergyNumber(ndx: number){
-        return ndx%this.columns!==0 && ndx%this.columns !== this.columns-1 ? 1: 0
+        return ndx%this.columns!==0 && ndx%this.columns !== this.columns-1 ?  this.energyInputGenerator(): 0
     }
 
     private allocateEnergyForTwoColumn(ndx: number){
-        return ndx%this.columns==0 ? 1: 0
+        return ndx%this.columns==0 ? this.energyInputGenerator(): 0
     }
 
     private templateSchema(numberOfBricks: number): number[]{
@@ -104,21 +104,28 @@ class BricksWrapperClient{
 
     private oneColumnSchema(numberOfBricks: number){
         const schema = this.templateSchema(numberOfBricks)
-        schema.fill(1, 1)
+        for (let i = 1; i< schema.length; i++){
+            schema[i] = this.energyInputGenerator()
+        }
         return schema
     }
 
     private multiSchema(numberOfBricks: number){
         const schema = this.templateSchema(numberOfBricks)
         for (let i=this.columns; i< schema.length; i++){
-            schema[i] = this.allocateEnergyNumber(i)
+             if (numberOfBricks>=0){
+                 schema[i] = this.allocateEnergyNumber(i)
+                 numberOfBricks--
+             }
         }
-
         return schema
     }
 
-    public generateBrickSchema(numberOfBricks: number): number[] {
+    public energyInputGenerator():number{
+        return 1 +  Math.floor(Math.random() * 4);
+    }
 
+    public generateBrickSchema(numberOfBricks: number): number[] {
         if (this.columns == 1 ){
            return this.oneColumnSchema(numberOfBricks)
         }
@@ -131,7 +138,7 @@ class BricksWrapperClient{
     }
 
     public createBricks(numberOfBricks: number): Brick[] {
-        if (numberOfBricks <=0){
+        if (numberOfBricks <= 0){
             return[]
         }
         const schema = this.generateBrickSchema(numberOfBricks)
