@@ -1,6 +1,6 @@
 import {CanvasView} from "../../src/view/CanvasView";
 import {Sprite} from "../../src/sprites/Sprite";
-import {Brick} from "../../src/sprites/Brick";
+import {Brick} from "../../src/sprites/Bricks/Brick";
 import {BRICK_HEIGHT, BRICK_WIDTH} from "../../src/setup";
 import {Position, Size} from "../../src/types";
 

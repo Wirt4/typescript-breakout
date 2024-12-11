@@ -1,8 +1,8 @@
-import {Sprite} from "./Sprite";
-import {Position} from "../types";
-import {BRICK_HEIGHT, BRICK_WIDTH} from "../setup";
-import {Ball} from "./Ball";
-import {Contact} from "../enums";
+import {Sprite} from "../Sprite";
+import {Position, Size} from "../../types";
+import {BRICK_HEIGHT, BRICK_WIDTH} from "../../setup";
+import {Ball} from "../Ball";
+import {Contact} from "../../enums";
 interface overlapRange{
     start: number,
     end: number
@@ -12,8 +12,8 @@ export class Brick extends Sprite{
     private _contactType = Contact.NO_CONTACT
     private _collisionOverlapDistance = 0
 
-    constructor(imgSrc: string, coords: Position, energy: number = 1) {
-        super(imgSrc, coords, {width: BRICK_WIDTH, height: BRICK_HEIGHT});
+    constructor(imgSrc: string, coords: Position, energy: number = 1, size: Size = {width: BRICK_WIDTH, height: BRICK_HEIGHT}) {
+        super(imgSrc, coords, size);
         this._energy = energy;
     }
 

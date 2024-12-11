@@ -1,5 +1,5 @@
 import {Sprite} from "../sprites/Sprite";
-import {Brick} from "../sprites/Brick";
+import {Brick} from "../sprites/Bricks/Brick";
 
 export class CanvasView {
     canvas: HTMLCanvasElement;

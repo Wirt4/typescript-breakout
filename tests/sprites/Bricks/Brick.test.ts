@@ -1,10 +1,10 @@
-import {Brick} from "../../src/sprites/Brick";
-import {BRICK_HEIGHT, BRICK_WIDTH} from "../../src/setup";
-import {Ball} from "../../src/sprites/Ball";
-import {Position} from "../../src/types";
-import {Contact} from "../../src/enums";
+import {Brick} from "../../../src/sprites/Bricks/Brick";
+import {BRICK_HEIGHT, BRICK_WIDTH} from "../../../src/setup";
+import {Ball} from "../../../src/sprites/Ball";
+import {Position} from "../../../src/types";
+import {Contact} from "../../../src/enums";
 
-jest.mock("../../src/setup", () => ({
+jest.mock("../../../src/setup", () => ({
     BRICK_WIDTH:35,
     BRICK_HEIGHT:15,
 }))

@@ -28,21 +28,6 @@ export const BALL_SIZE = 20;
 export const BALL_STARTX = 500;
 export const BALL_STARTY = 400;
 
-export const BRICK_IMAGES: { [key: number]: string } = {
-    1: RED_BRICK_IMAGE,
-    2: GREEN_BRICK_IMAGE,
-    3: YELLOW_BRICK_IMAGE,
-    4: BLUE_BRICK_IMAGE,
-    5: PURPLE_BRICK_IMAGE
-};
-
-export const BRICK_ENERGY: { [key: number]: number } = {
-    1: 1, // Red brick
-    2: 1, // Green brick
-    3: 2, // Yellow brick
-    4: 2, // Blue brick
-    5: 3 // Purple brick
-};
 
 // prettier-ignore
 export const LEVEL = [
@@ -53,3 +38,5 @@ export const LEVEL = [
     0, 0, 4, 4, 4, 4, 4, 4, 0, 0,
     0, 0, 5, 5, 0, 0, 5, 5, 0, 0,
 ];
+
+export const NUMBER_OF_BRICKS =60
