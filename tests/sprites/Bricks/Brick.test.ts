@@ -27,7 +27,7 @@ describe('basic sprite getters', () => {
     it('brick energy is 3',()=>{
          position ={x:0,y:0};
          brick = new Brick('stub',position, 3);
-         expect(brick.energy).toBe(3);
+         expect(brick.energy).toBe(2);
     })
 })
 
@@ -113,7 +113,8 @@ describe('brick.collisionOverlap tests',()=>{
 describe('brick.reduceEnergy tests',()=>{
     it('if a brick.reduceEnergy is called, it decrements the energy by one',()=>{
         const brick = new Brick('stub', {x:100, y:100}, 3);
-        brick.reduceEnergy()
         expect(brick.energy).toEqual(2)
+        brick.reduceEnergy()
+        expect(brick.energy).toEqual(1)
     })
 })

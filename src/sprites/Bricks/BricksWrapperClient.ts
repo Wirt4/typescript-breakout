@@ -50,30 +50,6 @@ class BricksWrapperClient{
         this.columns = stageColumns;
     }
 
-    private brickStats(energyLevel: number){
-        let color = RED_BRICK_IMAGE
-        let level = 1
-        switch (energyLevel){
-            case 2:
-                color = GREEN_BRICK_IMAGE
-                level = 1
-                break
-            case 3:
-                color = YELLOW_BRICK_IMAGE
-                level = 2
-                break
-            case 4:
-                color = BLUE_BRICK_IMAGE
-                level = 2
-                break
-            case 5:
-                color = PURPLE_BRICK_IMAGE
-                level = 3
-                break
-        }
-        return { img:color, energyLevel: level };
-    }
-
     private adjustedCoords(i: number): Position{
         const x = this.brickCoordinates.xCoordinate(i)
         const y = this.brickCoordinates.yCoordinate(i)
@@ -156,8 +132,7 @@ class BricksWrapperClient{
 
     private brickFromIndex(ndx: number, energy: number): Brick{
         const coordinates = this.adjustedCoords(ndx)
-        const {img, energyLevel} = this.brickStats(energy)
-        return new Brick(img, coordinates, energyLevel, this.brickSize)
+        return new Brick('stub', coordinates, energy, this.brickSize)
     }
 
     public getBricksWrapper(numberOfBricks: number = 1): BricksWrapper {

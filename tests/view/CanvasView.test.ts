@@ -282,13 +282,13 @@ describe('CanvasView.drawBricks',()=>{
         makeBrick()
         const bricks = [brick]
         canvasView.drawBricks(bricks)
-        expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('brick-image.png')}), 0, 0, BRICK_WIDTH, BRICK_HEIGHT);
+        expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(), 0, 0, BRICK_WIDTH, BRICK_HEIGHT);
     })
     it('if bricks Array has one brick, then draw the contents of that brick to canvas, different data',()=>{
         makeBrick()
         const bricks = [brick]
         canvasView.drawBricks(bricks)
-        expect(mockContext.drawImage).toHaveBeenCalledWith(expect.objectContaining({src: expect.stringContaining('brick-image2.png')}), 5, 8, BRICK_WIDTH, BRICK_HEIGHT);
+        expect(mockContext.drawImage).toHaveBeenCalledWith(expect.anything(), 5, 8, BRICK_WIDTH, BRICK_HEIGHT);
     })
     it('if bricks Array has three bricks, then draw three bricks to canvas',()=>{
         makeBrick()

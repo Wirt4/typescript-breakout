@@ -3,6 +3,11 @@ import {Position, Size} from "../../types";
 import {BRICK_HEIGHT, BRICK_WIDTH} from "../../setup";
 import {Ball} from "../Ball";
 import {Contact} from "../../enums";
+import RED_BRICK_IMAGE from "../../images/brick-red.png";
+import GREEN_BRICK_IMAGE from "../../images/brick-green.png";
+import YELLOW_BRICK_IMAGE from "../../images/brick-yellow.png";
+import BLUE_BRICK_IMAGE from "../../images/brick-blue.png";
+import PURPLE_BRICK_IMAGE from "../../images/brick-purple.png";
 interface overlapRange{
     start: number,
     end: number
@@ -13,8 +18,28 @@ export class Brick extends Sprite{
     private _collisionOverlapDistance = 0
 
     constructor(imgSrc: string, coords: Position, energy: number = 1, size: Size = {width: BRICK_WIDTH, height: BRICK_HEIGHT}) {
-        super(imgSrc, coords, size);
-        this._energy = energy;
+            let color = RED_BRICK_IMAGE
+            let level = 1
+            switch (energy){
+                case 2:
+                    color = GREEN_BRICK_IMAGE
+                    level = 1
+                    break
+                case 3:
+                    color = YELLOW_BRICK_IMAGE
+                    level = 2
+                    break
+                case 4:
+                    color = BLUE_BRICK_IMAGE
+                    level = 2
+                    break
+                case 5:
+                    color = PURPLE_BRICK_IMAGE
+                    level = 3
+                    break
+            }
+        super(color, coords, size);
+        this._energy = level;
     }
 
     get energy(): number {

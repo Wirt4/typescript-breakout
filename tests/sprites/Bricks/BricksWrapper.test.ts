@@ -82,8 +82,8 @@ describe('adjustBricks tests',()=>{
         wrapper.adjustBricks()
         expect(wrapper.arr.length).toEqual(2)
     })
-    it('if the wrapper detects a collision with a brick with an energy rating greater han 1, it calls "reduceEnergy on the brick"',()=>{
-        brick2 = new Brick('stub',{x:0, y:0}, 2)
+    it('if the wrapper detects a collision with a brick with an energy rating greater than 1, it calls "reduceEnergy on the brick"',()=>{
+        brick2 = new Brick('stub',{x:0, y:0}, 5)
         jest.spyOn(brick2, 'hasCollision').mockReturnValue(Contact.TOP_OR_BOTTOM)
         const reduceEnergySpy = jest.spyOn(brick2, 'reduceEnergy')
         mockCollision()
