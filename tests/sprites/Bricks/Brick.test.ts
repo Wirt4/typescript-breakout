@@ -13,7 +13,7 @@ describe('basic sprite getters', () => {
     let position: Position
     let brick: Brick
     beforeEach(() => {
-        brick = new Brick('stub', position);
+        brick = new Brick( position);
     })
     it('brick width is the const BRICK_WIDTH',()=>{
         expect(brick.width).toEqual(BRICK_WIDTH)
@@ -26,7 +26,7 @@ describe('basic sprite getters', () => {
     })
     it('brick energy is 3',()=>{
          position ={x:0,y:0};
-         brick = new Brick('stub',position, 3);
+         brick = new Brick(position, 3);
          expect(brick.energy).toBe(2);
     })
 })
@@ -42,25 +42,25 @@ describe('brick.isCollidingWith',()=>{
         diameter = 5
     })
     it('detects collision from side, coming from left',()=>{
-         brick = new Brick('stub', {x: diameter, y:0}, 3);
+         brick = new Brick( {x: diameter, y:0}, 3);
          ball = new Ball(originPosition, diameter,  ballSped);
          brick.detectCollision(ball)
          expect(brick.hasCollision()).toEqual(Contact.SIDE);
     })
     it('detects collision, coming from top, are occupying the same space',()=>{
-        brick = new Brick('stub', {x:0, y:diameter}, 3);
+        brick = new Brick( {x:0, y:diameter}, 3);
         ball = new Ball(originPosition, 5, ballSped);
         brick.detectCollision(ball)
         expect(brick.hasCollision()).toEqual(Contact.TOP_OR_BOTTOM);
     })
     it('detects collision ,no contact',()=>{
-         brick = new Brick('stub',originPosition, 3);
+         brick = new Brick(originPosition, 3);
          ball = new Ball({x:100, y:100}, 5, ballSped);
          brick.detectCollision(ball)
          expect(brick.hasCollision()).toEqual(Contact.NO_CONTACT);
     })
     it('detects collision, coming from top, followed by checking a fresh value',()=>{
-        brick = new Brick('stub', {x:0, y:diameter}, 3);
+        brick = new Brick( {x:0, y:diameter}, 3);
         ball = new Ball(originPosition, 5, ballSped);
         brick.detectCollision(ball)
         expect(brick.hasCollision()).toEqual(Contact.TOP_OR_BOTTOM);
@@ -71,7 +71,7 @@ describe('brick.isCollidingWith',()=>{
 })
 
 describe('brick.collisionOverlap tests',()=>{
-    const  brick= new Brick('stub', {x:100, y:100}, 3);
+    const  brick= new Brick( {x:100, y:100}, 3);
     let  diameter: number
     let ball : Ball
     function constructBall(position:Position,){
@@ -112,7 +112,7 @@ describe('brick.collisionOverlap tests',()=>{
 
 describe('brick.reduceEnergy tests',()=>{
     it('if a brick.reduceEnergy is called, it decrements the energy by one',()=>{
-        const brick = new Brick('stub', {x:100, y:100}, 3);
+        const brick = new Brick( {x:100, y:100}, 3);
         expect(brick.energy).toEqual(2)
         brick.reduceEnergy()
         expect(brick.energy).toEqual(1)

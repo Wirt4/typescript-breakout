@@ -132,7 +132,7 @@ class BricksWrapperClient{
 
     private brickFromIndex(ndx: number, energy: number): Brick{
         const coordinates = this.adjustedCoords(ndx)
-        return new Brick('stub', coordinates, energy, this.brickSize)
+        return new Brick(coordinates, energy, this.brickSize)
     }
 
     public getBricksWrapper(numberOfBricks: number = 1): BricksWrapper {

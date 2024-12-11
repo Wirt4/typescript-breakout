@@ -245,10 +245,9 @@ describe('CanvasView.drawBricks',()=>{
     let mockContext: jest.Mocked<CanvasRenderingContext2D>;
     let brickPosition: Position
     let brick: Brick
-    let brickImage: string
 
     const makeBrick=()=>{
-        brick = new Brick(brickImage, brickPosition)
+        brick = new Brick(brickPosition)
         jest.spyOn(brick, 'hasValidImage').mockReturnValue(true)
     }
 
@@ -269,8 +268,6 @@ describe('CanvasView.drawBricks',()=>{
 
         canvasView = new CanvasView('#playField');
         brickPosition = {x: 5, y: 8};
-        brickImage = './brick-image2.png'
-
     })
 
     afterAll(()=>{
@@ -278,7 +275,6 @@ describe('CanvasView.drawBricks',()=>{
     })
     it('if bricks Array has one brick, then draw the contents of that brick to canvas',()=>{
         brickPosition = {x: 0, y: 0};
-        brickImage = './brick-image.png'
         makeBrick()
         const bricks = [brick]
         canvasView.drawBricks(bricks)

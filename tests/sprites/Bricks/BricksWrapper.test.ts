@@ -20,9 +20,9 @@ describe('detectCollision tests', () => {
         startPosition = {x:0, y:0};
         ballSize = 5
         ballSpeed = {xComponent: 1, yComponent: -1}
-        brick1 = new Brick('stub',startPosition, 1)
-        brick2 = new Brick('stub',startPosition, 1)
-        brick3 = new Brick('stub',startPosition, 1)
+        brick1 = new Brick(startPosition, 1)
+        brick2 = new Brick(startPosition, 1)
+        brick3 = new Brick(startPosition, 1)
         mockCollision = ()=>{
             wrapper = new BricksWrapper([brick1, brick2, brick3])
             ball = new Ball(startPosition, ballSize,  ballSpeed)
@@ -50,7 +50,7 @@ describe('detectCollision tests', () => {
         expect(wrapper.collisionType()).toEqual(Contact.TOP_OR_BOTTOM);
     })
     it('if the wrapper detects a collision with a brick with an energy rating greater han 1, then that brick is not removed',()=>{
-        brick2 = new Brick('stub',startPosition, 2)
+        brick2 = new Brick(startPosition, 2)
         setUpBricks()
         mockCollision()
         expect(wrapper.arr.length).toEqual(3)
@@ -68,9 +68,9 @@ describe('adjustBricks tests',()=>{
         wrapper.detectCollision(ball)
     }
     beforeEach(() => {
-        brick1 = new Brick('stub', {x:0, y:0})
-        brick2 = new Brick('stub', {x:0, y:0})
-        brick3 = new Brick('stub', {x:0, y:0})
+        brick1 = new Brick( {x:0, y:0})
+        brick2 = new Brick( {x:0, y:0})
+        brick3 = new Brick( {x:0, y:0})
         jest.spyOn(brick1, 'hasCollision').mockReturnValue(Contact.NO_CONTACT)
         jest.spyOn(brick2, 'hasCollision').mockReturnValue(Contact.NO_CONTACT)
         jest.spyOn(brick3, 'hasCollision').mockReturnValue(Contact.NO_CONTACT)
@@ -83,7 +83,7 @@ describe('adjustBricks tests',()=>{
         expect(wrapper.arr.length).toEqual(2)
     })
     it('if the wrapper detects a collision with a brick with an energy rating greater than 1, it calls "reduceEnergy on the brick"',()=>{
-        brick2 = new Brick('stub',{x:0, y:0}, 5)
+        brick2 = new Brick({x:0, y:0}, 5)
         jest.spyOn(brick2, 'hasCollision').mockReturnValue(Contact.TOP_OR_BOTTOM)
         const reduceEnergySpy = jest.spyOn(brick2, 'reduceEnergy')
         mockCollision()
@@ -95,7 +95,7 @@ describe('adjustBricks tests',()=>{
 
 describe('collisionOverLap tests',()=>{
     it('If the array contains a brick that has a collision, then the return value of bricksWrapper collision distance is that value',()=>{
-        const brick = new Brick('stub',{x:0, y:0})
+        const brick = new Brick({x:0, y:0})
         jest.spyOn(brick, 'hasCollision').mockReturnValue(Contact.TOP_OR_BOTTOM)
         const distance = 3
         jest.spyOn(brick, 'collisionOverlapDistance').mockReturnValue(distance)
@@ -107,7 +107,7 @@ describe('collisionOverLap tests',()=>{
 })
 
 describe('isEmpty() tests',()=>{
-    const brick = new Brick('stub',{x:0, y:0})
+    const brick = new Brick({x:0, y:0})
     let wrapper: BricksWrapper
     it('if the wrapper contains one brick, then isEmpty is false',()=>{
         wrapper = new BricksWrapper([brick])

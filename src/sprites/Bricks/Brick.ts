@@ -17,7 +17,7 @@ export class Brick extends Sprite{
     private _contactType = Contact.NO_CONTACT
     private _collisionOverlapDistance = 0
 
-    constructor(imgSrc: string, coords: Position, energy: number = 1, size: Size = {width: BRICK_WIDTH, height: BRICK_HEIGHT}) {
+    constructor(coords: Position, energy: number = 1, size: Size = {width: BRICK_WIDTH, height: BRICK_HEIGHT}) {
             let color = RED_BRICK_IMAGE
             let level = 1
             switch (energy){
