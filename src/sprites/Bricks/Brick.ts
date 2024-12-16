@@ -4,11 +4,13 @@ import {BRICK_HEIGHT, BRICK_WIDTH} from "../../setup";
 import {Ball} from "../Ball";
 import {BrickImages, Contact} from "../../enums";
 import {BrickEnergy} from "./BrickEnergy";
+import {IBrick} from "../../Game/Interfaces/sprites/IBrick";
+
 interface overlapRange{
     start: number,
     end: number
 }
-export class Brick extends Sprite{
+export class Brick extends Sprite implements IBrick{
     private _energy: BrickEnergy;
     private _contactType = Contact.NO_CONTACT
     private _collisionOverlapDistance = 0

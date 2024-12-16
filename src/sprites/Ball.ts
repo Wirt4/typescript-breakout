@@ -1,9 +1,8 @@
 import {Sprite} from "./Sprite";
 import { Position, Vector} from "../types";
 import BALL_IMAGE from "../images/ball.png";
-import {IBall} from "../Game/Interfaces/IBall";
 
-export class Ball extends Sprite implements IBall{
+export class Ball extends Sprite{
     private _speed: Vector;
 
     constructor(position: Position, size: number, vector: Vector) {

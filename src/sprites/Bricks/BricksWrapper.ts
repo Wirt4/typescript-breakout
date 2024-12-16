@@ -1,11 +1,12 @@
 import {Brick} from "./Brick";
 import {Ball} from "../Ball";
 import {Contact} from "../../enums";
+import {IBricks} from "../../Game/Interfaces/sprites/IBricks";
 
-export class BricksWrapper{
+export class BricksWrapper implements  IBricks{
     private readonly _bricks: Brick[];
     private _collisionOverlap = 0
-    private _collisiontype = Contact.NO_CONTACT
+    private _collisionType = Contact.NO_CONTACT
     private _alteredBrickIndex = -1
     constructor(bricks: Brick[]){
         this._bricks = bricks;
@@ -32,7 +33,7 @@ export class BricksWrapper{
     }
 
     detectCollision(ball: Ball):void{
-        this._collisiontype = Contact.NO_CONTACT
+        this._collisionType = Contact.NO_CONTACT
         if (!this._bricks?.length) {
             return
         }
@@ -41,7 +42,7 @@ export class BricksWrapper{
             const hasCollision: Contact = this._bricks[i].hasCollision();
             if (hasCollision !== Contact.NO_CONTACT){
                 this._collisionOverlap = this._bricks[i].collisionOverlapDistance()
-                this._collisiontype = this._bricks[i].hasCollision()
+                this._collisionType = this._bricks[i].hasCollision()
                 this._alteredBrickIndex = i
                 return
             }
@@ -49,7 +50,7 @@ export class BricksWrapper{
     }
 
     collisionType(): Contact{
-        return this._collisiontype
+        return this._collisionType
     }
 
     collisionOverlap():number{

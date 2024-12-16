@@ -1,19 +1,10 @@
-import {CanvasView} from "../view/CanvasView";
-import {Paddle} from "../sprites/Paddle";
-import {
-    BALL_SIZE,
-    BALL_SPEED,
-    BALL_STARTX,
-    BALL_STARTY,
-    NUMBER_OF_BRICKS,
-    PADDLE_SPEED,
-    PADDLE_STARTX,
-} from "../setup";
+
 import {Size} from "../types";
-import {Ball} from "../sprites/Ball";
-import {BricksWrapper} from "../sprites/Bricks/BricksWrapper";
 import {Contact} from "../enums";
-import {BricksWrapperClient} from "../sprites/Bricks/BricksWrapperClient";
+import {ICanvasView} from "./Interfaces/view/ICanvasView";
+import {IPaddle} from "./Interfaces/sprites/IPaddle";
+import {IBall} from "./Interfaces/sprites/IBall";
+import {IBricks} from "./Interfaces/sprites/IBricks";
 
 enum EndState{
     GAME_OVER = "Game Over!",
@@ -22,26 +13,24 @@ enum EndState{
 
 export class Game {
     private _isGameOver: boolean
-    private readonly _view: CanvasView
+    private readonly _view: ICanvasView
     private _score = 0
-    public bricks : BricksWrapper
-    private readonly _paddle: Paddle
-    private readonly _ball: Ball
+    public bricks : IBricks
+    private readonly _paddle: IPaddle
     private readonly canvasWidth: number;
     private readonly canvasHeight: number;
     private _ballHasBounced =  false
+    private _ball: IBall
 
-    constructor(view: CanvasView, bricksWrapperClient: BricksWrapperClient) {
+    constructor(view: ICanvasView, bricksWrapper: IBricks, paddle:IPaddle, ball: IBall) {
         this._isGameOver = false;
         this._view = view;
-        this._paddle = new Paddle(PADDLE_STARTX, this.canvasSize(), PADDLE_SPEED)
-        const ballPosition = {x: BALL_STARTX, y: BALL_STARTY};
-        let speed = {xComponent: BALL_SPEED, yComponent: -BALL_SPEED};
+        this._paddle = paddle
         const canvasSize = this.canvasSize()
         this.canvasWidth = canvasSize.width
         this.canvasHeight = canvasSize.height
-        this._ball = new Ball(ballPosition, BALL_SIZE,speed)
-        this.bricks = bricksWrapperClient.getBricksWrapper(NUMBER_OF_BRICKS)
+        this._ball = ball
+        this.bricks = bricksWrapper
     }
 
     private canvasSize(): Size{
@@ -52,10 +41,11 @@ export class Game {
         return {width:0, height:0}
     }
 
-    get ball(): Ball{
+    get ball(): IBall{
         return this._ball
     }
-    get paddle(): Paddle{
+
+    get paddle(): IPaddle{
         return this._paddle
     }
 
