@@ -4,8 +4,9 @@ import {Contact} from "../enums";
 import {ICanvasView} from "./Interfaces/view/ICanvasView";
 import {IPaddle} from "./Interfaces/sprites/IPaddle";
 import {IBall} from "./Interfaces/sprites/IBall";
-import {IBricks} from "./Interfaces/sprites/IBricks";
+import {IBricksWrapper} from "./Interfaces/sprites/IBricksWrapper";
 import {SpriteFacade} from "./Interfaces/spriteFacade";
+import {IBrick} from "./Interfaces/sprites/IBrick";
 
 enum EndState{
     GAME_OVER = "Game Over!",
@@ -16,12 +17,13 @@ export class Game {
     private _isGameOver: boolean
     private readonly _view: ICanvasView
     private _score = 0
-    public bricks : IBricks
+    public bricksWrapper : IBricksWrapper
     private readonly _paddle: IPaddle
     private readonly canvasWidth: number;
     private readonly canvasHeight: number;
     private _ballHasBounced =  false
     private _ball: IBall
+    private _bricks: IBrick[]
 
     constructor(view: ICanvasView, sprites: SpriteFacade) {
         this._isGameOver = false;
@@ -31,7 +33,12 @@ export class Game {
         this.canvasWidth = canvasSize.width
         this.canvasHeight = canvasSize.height
         this._ball = sprites.ball
-        this.bricks = sprites.bricks
+        this.bricksWrapper = sprites.bricksWrapper
+        if (sprites.bricks){
+            this._bricks = sprites.bricks
+        }else{
+            this._bricks = []
+        }
     }
 
     private canvasSize(): Size{
@@ -58,6 +65,10 @@ export class Game {
         return this._isGameOver
     }
 
+    get bricks():IBrick[]{
+        return this._bricks
+    }
+
     setGameOver():void {
         this.setGameStatus(EndState.GAME_OVER)
     }
@@ -81,7 +92,7 @@ export class Game {
     }
 
     private drawSprites(){
-        this._view.drawBricks(this.bricks?.arr)
+        this._view.drawBricks(this.bricksWrapper?.arr)
         this._view.drawSprite(this._paddle)
         this._view.drawSprite(this._ball)
     }
@@ -108,7 +119,7 @@ export class Game {
     }
 
     private detectIfAllBricksGone(){
-        if (this.bricks?.isEmpty()){
+        if (this.bricksWrapper?.isEmpty()){
             this.setGameWin()
             this._isGameOver = true;
         }
@@ -132,7 +143,7 @@ export class Game {
     }
 
     private adjustBallPosition(){
-        this.ball.rewind(this.bricks.collisionOverlap())
+        this.ball.rewind(this.bricksWrapper.collisionOverlap())
     }
 
     private handleBrickBounce(contact: Contact){
@@ -141,6 +152,17 @@ export class Game {
             return
         }
         this.ball.bounceX()
+    }
+
+    private getContact(): number{
+        for (let i=0; i< this._bricks.length; i++){
+            this._bricks[i].detectCollision(this.ball)
+            const collisionType = this._bricks[i].hasCollision()
+            if (collisionType!= Contact.NO_CONTACT){
+                return i
+            }
+        }
+        return -1
     }
 
      detectEvents(){
@@ -158,15 +180,23 @@ export class Game {
          if (this._isGameOver){
              return
          }
+         const contactIndex = this.getContact()
+         if (contactIndex != -1){
+               if (this._bricks[contactIndex].energy ==1){
+                   this._bricks.splice(contactIndex, 1)
+               }else{
+                   this._bricks[contactIndex].reduceEnergy()
+               }
+         }
 
-         this.bricks.detectCollision(this.ball)
-         const brickCollide = this.bricks.collisionType()
+         this.bricksWrapper.detectCollision(this.ball)
+         const brickCollide = this.bricksWrapper.collisionType()
 
          if (brickCollide == Contact.NO_CONTACT){
              return
          }
 
-         this.bricks.adjustBricks()
+         this.bricksWrapper.adjustBricks()
          this.adjustBallPosition()
          this.updateScore()
          this.handleBrickBounce(brickCollide)

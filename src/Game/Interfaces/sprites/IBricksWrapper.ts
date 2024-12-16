@@ -2,7 +2,7 @@ import {IBall} from "./IBall";
 import {Contact} from "../../../enums";
 import {IBrick} from "./IBrick";
 
-export interface IBricks{
+export interface IBricksWrapper {
     arr: IBrick[]
     detectCollision(ball :IBall):void
     collisionType(): Contact

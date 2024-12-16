@@ -1,9 +1,9 @@
 import {Brick} from "./Brick";
 import {Ball} from "../Ball";
 import {Contact} from "../../enums";
-import {IBricks} from "../../Game/Interfaces/sprites/IBricks";
+import {IBricksWrapper} from "../../Game/Interfaces/sprites/IBricksWrapper";
 
-export class BricksWrapper implements  IBricks{
+export class BricksWrapper implements  IBricksWrapper{
     private readonly _bricks: Brick[];
     private _collisionOverlap = 0
     private _collisionType = Contact.NO_CONTACT
