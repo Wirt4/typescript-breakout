@@ -5,7 +5,6 @@ import {IBrick} from "./sprites/IBrick";
 
 export interface SpriteFacade {
     ball: IBall;
-    bricksWrapper: IBricksWrapper;
     paddle: IPaddle;
     bricks?: IBrick[]
 }

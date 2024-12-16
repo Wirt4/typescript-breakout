@@ -1,10 +1,8 @@
-
 import {Size} from "../types";
 import {Contact} from "../enums";
 import {ICanvasView} from "./Interfaces/view/ICanvasView";
 import {IPaddle} from "./Interfaces/sprites/IPaddle";
 import {IBall} from "./Interfaces/sprites/IBall";
-import {IBricksWrapper} from "./Interfaces/sprites/IBricksWrapper";
 import {SpriteFacade} from "./Interfaces/spriteFacade";
 import {IBrick} from "./Interfaces/sprites/IBrick";
 
@@ -17,13 +15,12 @@ export class Game {
     private _isGameOver: boolean
     private readonly _view: ICanvasView
     private _score = 0
-    public bricksWrapper : IBricksWrapper
     private readonly _paddle: IPaddle
     private readonly canvasWidth: number;
     private readonly canvasHeight: number;
     private _ballHasBounced =  false
-    private _ball: IBall
-    private _bricks: IBrick[]
+    private readonly _ball: IBall
+    private readonly _bricks: IBrick[]
 
     constructor(view: ICanvasView, sprites: SpriteFacade) {
         this._isGameOver = false;
@@ -33,7 +30,6 @@ export class Game {
         this.canvasWidth = canvasSize.width
         this.canvasHeight = canvasSize.height
         this._ball = sprites.ball
-        this.bricksWrapper = sprites.bricksWrapper
         if (sprites.bricks){
             this._bricks = sprites.bricks
         }else{
@@ -92,7 +88,7 @@ export class Game {
     }
 
     private drawSprites(){
-        this._view.drawBricks(this.bricksWrapper?.arr)
+        this._view.drawBricks(this._bricks)
         this._view.drawSprite(this._paddle)
         this._view.drawSprite(this._ball)
     }
@@ -119,7 +115,7 @@ export class Game {
     }
 
     private detectIfAllBricksGone(){
-        if (this.bricksWrapper?.isEmpty()){
+        if (this._bricks.length == 0){
             this.setGameWin()
             this._isGameOver = true;
         }
@@ -143,7 +139,7 @@ export class Game {
     }
 
     private adjustBallPosition(){
-        this.ball.rewind(this.bricksWrapper.collisionOverlap())
+        this.ball.rewind(-1)
     }
 
     private handleBrickBounce(contact: Contact){
@@ -154,15 +150,32 @@ export class Game {
         this.ball.bounceX()
     }
 
-    private getContact(): number{
+    private getContact(): {index: number, type: Contact, overlap: number}{
         for (let i=0; i< this._bricks.length; i++){
             this._bricks[i].detectCollision(this.ball)
             const collisionType = this._bricks[i].hasCollision()
             if (collisionType!= Contact.NO_CONTACT){
-                return i
+                return {index:i, type: collisionType, overlap: this._bricks[i].collisionOverlapDistance()}
             }
         }
-        return -1
+        return {index:-1, type: Contact.NO_CONTACT, overlap:0}
+    }
+
+
+    private bounceBall(contact: Contact){
+        if (contact == Contact.TOP_OR_BOTTOM){
+            this._ball.bounceY()
+        }else{
+            this._ball.bounceX()
+        }
+    }
+
+    private adjustBricks(index: number){
+        if (this._bricks[index].energy ==1){
+            this._bricks.splice(index, 1)
+            return
+        }
+            this._bricks[index].reduceEnergy()
     }
 
      detectEvents(){
@@ -180,26 +193,14 @@ export class Game {
          if (this._isGameOver){
              return
          }
-         const contactIndex = this.getContact()
-         if (contactIndex != -1){
-               if (this._bricks[contactIndex].energy ==1){
-                   this._bricks.splice(contactIndex, 1)
-               }else{
-                   this._bricks[contactIndex].reduceEnergy()
-               }
+
+         const contact = this.getContact()
+         if (contact.type != Contact.NO_CONTACT){
+             this.updateScore()
+             this._ball.rewind(contact.overlap)
+             this.bounceBall(contact.type)
+             this.adjustBricks(contact.index)
          }
-
-         this.bricksWrapper.detectCollision(this.ball)
-         const brickCollide = this.bricksWrapper.collisionType()
-
-         if (brickCollide == Contact.NO_CONTACT){
-             return
-         }
-
-         this.bricksWrapper.adjustBricks()
-         this.adjustBallPosition()
-         this.updateScore()
-         this.handleBrickBounce(brickCollide)
     }
 
     loop():void{

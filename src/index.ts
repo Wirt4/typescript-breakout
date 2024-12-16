@@ -17,7 +17,8 @@ import {Ball} from "./sprites/Ball";
 
 const view = new CanvasView("#playField")
 const client = new BricksWrapperClient(STAGE_COLS, {width:BRICK_WIDTH, height:BRICK_HEIGHT}, {stage:STAGE_PADDING, brick:BRICK_PADDING})
-const bricks = client.getBricksWrapper(NUMBER_OF_BRICKS)
+const wrapper = client.getBricksWrapper(NUMBER_OF_BRICKS)
+const bricks = wrapper.arr
 const paddle = new Paddle(PADDLE_STARTX, view.canvas, PADDLE_SPEED)
 const ball = new Ball({x: BALL_STARTX, y: BALL_STARTY}, BALL_SIZE,{xComponent: BALL_SPEED, yComponent:BALL_SPEED*-1})
 const sprites = {ball, bricks, paddle}
