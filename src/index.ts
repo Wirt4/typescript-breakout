@@ -20,7 +20,8 @@ const client = new BricksWrapperClient(STAGE_COLS, {width:BRICK_WIDTH, height:BR
 const bricks = client.getBricksWrapper(NUMBER_OF_BRICKS)
 const paddle = new Paddle(PADDLE_STARTX, view.canvas, PADDLE_SPEED)
 const ball = new Ball({x: BALL_STARTX, y: BALL_STARTY}, BALL_SIZE,{xComponent: BALL_SPEED, yComponent:BALL_SPEED*-1})
+const sprites = {ball, bricks, paddle}
 view.initStartButton(()=> {
-    const game = new Game(view, bricks, paddle, ball)
+    const game = new Game(view, sprites)
     game.start()
 })

@@ -5,6 +5,7 @@ import {ICanvasView} from "./Interfaces/view/ICanvasView";
 import {IPaddle} from "./Interfaces/sprites/IPaddle";
 import {IBall} from "./Interfaces/sprites/IBall";
 import {IBricks} from "./Interfaces/sprites/IBricks";
+import {SpriteFacade} from "./Interfaces/spriteFacade";
 
 enum EndState{
     GAME_OVER = "Game Over!",
@@ -22,15 +23,15 @@ export class Game {
     private _ballHasBounced =  false
     private _ball: IBall
 
-    constructor(view: ICanvasView, bricksWrapper: IBricks, paddle:IPaddle, ball: IBall) {
+    constructor(view: ICanvasView, sprites: SpriteFacade) {
         this._isGameOver = false;
         this._view = view;
-        this._paddle = paddle
+        this._paddle = sprites.paddle
         const canvasSize = this.canvasSize()
         this.canvasWidth = canvasSize.width
         this.canvasHeight = canvasSize.height
-        this._ball = ball
-        this.bricks = bricksWrapper
+        this._ball = sprites.ball
+        this.bricks = sprites.bricks
     }
 
     private canvasSize(): Size{

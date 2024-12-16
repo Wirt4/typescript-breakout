@@ -8,6 +8,7 @@ import {BricksWrapperClient} from "../src/sprites/Bricks/BricksWrapperClient";
 import {BricksWrapper} from "../src/sprites/Bricks/BricksWrapper";
 import {IBall} from "../src/Game/Interfaces/sprites/IBall";
 import {Brick} from "../src/sprites/Bricks/Brick";
+import {SpriteFacade} from "../src/Game/Interfaces/spriteFacade";
 
 jest.mock("../src/sprites/Bricks/BricksWrapperClient");
 jest.mock("../src/sprites/Paddle");
@@ -20,7 +21,8 @@ describe('Game.setGameOver tests',()=>{
     beforeEach(()=>{
         view = new CanvasView('#playField')
         spy = jest.spyOn(view, 'drawInfo').mockImplementation(()=>{})
-        game = new Game( view, new BricksWrapper([]), new Paddle(0, {width: 800, height: 600}), new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1}))
+        const sprites = {bricks:  new BricksWrapper([]), paddle: new Paddle(0, {width: 800, height: 600}), ball: new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1})}
+        game = new Game( view, sprites)
     })
     afterEach(()=>{
         jest.resetAllMocks()
@@ -39,7 +41,8 @@ describe('Game.isGameOver',()=>{
     let game: Game
     beforeEach(()=>{
         view = new CanvasView('#playField')
-        game = new Game(view, new BricksWrapper([]), new Paddle(0, {width: 800, height: 600}), new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1}))
+        const sprites = {bricks:  new BricksWrapper([]), paddle: new Paddle(0, {width: 800, height: 600}), ball: new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1})}
+        game = new Game(view, sprites)
     })
     afterEach(()=>{
         jest.resetAllMocks()
@@ -56,7 +59,8 @@ describe('Game.setGameWin tests',()=>{
     beforeEach(()=>{
         view = new CanvasView('#playField')
         spy = jest.spyOn(view, 'drawInfo').mockImplementation(()=>{})
-        game = new Game(view, new BricksWrapper([]), new Paddle(0, {width: 800, height: 600}), new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1}))
+        const sprites = {bricks:  new BricksWrapper([]), paddle: new Paddle(0, {width: 800, height: 600}), ball: new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1})}
+        game = new Game(view, sprites)
     })
     afterEach(()=>{
         jest.resetAllMocks()
@@ -73,9 +77,11 @@ describe('Game.setGameWin tests',()=>{
 describe('Game.start tests',()=>{
     let view: CanvasView
     let game: Game
+    let sprites: SpriteFacade
     beforeEach(()=>{
         view = new CanvasView('#playField');
-        game = new Game(view, new BricksWrapper([]), new Paddle(0, {width: 800, height: 600}), new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1}))
+        sprites = {bricks:  new BricksWrapper([]), paddle: new Paddle(0, {width: 800, height: 600}), ball: new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1})}
+        game = new Game(view, sprites)
     })
     afterEach(()=>{
         jest.resetAllMocks()
@@ -86,13 +92,13 @@ describe('Game.start tests',()=>{
     })
     it('expect view.drawInfo to have been called with an empty string',()=>{
         const drawInfoSpy = jest.spyOn(view, 'drawInfo').mockImplementation(()=>{})
-        game = new Game(view, new BricksWrapper([]), new Paddle(0, {width: 800, height: 600}), new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1}))
+        game = new Game(view, sprites)
         game.start()
         expect(drawInfoSpy).toHaveBeenCalledWith("")
     })
     it('expect view.drawScore to have been called with 0',()=>{
         const drawScoreSpy = jest.spyOn(view, 'drawScore').mockImplementation(()=>{})
-        game = new Game(view, new BricksWrapper([]), new Paddle(0, {width: 800, height: 600}), new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1}))
+        game = new Game(view,  sprites)
         game.start()
         expect(drawScoreSpy).toHaveBeenCalledWith(0)
     })
@@ -122,13 +128,15 @@ describe('Game.loop tests',()=>{
         document.body.innerHTML = `<canvas id="playField" width="${width}" height="${height}"></canvas><button id="start"></button>`
         wrapper = new BricksWrapper([])
         jest.spyOn(wrapper, 'isEmpty').mockReturnValue(isEmpty)
-        game = new Game(view,wrapper, new Paddle(0, {width, height}), new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1}));
+        const sprites = {bricks: wrapper, paddle: new Paddle(0, {width, height}), ball: new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1})}
+        game = new Game(view, sprites);
     }
     function mockCollisionType(collision: Contact){
         wrapper = new BricksWrapper([])
         jest.spyOn(wrapper, 'collisionType').mockReturnValue(collision)
         jest.spyOn(wrapper, 'isEmpty').mockReturnValue(false)
-        game = new Game(view, wrapper, new Paddle(0, {width: 800, height: 600}), new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1}))
+        const sprites = {bricks:  wrapper, paddle: new Paddle(0, {width:800, height:600}), ball: new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1})}
+        game = new Game(view, sprites)
     }
     beforeEach(()=>{
         view = new CanvasView('#playField');
@@ -149,7 +157,8 @@ describe('Game.loop tests',()=>{
     })
     it('game loop calls view.drawBricks', ()=>{
         drawBricksSpy = jest.spyOn(view, 'drawBricks').mockImplementation(()=>{})
-        game = new Game(view, new BricksWrapper([]), new Paddle(0, {width: 800, height: 600}), new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1}))
+        const sprites = {bricks:  new BricksWrapper([]), paddle: new Paddle(0, {width:800, height:600}), ball: new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1})}
+        game = new Game(view, sprites)
         jest.spyOn(game, 'detectEvents').mockImplementation(()=>{})
         game.loop()
         expect(drawBricksSpy).toHaveBeenCalled()
@@ -183,7 +192,8 @@ describe('Game.loop tests',()=>{
         const adjustSpy = jest.spyOn(wrapper, 'adjustBricks')
         jest.spyOn(wrapper, 'collisionType').mockReturnValue(Contact.TOP_OR_BOTTOM)
         jest.spyOn(wrapper, 'isEmpty').mockReturnValue(false)
-        game = new Game(view, wrapper, new Paddle(0, {width: 800, height: 600}), new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1}))
+        const sprites = {bricks: wrapper, paddle: new Paddle(0, {width: 800, height: 600}), ball: new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1})}
+        game = new Game(view, sprites)
         game.loop();
         expect(adjustSpy).toHaveBeenCalled()
     })
@@ -246,7 +256,8 @@ describe('Game.loop tests',()=>{
         jest.spyOn(wrapper, 'collisionType').mockReturnValue(Contact.SIDE)
         jest.spyOn(wrapper, 'isEmpty').mockReturnValue(false)
         jest.spyOn(wrapper, 'collisionOverlap').mockReturnValue(overlapDistance)
-        game = new Game(view, wrapper, new Paddle(0, {width: 800, height: 600}), new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1}))
+        const sprites = {bricks: wrapper, paddle: new Paddle(0, {width: 800, height: 600}), ball: new Ball({x:0, y:0}, 5, {xComponent: 1, yComponent: 1})}
+        game = new Game(view, sprites)
         ballRewindSpy = jest.spyOn(game.ball, 'rewind')
         game.loop();
         expect(ballRewindSpy).toHaveBeenCalledWith(overlapDistance)
