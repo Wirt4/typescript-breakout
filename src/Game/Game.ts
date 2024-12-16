@@ -42,7 +42,6 @@ export class Game {
         this.canvasHeight = canvasSize.height
         this._ball = new Ball(ballPosition, BALL_SIZE,speed)
         this.bricks = bricksWrapperClient.getBricksWrapper(NUMBER_OF_BRICKS)
-
     }
 
     private canvasSize(): Size{
