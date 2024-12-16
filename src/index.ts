@@ -1,5 +1,5 @@
 import {CanvasView} from "./view/CanvasView";
-import {Game} from "./Game";
+import {Game} from "./Game/Game";
 import {BricksWrapperClient} from "./sprites/Bricks/BricksWrapperClient";
 import {BRICK_HEIGHT, BRICK_PADDING, BRICK_WIDTH, STAGE_COLS, STAGE_PADDING} from "./setup";
 

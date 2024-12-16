@@ -2,48 +2,30 @@ import {Sprite} from "../Sprite";
 import {Position, Size} from "../../types";
 import {BRICK_HEIGHT, BRICK_WIDTH} from "../../setup";
 import {Ball} from "../Ball";
-import {Contact} from "../../enums";
-import RED_BRICK_IMAGE from "../../images/brick-red.png";
-import GREEN_BRICK_IMAGE from "../../images/brick-green.png";
-import YELLOW_BRICK_IMAGE from "../../images/brick-yellow.png";
-import BLUE_BRICK_IMAGE from "../../images/brick-blue.png";
-import PURPLE_BRICK_IMAGE from "../../images/brick-purple.png";
+import {BrickImages, Contact} from "../../enums";
+import {BrickEnergy} from "./BrickEnergy";
 interface overlapRange{
     start: number,
     end: number
 }
 export class Brick extends Sprite{
-    private _energy: number;
+    private _energy: BrickEnergy;
     private _contactType = Contact.NO_CONTACT
     private _collisionOverlapDistance = 0
 
     constructor(coords: Position, energy: number = 1, size: Size = {width: BRICK_WIDTH, height: BRICK_HEIGHT}) {
-            let color = RED_BRICK_IMAGE
-            let level = 1
-            switch (energy){
-                case 2:
-                    color = GREEN_BRICK_IMAGE
-                    level = 1
-                    break
-                case 3:
-                    color = YELLOW_BRICK_IMAGE
-                    level = 2
-                    break
-                case 4:
-                    color = BLUE_BRICK_IMAGE
-                    level = 2
-                    break
-                case 5:
-                    color = PURPLE_BRICK_IMAGE
-                    level = 3
-                    break
-            }
-        super(color, coords, size);
-        this._energy = level;
+        const brickEnergy = new BrickEnergy("../../images/brick-purple.png",energy)
+
+        super(brickEnergy.imagePath as string, coords, size);
+        this._energy = brickEnergy;
+    }
+
+    get imageSource():BrickImages{
+        return BrickImages.RED
     }
 
     get energy(): number {
-        return this._energy;
+        return this._energy.energy;
     }
 
     collisionOverlapDistance():number {
@@ -86,8 +68,11 @@ export class Brick extends Sprite{
         return ball.position.y <= this.bottomMostY && ball.bottomMostY >= this.position.y
     }
 
-    reduceEnergy():void{
-        this._energy --
+    async reduceEnergy():Promise<void>{
+        this._energy.decrementScore()
+        this.loadImage(this._energy.imagePath as string).catch((err: Error) => {
+            console.error(err);
+        });
     }
 
     hasCollision():Contact{

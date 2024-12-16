@@ -1,4 +1,4 @@
-import {Game} from "../src/Game";
+import {Game} from "../src/Game/Game";
 import {CanvasView} from "../src/view/CanvasView";
 import {Paddle} from "../src/sprites/Paddle";
 import {BALL_SIZE, BALL_SPEED, BALL_STARTX, BALL_STARTY, PADDLE_SPEED, PADDLE_STARTX} from "../src/setup";

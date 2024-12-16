@@ -17,11 +17,10 @@ export class Sprite {
         });
     }
 
-    private async loadImage(src: string): Promise<void> {
+    protected async loadImage(src: string): Promise<void> {
         try {
             await new Promise<void>((resolve, reject) => {
                 this._img.onload = () => {
-                    console.log(`Image loaded: ${src}`);
                     resolve();
                 };
 

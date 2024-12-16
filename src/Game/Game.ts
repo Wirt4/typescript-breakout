@@ -1,5 +1,5 @@
-import {CanvasView} from "./view/CanvasView";
-import {Paddle} from "./sprites/Paddle";
+import {CanvasView} from "../view/CanvasView";
+import {Paddle} from "../sprites/Paddle";
 import {
     BALL_SIZE,
     BALL_SPEED,
@@ -8,12 +8,12 @@ import {
     NUMBER_OF_BRICKS,
     PADDLE_SPEED,
     PADDLE_STARTX,
-} from "./setup";
-import {Size} from "./types";
-import {Ball} from "./sprites/Ball";
-import {BricksWrapper} from "./sprites/Bricks/BricksWrapper";
-import {Contact} from "./enums";
-import {BricksWrapperClient} from "./sprites/Bricks/BricksWrapperClient";
+} from "../setup";
+import {Size} from "../types";
+import {Ball} from "../sprites/Ball";
+import {BricksWrapper} from "../sprites/Bricks/BricksWrapper";
+import {Contact} from "../enums";
+import {BricksWrapperClient} from "../sprites/Bricks/BricksWrapperClient";
 
 enum EndState{
     GAME_OVER = "Game Over!",

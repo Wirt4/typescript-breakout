@@ -2,7 +2,7 @@ import {Brick} from "../../../src/sprites/Bricks/Brick";
 import {BRICK_HEIGHT, BRICK_WIDTH} from "../../../src/setup";
 import {Ball} from "../../../src/sprites/Ball";
 import {Position} from "../../../src/types";
-import {Contact} from "../../../src/enums";
+import {BrickImages, Contact} from "../../../src/enums";
 
 jest.mock("../../../src/setup", () => ({
     BRICK_WIDTH:35,
@@ -116,5 +116,11 @@ describe('brick.reduceEnergy tests',()=>{
         expect(brick.energy).toEqual(2)
         brick.reduceEnergy()
         expect(brick.energy).toEqual(1)
+    })
+    it('if a brick.reduceEnergy is set to 1 then its color is set to red',()=>{
+        const brick = new Brick( {x:100, y:100}, 3);
+        expect(brick.energy).toEqual(2)
+        brick.reduceEnergy()
+        expect(brick.imageSource).toEqual(BrickImages.RED)
     })
 })
